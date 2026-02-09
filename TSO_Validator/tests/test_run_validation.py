@@ -28,9 +28,9 @@ class TestRunValidation(unittest.TestCase):
         for name, content in self._backup_raw:
             (RAW_DIR / name).write_text(content)
 
-    def test_empty_raw_returns_validated(self):
+    def test_empty_raw_returns_indeterminate(self):
         summary = run_validation()
-        self.assertEqual(summary["status"], "TSO_VALIDATED")
+        self.assertEqual(summary["status"], "TSO_INDETERMINATE")
         self.assertEqual(summary["files_checked"], 0)
 
     def test_clean_record_validates(self):

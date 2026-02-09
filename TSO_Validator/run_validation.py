@@ -64,12 +64,12 @@ def run_validation() -> dict:
 
     if len(records) == 0:
         return {
-            "status": "TSO_VALIDATED",
+            "status": "TSO_INDETERMINATE",
             "run_id": run_id,
             "timestamp": timestamp.isoformat(),
             "files_checked": 0,
             "failures": [],
-            "message": "No input files in data/raw/; validation trivially passes.",
+            "message": "No input files in data/raw/; cannot validate without data.",
         }
 
     # 2. Provenance (checksums for all raw files)
