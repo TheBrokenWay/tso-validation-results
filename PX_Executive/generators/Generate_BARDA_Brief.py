@@ -3,10 +3,11 @@ import os
 import csv
 from datetime import datetime
 
-# CONFIGURATION
-LEADERBOARD_FILE = r"E:\foundation\PX_Warehouse\SMART_DIAMOND_LEADERBOARD.csv"
-DOSSIER_DIR = r"E:\foundation\PX_Warehouse\SMART_Antiviral_Dossiers"
-OUTPUT_FILE = r"E:\foundation\PX_Warehouse\BARDA_EXECUTIVE_BRIEF.md"
+# CONFIGURATION — resolve paths relative to repo root (portable)
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+LEADERBOARD_FILE = os.path.join(_REPO_ROOT, "PX_Warehouse", "SMART_DIAMOND_LEADERBOARD.csv")
+DOSSIER_DIR = os.path.join(_REPO_ROOT, "PX_Warehouse", "Finalized_Dossiers", "DIAMOND")
+OUTPUT_FILE = os.path.join(_REPO_ROOT, "PX_Warehouse", "BARDA_EXECUTIVE_BRIEF.md")
 
 def generate_brief():
     print(f">>> GENERATING BARDA SUBMISSION PACKAGE...")

@@ -27,6 +27,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from PX_System.foundation.ZeusLaws import run_zeus_gate
 from PX_Warehouse.warehouse_layout import (
     ensure_structure,
     get_tier,
@@ -44,6 +45,7 @@ def sort_root_files(dry_run: bool = False, limit: int = 0) -> dict:
         "total": 0,
         "placed": 0,
         "skipped": 0,
+        "rejected": 0,
         "errors": 0,
         "tiers": {"Diamond": 0, "Gold": 0, "Silver": 0, "Bronze": 0},
         "calibration": 0,
@@ -84,6 +86,24 @@ def sort_root_files(dry_run: bool = False, limit: int = 0) -> dict:
                 continue
 
             dossier = json.loads(src.read_text(encoding="utf-8"))
+
+            # Zeus gate: constitutional governance check before tier placement
+            zeus_verdict = run_zeus_gate(dossier)
+            if not zeus_verdict.get("authorized", False):
+                rationale = zeus_verdict.get("rationale", "governance failure")
+                print(f"  ZEUS REJECTED: {src.name}: {rationale}")
+                try:
+                    from PX_System.foundation.Sovereign_Log_Chain import append as slc_append
+                    slc_append("ZEUS_GATE_REJECTION", {
+                        "file": src.name,
+                        "rationale": rationale,
+                        "source": "sort_warehouse_root",
+                    }, context="warehouse_sort")
+                except Exception:
+                    pass  # Logging failure must not block rejection
+                stats["rejected"] += 1
+                continue
+
             tier = get_tier(dossier)
             is_novel = category == "PRV_NOV"
             dest_dir = get_prv_dossier_dir(is_novel, tier, REPO_ROOT)
@@ -124,6 +144,7 @@ def main() -> int:
     print(f"{'='*60}")
     print(f"Total scanned:   {stats['total']}")
     print(f"Placed:          {stats['placed']}")
+    print(f"Zeus rejected:   {stats['rejected']}")
     print(f"Already present: {stats['skipped']}")
     print(f"Errors:          {stats['errors']}")
     print(f"\nBy tier:")

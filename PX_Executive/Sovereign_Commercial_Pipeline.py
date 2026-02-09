@@ -117,8 +117,15 @@ def generate_dossier(candidate_data: Dict, worldline_path: str) -> str:
             ope_analysis = run_ope(smiles)
             admet_analysis = run_admet(smiles, ope_analysis)
         except Exception as e:
-            # Non-critical failure - log but continue
-            print(f"    ⚠️  OPE/ADMET analysis skipped: {e}")
+            # Non-critical failure - log and continue
+            print(f"    OPE/ADMET analysis skipped: {e}")
+            from PX_System.finalization_log import log_finalization_failure
+            log_finalization_failure(
+                source_file="Sovereign_Commercial_Pipeline.py",
+                candidate_id=candidate_data.get("task_id", "UNKNOWN"),
+                error=str(e),
+                context="OPE/ADMET analysis during dossier generation",
+            )
     
     # Build dossier
     dossier = {
@@ -222,14 +229,21 @@ def generate_dossier(candidate_data: Dict, worldline_path: str) -> str:
         from PX_Warehouse.Finalization_Pipeline import finalize_and_place
         fin_path = finalize_and_place(dossier, task_id, is_novel, _REPO_ROOT)
         if fin_path:
-            print(f"    ✅ Finalized → {fin_path}")
+            print(f"    Finalized -> {fin_path}")
     except Exception as e:
         print(f"    Finalization (non-fatal): {e}")
+        from PX_System.finalization_log import log_finalization_failure
+        log_finalization_failure(
+            source_file="Sovereign_Commercial_Pipeline.py",
+            candidate_id=task_id,
+            error=str(e),
+            context="finalize_and_place call after dossier generation",
+        )
         try:
             from PX_System.foundation.Sovereign_Log_Chain import append as slc_append
             slc_append("FINALIZATION_FAILURE", {"item_id": task_id, "error": str(e), "source": "Sovereign_Commercial_Pipeline"})
-        except Exception as log_err:
-            print(f"    WARN: finalization log write failed: {log_err}", file=sys.stderr)
+        except Exception:
+            pass
 
     return str(dossier_path)
 

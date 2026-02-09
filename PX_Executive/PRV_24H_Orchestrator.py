@@ -239,6 +239,13 @@ def stage_e2e(item: dict[str, Any]) -> bool:
         return True
     except Exception as e:
         print(f"  E2E ERROR: {e}")
+        from PX_System.finalization_log import log_finalization_failure
+        log_finalization_failure(
+            source_file="PRV_24H_Orchestrator.py",
+            candidate_id=item.get("id", "UNKNOWN"),
+            error=str(e),
+            context="stage_e2e dossier generation and warehouse write",
+        )
         TESTS += 1
         return False
 
@@ -432,11 +439,18 @@ def main() -> int:
                     RUN_LOG_LINES.append(f"  Finalized → {out_path}")
         except Exception as e:
             RUN_LOG_LINES.append(f"  Finalization (non-fatal): {e}")
+            from PX_System.finalization_log import log_finalization_failure
+            log_finalization_failure(
+                source_file="PRV_24H_Orchestrator.py",
+                candidate_id=item_id,
+                error=str(e),
+                context="finalize_and_place call after successful pipeline stages",
+            )
             try:
                 from PX_System.foundation.Sovereign_Log_Chain import append as slc_append
                 slc_append("FINALIZATION_FAILURE", {"item_id": item_id, "error": str(e), "source": "PRV_24H_Orchestrator"})
-            except Exception as log_err:
-                print(f"    WARN: finalization log write failed: {log_err}", file=sys.stderr)
+            except Exception:
+                pass
 
     return 0
 

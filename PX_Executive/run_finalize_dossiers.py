@@ -77,11 +77,25 @@ def main() -> int:
             dossier = json.loads(path.read_text(encoding="utf-8"))
         except Exception as e:
             print(f"  Skip {path.name}: read error {e}")
+            from PX_System.finalization_log import log_finalization_failure
+            log_finalization_failure(
+                source_file="run_finalize_dossiers.py",
+                candidate_id=item_id,
+                error=str(e),
+                context="dossier JSON read before finalization",
+            )
             fail += 1
             continue
         finalized, tier, err = run_finalization(dossier, item_id, is_novel, REPO_ROOT)
         if err:
             print(f"  {item_id}: {err}")
+            from PX_System.finalization_log import log_finalization_failure
+            log_finalization_failure(
+                source_file="run_finalize_dossiers.py",
+                candidate_id=item_id,
+                error=err,
+                context="run_finalization pipeline returned error",
+            )
             fail += 1
             continue
         # Only the WRITE is gated by Zeus; full pipeline already ran for every dossier

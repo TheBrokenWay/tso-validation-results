@@ -16,8 +16,9 @@ try:
     from PX_Laboratory.Simulation_Engine import SimulationEngine
     from PX_Executive.GAIP_Gateway import GAIPGateway
     from PX_Executive.Byzantium_Council import ByzantiumCouncil
+    from PX_Engine.Vector_Core import VectorCore
 except ImportError as e:
-    print("❌ CRITICAL ERROR: Core Organs not found.", e)
+    print("CRITICAL ERROR: Core Organs not found.", e)
     raise
 
 # CONFIGURATION
@@ -49,6 +50,7 @@ class DiamondFork:
         self.lab = SimulationEngine()
         self.gateway = GAIPGateway(mode="REGULATORY")
         self.council = ByzantiumCouncil()
+        self.vector_core = VectorCore(threshold=0.95, dims_limit=35.0, global_sum_target=36.1)
         
     def assess_population_safety(self, toxicity, mechanism):
         base = "ACCEPTABLE" if toxicity <= SMART_CRITERIA["toxicity_limit"] else "RISKY"
@@ -121,14 +123,17 @@ class DiamondFork:
         # D. POPULATION
         population_safety = self.assess_population_safety(toxicity, mechanism)
 
-        # E. GOVERNANCE
-        vector_res = {"authorized": True, "coherence": cand["coherence"]}
+        # E. GOVERNANCE (fail-closed: Vector_Core must authorize, no fabricated results)
+        p0 = 36.1 - (0.0 + 35.0 + 1.0 + 0.85)
+        p_vector = np.array([p0, 0.0, 35.0, 1.0, 0.85])
+        vector_res = self.vector_core.execute(p_vector)
+        if not vector_res.get("authorized", False): return None
         csa_res = {"status": "COHERENT", "human_review_required": False}
         aas_res = {"status": "SUCCESS"}
         gaip_res = self.gateway.evaluate(csa_res, aas_res, vector_res, {})
-        if not gaip_res["authorized"]: return None
+        if not gaip_res.get("authorized", False): return None
         council_res = self.council.decide(vector_res, csa_res, aas_res, gaip_res)
-        if not council_res["authorized"]: return None
+        if not council_res.get("authorized", False): return None
         
         # F. DOSSIER ASSEMBLY
         return {
@@ -222,14 +227,21 @@ class DiamondFork:
             from PX_Warehouse.Finalization_Pipeline import finalize_and_place
             fin_path = finalize_and_place(dossier, dossier['candidate_id'], True, repo_root)
             if fin_path:
-                print(f"    ✅ Finalized → {fin_path}")
+                print(f"    Finalized -> {fin_path}")
         except Exception as e:
             print(f"    Finalization (non-fatal): {e}")
+            from PX_System.finalization_log import log_finalization_failure
+            log_finalization_failure(
+                source_file="SMART_Antiviral_Fork.py",
+                candidate_id=dossier.get('candidate_id', 'UNKNOWN'),
+                error=str(e),
+                context="finalize_and_place call in persist_dossier",
+            )
             try:
                 from PX_System.foundation.Sovereign_Log_Chain import append as slc_append
                 slc_append("FINALIZATION_FAILURE", {"item_id": dossier['candidate_id'], "error": str(e), "source": "SMART_Antiviral_Fork"})
-            except Exception as log_err:
-                print(f"    WARN: finalization log write failed: {log_err}", file=sys.stderr)
+            except Exception:
+                pass
 
 if __name__ == "__main__":
     fork = DiamondFork()

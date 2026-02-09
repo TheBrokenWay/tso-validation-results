@@ -139,6 +139,13 @@ def main() -> int:
             dossier = json.loads(path.read_text(encoding="utf-8"))
         except Exception as e:
             print(f"  Skip {path.name}: read error {e}")
+            from PX_System.finalization_log import log_finalization_failure
+            log_finalization_failure(
+                source_file="reprocess_warehouse_lifecycle.py",
+                candidate_id=item_id,
+                error=str(e),
+                context="dossier JSON read during warehouse lifecycle reprocessing",
+            )
             fail += 1
             continue
         if args.dry_run:

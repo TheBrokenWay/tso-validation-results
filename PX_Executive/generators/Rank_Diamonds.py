@@ -3,9 +3,10 @@ import os
 import csv
 import glob
 
-# CONFIGURATION
-TARGET_DIR = r"E:\foundation\PX_Warehouse\SMART_Antiviral_Dossiers"
-REPORT_FILE = r"E:\foundation\PX_Warehouse\SMART_DIAMOND_LEADERBOARD.csv"
+# CONFIGURATION — resolve paths relative to repo root (portable)
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+TARGET_DIR = os.path.join(_REPO_ROOT, "PX_Warehouse", "Finalized_Dossiers", "DIAMOND")
+REPORT_FILE = os.path.join(_REPO_ROOT, "PX_Warehouse", "SMART_DIAMOND_LEADERBOARD.csv")
 
 def rank_diamonds():
     print(f">>> INITIATING DIAMOND AUDIT...")
