@@ -1,0 +1,47 @@
+{
+  "fork_id": "SMART_ANTIVIRAL_2026_BARDA",
+  "version": "1.1.0-ADVANCED",
+  "purpose": "Broad-spectrum small-molecule antiviral discovery for Flaviviridae and Togaviridae, aligned with BARDA SMART Antiviral Prize Desired Product Attributes.",
+  "governing_laws": {
+    "PotencyLaw": "EC50 <= 100 nM across predefined breadth panel.",
+    "ContextLaw": "Only efficacy assays; safety/toxicity readouts excluded from potency logic.",
+    "UnitLaw": "All potency values expressed explicitly in nM.",
+    "OrganismLaw": "Targets restricted to Flaviviridae/Togaviridae lineage and defined host factors."
+  },
+  "constraint_axes": {
+    "potency": {
+      "limit_nm": 100.0,
+      "base_formula": "potency_nm = 1000.0 / binding_affinity_kj"
+    },
+    "safety": {
+      "toxicity_limit": 0.0200,
+      "tier": "GOLD"
+    },
+    "breadth": {
+      "viral_targets": [
+        "DENGUE_NS5", "ZIKA_NS5", "YELLOW_FEVER_NS5",
+        "CHIKUNGUNYA_E1", "CHIKUNGUNYA_E2"
+      ],
+      "host_targets": [
+        "HOST_ENTRY_RECEPTOR", "HOST_LIPID_METABOLISM", "HOST_INNATE_SENSOR"
+      ],
+      "min_hits": 4
+    },
+    "resistance": {
+      "metric": "resistance_risk",
+      "threshold": 0.6,
+      "description": "Penalizes narrow breadth and weak potency; favors conserved, multi-target engagement."
+    },
+    "mechanism": {
+      "modes": ["DIRECT_ACTING_ANTIVIRAL", "MIXED_VIRAL_HOST"]
+    },
+    "population_safety": {
+      "populations": ["pediatrics", "pregnancy_lactation", "older_adults", "immunocompromised"],
+      "logic": "Derived from toxicity_index and mechanism; flags CAUTION where host-factor modulation or higher toxicity may impact vulnerable groups."
+    }
+  },
+  "outputs": {
+    "dossier_directory": "E:\\foundation\\PX_Warehouse\\SMART_Antiviral_Dossiers",
+    "dossier_schema": "SMART_ANTIVIRAL_DOSSIER_v2"
+  }
+}

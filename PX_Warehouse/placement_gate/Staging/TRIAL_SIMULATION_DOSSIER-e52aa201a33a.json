@@ -1,0 +1,150 @@
+{
+  "metadata": {
+    "run_id": "e52aa201a33a",
+    "name": "Aticaprant",
+    "id": "J&J-ATICAPRANT",
+    "smiles": "CC1=CC(=CC(=C1)[C@@H]2CCCN2CC3=CC=C(C=C3)OC4=C(C=C(C=C4)C(=O)N)F)C",
+    "timestamp": "2026-02-05T16:23:46.420285+00:00",
+    "version": "3.0",
+    "pipeline_version": "2.0.0-CORE-FIXED"
+  },
+  "ope": {
+    "molecular_weight": 418.51200000000017,
+    "logp": 5.67084,
+    "hbd": 1,
+    "hba": 3,
+    "tpsa": 55.56,
+    "ec50": 49.87275972,
+    "emax": 0.95,
+    "clearance_estimate_L_per_h": 10.50626,
+    "vd_estimate_L": 153.4168,
+    "binding_affinity_nM": 39.89820777,
+    "note": "OPE engine using RDKit deterministic molecular descriptors (v3.0-CORE-RDKIT)",
+    "version": "3.0-CORE-RDKIT"
+  },
+  "admet": {
+    "absorption": {
+      "oral_bioavailability_percent": 70.0,
+      "intestinal_permeability": "moderate",
+      "predicted_bioavailability": 0.7,
+      "bcs_class": "II",
+      "note": "Calculated from Rule of Five and TPSA"
+    },
+    "distribution": {
+      "plasma_protein_binding_percent": 96.7084,
+      "vd_L": 153.4168,
+      "blood_brain_barrier": "permeable",
+      "predicted_vd_L_per_kg": 2.19166857,
+      "bbb_penetration": "HIGH"
+    },
+    "metabolism": {
+      "hepatic_extraction_ratio": 0.11673622,
+      "clearance_L_per_h": 10.50626,
+      "half_life_h": 10.11947566
+    },
+    "excretion": {
+      "renal_clearance_fraction": 0.094258,
+      "hepatic_clearance_fraction": 0.905742
+    },
+    "toxicity": {
+      "toxicity_index": 0.3968962,
+      "herg_risk": 0.667084,
+      "hepatotoxicity_risk": 0.383542,
+      "ames_mutagenicity": 0.05,
+      "risk_level": "TOXICITY_FAILURE"
+    },
+    "toxicity_flags": {
+      "hepatotoxicity_risk": "HIGH",
+      "cardiotoxicity_risk": "HIGH"
+    },
+    "constitutional": {
+      "status": "VERIFIED",
+      "engine": "OPE_ADMET_V3_DETERMINISTIC",
+      "law_basis": [
+        "L11",
+        "U27"
+      ]
+    },
+    "safety_margins": {
+      "max_tolerated_cmax_mg_per_L": 201.249275,
+      "max_tolerated_auc_mg_h_per_L": 4829.98259999
+    },
+    "toxicity_threshold": 201.249275,
+    "note": "ADMET engine using deterministic physical laws (v3.0-CORE-DETERMINISTIC)",
+    "version": "3.0-CORE-DETERMINISTIC"
+  },
+  "pkpd": {
+    "auc": {
+      "mean": 82.25,
+      "sd": 25.5,
+      "cv": 25.0
+    },
+    "cmax": {
+      "mean": 1.0,
+      "sd": 0.31
+    }
+  },
+  "pd": {
+    "max_effect": {
+      "mean": 0.019,
+      "sd": 0.003
+    }
+  },
+  "dose_optimization": {
+    "best_dose_mg": 343.6,
+    "best_interval_h": 24.0,
+    "target_auc": 300.0,
+    "predicted_auc": 327.0,
+    "target_concentration": 7.5,
+    "score": 0.798,
+    "safety_margin": 89.87,
+    "status": "optimized",
+    "optimization_method": "target_EC90",
+    "best_regimen": {
+      "dose_mg": 343.6,
+      "interval_hours": 24.0,
+      "safety_margin": 89.87
+    },
+    "note": "Simplified optimization targeting EC90 with safety constraints"
+  },
+  "virtual_efficacy": {
+    "pk_pta": {
+      "auc_mg_h_per_L": {
+        "pta": 32.1,
+        "threshold": 300.0,
+        "predicted_value": 282.6,
+        "achievement_ratio": 0.94
+      }
+    },
+    "responder_rate": {
+      "effect_ge_threshold": 0.018,
+      "threshold": 0.5,
+      "mean_effect_achieved": 0.061,
+      "response_ratio": 0.12
+    },
+    "therapeutic_window": {
+      "time_above_ec50_h": 0.0,
+      "total_time_h": 168.0,
+      "coverage_percent": 0.0
+    },
+    "variability_risk": {
+      "pk_cv_percent": 25.0,
+      "pd_cv_percent": 15.0,
+      "risk_level": "low"
+    },
+    "note": "Efficacy calculated on OPTIMIZED dose (corrected pipeline)",
+    "version": "2.0-CORE-SIMPLE"
+  },
+  "output_directory": "PX_Warehouse/TrialSimulations/LiveRuns/run_20260205_162346",
+  "predator_x_v3": {
+    "grade": "GOLD",
+    "dominance_score": 0.3686577372966055,
+    "metrics": {
+      "sm": 89.87,
+      "rr": 0.12,
+      "ba": 39.89820777,
+      "bio": 70.0
+    },
+    "audit_date": "2026-02-05"
+  }
+}

@@ -1,0 +1,309 @@
+{
+  "audit_timestamp": "2026-02-08",
+  "audit_type": "FULL_SYSTEM_CONNECTIVITY_AUDIT",
+  "total_directories_audited": 26,
+
+  "connectivity_matrix": {
+    "PX_Engine": {
+      "talks_to": ["PX_Constitution", "PX_Security", "PX_Warehouse", "PX_Laboratory"],
+      "talked_to_by": ["PX_Executive", "PX_Validation", "PX_Audit"],
+      "total_files": 25,
+      "connected": 19,
+      "disconnected": 4,
+      "disconnected_list": ["Stress_Test.py", "operations/DoseOptimizer_Simple.py", "operations/PKPD_Simple.py", "operations/VirtualEfficacy_Simple.py"],
+      "warehouse_writes": ["Metabolism.py (UNGATED)", "Block_Orchestrator.py (gated via WorldLine_Database)"],
+      "bypass_violations": ["Metabolism.py writes to PX_Warehouse without placement_gate"]
+    },
+    "PX_Executive": {
+      "talks_to": ["PX_Engine", "PX_Warehouse", "PX_System", "PX_Laboratory", "PX_Constitution"],
+      "talked_to_by": ["PX_Validation"],
+      "total_files": 38,
+      "connected": 28,
+      "disconnected": 10,
+      "disconnected_list": ["Patent_Local_Index.py", "PX_Refinery.py", "Acquisition/patent_harvester.py", "Acquisition/harvest_failed_trials.py", "patent_data_refresh.py", "monitor_warehouse.py", "purge_fto_error_logs.py", "harvest_leads.py", "validate_v2_release.py", "diagnose_fto_failure_rate.py"],
+      "warehouse_writes_gated": ["PRV_24H_Orchestrator.py", "run_finalize_dossiers.py", "reprocess_warehouse_lifecycle.py"],
+      "warehouse_writes_ungated": ["PX_Live_Orchestrator_v2.py", "SMART_Antiviral_Fork.py", "Rank_Diamonds.py", "Generate_BARDA_Brief.py", "run_genesis_feed.py", "Sovereign_Commercial_Pipeline.py", "Gold_Rush_Miner.py", "batch/pipeline_batch_runner.py", "Acquisition/olympus_bridge_v2.py", "debug_factory.py"],
+      "bypass_violations": 10,
+      "rule_violations": ["SMART_Antiviral_Fork.py uses np.random for physics (Rule 2 CRITICAL)"]
+    },
+    "PX_Laboratory": {
+      "talks_to": ["PX_Warehouse", "PX_Engine"],
+      "talked_to_by": ["PX_Engine", "PX_Executive", "PX_Validation", "PX_Audit"],
+      "total_files": 4,
+      "connected": 4,
+      "disconnected": 0,
+      "warehouse_writes": ["Manufacturing_Manifest.py writes to PX_Warehouse/Orders/ (UNGATED)"],
+      "bypass_violations": []
+    },
+    "PX_System": {
+      "talks_to": ["PX_Warehouse", "PX_Audit"],
+      "talked_to_by": ["PX_Executive", "PX_Validation"],
+      "total_files": 32,
+      "connected": 7,
+      "disconnected": 14,
+      "disconnected_list": ["foundation/core.py", "foundation/Disease_Constraint_Model.py", "foundation/Emergency_Stop.py", "foundation/Research_Checkpoint.py", "foundation/Novelty_Budget_Engine.py", "foundation/integrations/smiles_security.py", "foundation/integrations/net_policy.py", "foundation/integrations/retry.py", "PX_Handshake.py", "auto_patch.py", "benchmark.py", "console.py", "Sign_Off_GAIP.py", "PX_Final_Assembly.py"],
+      "warehouse_writes": ["Evidence_Package.py writes to Calibration_Molecules (UNGATED)", "Intake_Policy.py writes to Operations/Inputs (READ_ONLY)"],
+      "bypass_violations": ["Evidence_Package.wrap_trial_simulation default output_dir uses relative path"]
+    },
+    "PX_Validation": {
+      "talks_to": ["PX_Engine", "PX_Executive", "PX_Laboratory", "PX_System", "PX_Warehouse", "PX_Security"],
+      "talked_to_by": [],
+      "total_files": 37,
+      "connected": 34,
+      "disconnected": 3,
+      "disconnected_list": ["benchmarks/dashboard.py", "benchmarks/report_generator.py", "benchmarks/run_benchmarks.py"],
+      "test_harness_gap": "Only 7 of 22 test files included in run_all_tests.py",
+      "tests_excluded_from_harness": 15
+    },
+    "PX_Audit": {
+      "talks_to": ["PX_Executive", "PX_Engine", "PX_Laboratory", "PX_Warehouse", "PX_Constitution", "PX_Security"],
+      "talked_to_by": ["PX_Validation"],
+      "total_files": 29,
+      "connected": 10,
+      "disconnected": 15,
+      "disconnected_list": ["Affinity_Audit.py", "Common_Denominator_Probe.py", "Curvature_Mapper.py", "Final_System_Seal.py", "Final_Mural_Update.py", "Lead_Optimization_Protocol.py", "Legacy_Scrubber.py", "Manifold_Explorer.py", "Mass_Warehouse_Scrubber.py", "Promote_Golden_Dossier.py", "PX_Mural.py", "Recovery_Scrubber_Final.py", "Refinement_Engine.py", "Scrub_Final_Report.py", "Stage_Correlation.py"],
+      "bypass_violations": 9,
+      "bypass_list": ["Autonomous_Research_Cycle.py", "Batch_Expansion_Protocol.py", "Full_Research_Cycle.py", "Lead_Optimization_Protocol.py", "Legacy_Scrubber.py", "Manifold_Normalizer.py", "Protocol_Zero.py", "Promote_Golden_Dossier.py", "Recovery_Scrubber_Final.py"],
+      "broken_imports": ["Refinement_Engine.py imports PX_Warehouse.RAG_Query_Engine (does not exist)"]
+    },
+    "PX_Constitution": {
+      "talks_to": [],
+      "talked_to_by": ["PX_Engine", "PX_Executive", "PX_Audit", "governance"],
+      "total_files": 6,
+      "connected": 3,
+      "disconnected": 3,
+      "disconnected_list": ["Block_Universe.py", "Filing_Rules.py", "gate_stamp.py"]
+    },
+    "PX_Security": {
+      "talks_to": ["PX_Constitution", "PX_Warehouse", "PX_Audit"],
+      "talked_to_by": ["PX_Engine", "PX_Validation"],
+      "total_files": 6,
+      "connected": 6,
+      "disconnected": 0,
+      "warehouse_writes": ["AAS_CircuitBreaker.py (aas_circuit_breaker.json)", "LogForensics.py (logs/forensic_manifest.json)", "Immune_Test.py (system_state.json)"]
+    },
+    "PX_Discovery": {
+      "talks_to": [],
+      "talked_to_by": ["PX_Validation"],
+      "total_files": 3,
+      "connected": 3,
+      "disconnected": 0,
+      "note": "Stub implementation - returns empty list"
+    },
+    "PX_Data": {
+      "talks_to": [],
+      "talked_to_by": ["PX_Warehouse/placement_gate/Staging (fetchers)", "PX_Executive"],
+      "total_files": 11,
+      "connected": 8,
+      "disconnected": 3,
+      "disconnected_list": ["drugbank/drugbank.csv (optional)", "drugbank/README.md", "patents/README.md"]
+    },
+    "PX_Domain": {
+      "talks_to": [],
+      "talked_to_by": ["Nipah_Analysis", "PX_Warehouse", "PX_Audit", "PX_Security", "PX_Validation", "PX_Executive"],
+      "total_files": 2,
+      "connected": 1,
+      "disconnected": 1,
+      "note": "PRV_Diseases/manifest.json is heavily referenced (canonical disease list)"
+    },
+    "Nipah_Analysis": {
+      "talks_to": ["PX_Engine", "PX_Executive", "governance", "PX_Warehouse"],
+      "talked_to_by": ["tests (root)", "governance"],
+      "total_files": 69,
+      "connected": 14,
+      "disconnected": 1,
+      "warehouse_writes": ["adapters/nipah_miner_adapter.py writes to PX_Warehouse/Proposals/Nipah"]
+    },
+    "governance": {
+      "talks_to": ["PX_Constitution"],
+      "talked_to_by": ["PX_Executive", "tests (root)", "Nipah_Analysis", "run_e2e_layers.py"],
+      "total_files": 26,
+      "connected": 23,
+      "disconnected": 3,
+      "disconnected_list": ["Design_Principles.py", "poison_pills/README.md", "ARCHITECTURE_AND_RULES_REFERENCE.md"]
+    },
+    "01_Executive": {
+      "talks_to": ["PX_Executive"],
+      "talked_to_by": ["PX_System"],
+      "total_files": 4,
+      "connected": 1,
+      "disconnected": 1,
+      "note": "Wrapper around PX_Executive.GAIP_Gateway"
+    },
+    "02_Audit": {
+      "talks_to": [],
+      "talked_to_by": ["PX_System"],
+      "total_files": 4,
+      "connected": 1,
+      "disconnected": 1
+    },
+    "MANIFESTS": {
+      "talks_to": [],
+      "talked_to_by": [],
+      "total_files": 1,
+      "connected": 0,
+      "disconnected": 1,
+      "note": "SMART_Antiviral_Fork.manifest.json is fully orphaned"
+    },
+    "scripts": {
+      "talks_to": [],
+      "talked_to_by": [],
+      "total_files": 2,
+      "connected": 0,
+      "disconnected": 2,
+      "note": "Shell setup scripts (WSL/Nix), not code dependencies"
+    },
+    "tests_root": {
+      "talks_to": ["PX_Engine", "PX_Executive", "PX_Warehouse", "PX_System", "PX_Constitution", "governance", "Nipah_Analysis"],
+      "talked_to_by": ["governance"],
+      "total_files": 11,
+      "connected": 7,
+      "disconnected": 4,
+      "disconnected_list": ["run_novel_pipeline_test.py", "run_warehouse_path_test.py", "verify_every_file.py", "verify_connectivity_and_orphans.py"]
+    },
+    "PX_Warehouse_placement_gate": {
+      "talks_to": ["PX_Warehouse (subdirs)"],
+      "talked_to_by": ["PX_Executive", "PX_Engine", "PX_Laboratory", "PX_Audit", "PX_Validation"],
+      "total_files": 5741,
+      "py_files": 53,
+      "data_files": 5688,
+      "core_modules": ["warehouse_layout.py", "placement_gate.py", "Finalization_Pipeline.py", "WorldLine_Database.py", "Finalization_Spec.py"],
+      "connected": "Core 5 modules well-connected; ~40 utility scripts loosely connected"
+    },
+    "PX_Warehouse_subdirs": {
+      "sanctioned_connected": ["Feeder", "Calibration_Molecules", "Finalized_Dossiers", "WorldLines", "Novel_Dossiers", "Prv_Dossiers", "Learning_Material"],
+      "orphaned_empty": ["Archive_Novel", "Archive_Primary", "Backup_Pre_Refinery", "CommercialAssets", "TrialSimulations"],
+      "fallback_only": ["Operations"]
+    },
+    "PX_Warehouse_root": {
+      "total_misplaced_files": 5631,
+      "categories": {
+        "PRV_REP_*.json": "~2500+ (should be in Prv_Dossiers/<tier>)",
+        "PRV_NOV_*.json": "~3000+ (should be in Novel_Dossiers/<tier>)",
+        "TRIAL_SIMULATION_DOSSIER_*.json": "31 (should be in Calibration_Molecules)",
+        "policy_and_config": "6 (queue/test artifacts)",
+        "python_modules": "~52 (infrastructure, intentional)"
+      },
+      "root_cause": "Code writes directly to PX_Warehouse/ root without calling placement_gate.place_prv_dossier(). Evidence_Package.wrap_trial_simulation uses relative default path."
+    }
+  },
+
+  "warehouse_write_paths": {
+    "total_files_that_write_to_warehouse": 28,
+    "gated_via_placement_gate_or_zeus": 5,
+    "ungated_direct_writes": 23,
+    "gated_files": [
+      "PX_Executive/PRV_24H_Orchestrator.py",
+      "PX_Executive/run_finalize_dossiers.py",
+      "PX_Executive/reprocess_warehouse_lifecycle.py",
+      "PX_Engine/Block_Orchestrator.py",
+      "PX_Warehouse/placement_gate/Staging/placement_gate.py"
+    ],
+    "ungated_files": [
+      "PX_Executive/PX_Live_Orchestrator_v2.py",
+      "PX_Executive/SMART_Antiviral_Fork.py",
+      "PX_Executive/Rank_Diamonds.py",
+      "PX_Executive/Generate_BARDA_Brief.py",
+      "PX_Executive/run_genesis_feed.py",
+      "PX_Executive/Sovereign_Commercial_Pipeline.py",
+      "PX_Executive/Gold_Rush_Miner.py",
+      "PX_Executive/batch/pipeline_batch_runner.py",
+      "PX_Executive/Acquisition/olympus_bridge_v2.py",
+      "PX_Executive/debug_factory.py",
+      "PX_Engine/Metabolism.py",
+      "PX_Laboratory/Manufacturing_Manifest.py",
+      "PX_System/foundation/Evidence_Package.py",
+      "PX_Security/AAS_CircuitBreaker.py",
+      "PX_Security/LogForensics.py",
+      "PX_Security/Immune_Test.py",
+      "PX_Audit/Autonomous_Research_Cycle.py",
+      "PX_Audit/Batch_Expansion_Protocol.py",
+      "PX_Audit/Full_Research_Cycle.py",
+      "PX_Audit/Lead_Optimization_Protocol.py",
+      "PX_Audit/Legacy_Scrubber.py",
+      "PX_Audit/Manifold_Normalizer.py",
+      "PX_Audit/Protocol_Zero.py"
+    ]
+  },
+
+  "orphaned_data": {
+    "warehouse_subdirs_no_code_connection": ["Archive_Novel", "Archive_Primary", "Backup_Pre_Refinery", "CommercialAssets", "TrialSimulations"],
+    "root_level_misplaced_dossiers": 5631,
+    "orphaned_manifest": "MANIFESTS/SMART_Antiviral_Fork.manifest.json"
+  },
+
+  "dead_code": {
+    "total_disconnected_files": 82,
+    "by_directory": {
+      "PX_Audit": 15,
+      "PX_System": 14,
+      "PX_Executive": 10,
+      "PX_Engine": 4,
+      "PX_Constitution": 3,
+      "PX_Validation": 3,
+      "PX_Data": 3,
+      "tests_root": 4,
+      "governance": 3,
+      "scripts": 2,
+      "01_Executive": 1,
+      "02_Audit": 1,
+      "MANIFESTS": 1,
+      "PX_Domain": 1,
+      "Nipah_Analysis": 1
+    },
+    "deprecated_banned_files": [
+      "PX_Engine/operations/DoseOptimizer_Simple.py (banned by version lock)",
+      "PX_Engine/operations/PKPD_Simple.py (banned by version lock)",
+      "PX_Engine/operations/VirtualEfficacy_Simple.py (banned by version lock)"
+    ]
+  },
+
+  "broken_imports": [
+    {
+      "file": "PX_Audit/Refinement_Engine.py",
+      "import": "PX_Warehouse.RAG_Query_Engine",
+      "status": "Module does not exist; uses stub fallback"
+    }
+  ],
+
+  "rule_violations": [
+    {
+      "rule": "Rule 2 (No random physics)",
+      "file": "PX_Executive/generators/SMART_Antiviral_Fork.py",
+      "lines": [73, 82],
+      "detail": "Uses np.random.uniform() for target_potency and host_potency in physics calculations",
+      "severity": "CRITICAL"
+    }
+  ],
+
+  "test_coverage_gap": {
+    "tests_in_harness": 7,
+    "tests_excluded": 15,
+    "excluded_list": [
+      "test_adaptive.py", "test_adaptive_integration.py", "test_dose_optimizer_v2.py",
+      "test_dose_optimizer_v2_integration.py", "test_grading_engine.py", "test_iiv.py",
+      "test_iiv_integration.py", "test_orchestrator_v2.py", "test_performance_regression.py",
+      "test_pkpd.py", "test_pkpd_integration.py", "test_system_trial_evidence_package.py",
+      "test_virtual_efficacy.py", "test_virtual_efficacy_integration.py", "test_warehouse_integrity.py"
+    ]
+  },
+
+  "totals": {
+    "total_files_audited": "~6100+ (excluding __pycache__)",
+    "total_py_files": "~280",
+    "total_connected": "~198",
+    "total_disconnected": 82,
+    "total_warehouse_writes": 28,
+    "total_gated_writes": 5,
+    "total_ungated_writes": 23,
+    "total_bypass_violations": 22,
+    "total_broken_imports": 1,
+    "total_rule_violations": 1,
+    "recommendation": {
+      "KEEP": "All connected files + sanctioned warehouse subdirs",
+      "REMOVE": "3 deprecated _Simple files, 5 orphaned warehouse subdirs (empty), MANIFESTS dir",
+      "RELOCATE": "5,631 root-level warehouse files through placement_gate to proper tier subdirs",
+      "FIX": "23 ungated warehouse write paths, 1 Rule 2 violation, 15 tests missing from harness"
+    }
+  }
+}

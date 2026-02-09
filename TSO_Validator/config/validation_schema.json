@@ -1,0 +1,39 @@
+{
+  "schema_version": "2.0",
+  "ontology_version": "1.0",
+  "description": "TSO_Validator input schema — physics-validated JSON records",
+  "required_fields": [
+    "record_id",
+    "timestamp"
+  ],
+  "physics_fields": {
+    "toxicity_index": {
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "description": "Toxicity index (L11 hard-limit: >= 0.0210 is failure)"
+    },
+    "binding_affinity_kj": {
+      "type": "number",
+      "min": 0.0,
+      "description": "Binding affinity in kJ/mol"
+    },
+    "coherence": {
+      "type": "number",
+      "min": 0.0,
+      "max": 1.0,
+      "description": "35D manifold coherence"
+    },
+    "harm_energy": {
+      "type": "number",
+      "min": 0.0,
+      "description": "Harm energy (L10: >= 0.0210 is violation)"
+    }
+  },
+  "constraints": {
+    "toxicity_hard_limit": 0.0210,
+    "harm_energy_hard_limit": 0.0210,
+    "min_coherence": 0.0,
+    "harmonic_overdrive": 1.02
+  }
+}

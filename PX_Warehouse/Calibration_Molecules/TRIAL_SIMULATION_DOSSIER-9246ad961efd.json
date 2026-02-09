@@ -1,0 +1,186 @@
+{
+  "dossier_type": "TRIAL_SIMULATION_DOSSIER",
+  "version": "3.0",
+  "timestamp_utc": "2026-02-05T17:29:29.767737+00:00",
+  "causal_trace_log": [
+    {
+      "law": "U34",
+      "authorization": "GLOBAL_SUM conserved",
+      "timestamp": "2026-02-05T17:29:29.767737+00:00"
+    }
+  ],
+  "protocol": {
+    "trial_id": "TRIAL-PK-BATCH-GLP1-TEST-GOLD",
+    "duration_days": 7.0,
+    "arms": [
+      {
+        "arm_id": "A1",
+        "label": "Standard Dose",
+        "dose_mg": 100.0,
+        "dosing_interval_h": 24.0,
+        "n_patients": 20
+      }
+    ]
+  },
+  "trial_result": {
+    "trial_id": "TRIAL-PK-BATCH-GLP1-TEST-GOLD",
+    "duration_days": 7.0,
+    "arms": [
+      {
+        "arm_id": "A1",
+        "label": "Standard Dose",
+        "n_patients": 20,
+        "initial_dose_mg": 100.0,
+        "final_dose_mg": 100.0,
+        "dosing_interval_h": 24.0,
+        "exposure_summary": {
+          "cmax_mg_per_L": {
+            "mean": 2.0526829628255943,
+            "median": 2.0383553399258547,
+            "min": 1.7835609224351228,
+            "max": 2.378081229913497,
+            "std": 0.17699609577508002
+          },
+          "auc_mg_h_per_L": {
+            "mean": 176.0045243092171,
+            "median": 174.77602166237918,
+            "min": 152.9290189545817,
+            "max": 203.9053586061089,
+            "std": 15.17629083772369
+          },
+          "cmin_steady_state_mg_per_L": {
+            "mean": 0.34650088259224965,
+            "median": 0.3440823240178779,
+            "min": 0.3010720335156431,
+            "max": 0.4014293780208575,
+            "std": 0.02987763064834209
+          }
+        },
+        "arm_stopped": false,
+        "patients_enrolled": 20
+      }
+    ],
+    "pd_params": null,
+    "adaptive_rules": null,
+    "constitutional": {
+      "status": "SIMULATED",
+      "engine": "TRIAL_ENGINE_V1",
+      "notes": "Exposure-only trial simulation; no clinical endpoints."
+    }
+  },
+  "provenance": {
+    "ope_engine": "UNKNOWN",
+    "admet_engine": "OPE_ADMET_V3_DETERMINISTIC",
+    "trial_engine": "TRIAL_ENGINE_V1",
+    "pkpd_enabled": false
+  },
+  "inputs": {
+    "ope_analysis": {
+      "molecular_weight": 129.167,
+      "logp": -1.03416,
+      "hbd": 4,
+      "hba": 2,
+      "tpsa": 88.99000000000001,
+      "ec50": 16.73325271,
+      "emax": 0.95,
+      "clearance_estimate_L_per_h": 2.0,
+      "vd_estimate_L": 40.0,
+      "binding_affinity_nM": 13.38660217,
+      "note": "OPE engine using RDKit deterministic molecular descriptors (v3.0-CORE-RDKIT)",
+      "version": "3.0-CORE-RDKIT"
+    },
+    "admet_analysis": {
+      "absorption": {
+        "oral_bioavailability_percent": 90.0,
+        "intestinal_permeability": "high",
+        "predicted_bioavailability": 0.9,
+        "bcs_class": "I",
+        "note": "Calculated from Rule of Five and TPSA"
+      },
+      "distribution": {
+        "plasma_protein_binding_percent": 29.6584,
+        "vd_L": 40.0,
+        "blood_brain_barrier": "limited",
+        "predicted_vd_L_per_kg": 0.57142857,
+        "bbb_penetration": "LOW"
+      },
+      "metabolism": {
+        "hepatic_extraction_ratio": 0.02222222,
+        "clearance_L_per_h": 2.0,
+        "half_life_h": 13.86
+      },
+      "excretion": {
+        "renal_clearance_fraction": 0.596658,
+        "hepatic_clearance_fraction": 0.403342
+      },
+      "toxicity": {
+        "toxicity_index": 0.0281212,
+        "herg_risk": -0.003416,
+        "hepatotoxicity_risk": 0.048292,
+        "ames_mutagenicity": 0.05,
+        "risk_level": "TOXICITY_FAILURE"
+      },
+      "toxicity_flags": {
+        "hepatotoxicity_risk": "LOW",
+        "cardiotoxicity_risk": "LOW"
+      },
+      "constitutional": {
+        "status": "VERIFIED",
+        "engine": "OPE_ADMET_V3_DETERMINISTIC",
+        "law_basis": [
+          "L11",
+          "U27"
+        ]
+      },
+      "safety_margins": {
+        "max_tolerated_cmax_mg_per_L": 780.51095369,
+        "max_tolerated_auc_mg_h_per_L": 18732.26288858
+      },
+      "toxicity_threshold": 780.51095369,
+      "note": "ADMET engine using deterministic physical laws (v3.0-CORE-DETERMINISTIC)",
+      "version": "3.0-CORE-DETERMINISTIC"
+    }
+  },
+  "pkpd_analysis": null,
+  "iiv_analysis": {
+    "enabled": true,
+    "variability_parameters": null,
+    "population_distributions": [
+      {
+        "arm_id": "A1",
+        "pk_distribution": {
+          "auc": {
+            "mean": 176.0045243092171,
+            "median": 174.77602166237918,
+            "min": 152.9290189545817,
+            "max": 203.9053586061089,
+            "std": 15.17629083772369
+          },
+          "cmax": {
+            "mean": 2.0526829628255943,
+            "median": 2.0383553399258547,
+            "min": 1.7835609224351228,
+            "max": 2.378081229913497,
+            "std": 0.17699609577508002
+          }
+        },
+        "pd_distribution": null
+      }
+    ],
+    "constitutional": {
+      "status": "SIMULATED",
+      "notes": "Population variability modeled with deterministic 7-tier system. IIV factors: clearance, Vd, ka. L51: No random sampling. L34: IIV explicitly labeled VIRTUAL."
+    }
+  },
+  "adaptive_analysis": null,
+  "constitutional": {
+    "status": "EVIDENCE_PACKAGE_CREATED",
+    "law_basis": [
+      "L51",
+      "L34",
+      "ALCOA+"
+    ],
+    "notes": "Population variability (IIV) modeled. No clinical endpoints. L51: No fabricated values. L34: All simulations explicitly labeled VIRTUAL."
+  },
+  "evidence_hash": "9246ad961efd"
+}

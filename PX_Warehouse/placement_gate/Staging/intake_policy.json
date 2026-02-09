@@ -1,0 +1,77 @@
+{
+  "intake_policy": "seed_libraries",
+  "sources": {
+    "ChEMBL": {
+      "enabled": true,
+      "include_approved": true,
+      "include_investigational": true,
+      "include_withdrawn": true,
+      "local_cache_path": "PX_Data/chembl/chembl_molecules.csv"
+    },
+    "DrugBank": {
+      "enabled": true,
+      "include_approved": true,
+      "include_investigational": true,
+      "local_file": "PX_Data/drugbank/drugbank.csv"
+    },
+    "ClinicalTrials": {
+      "enabled": true,
+      "include_phase_1": true,
+      "include_phase_2": true,
+      "include_phase_3": true,
+      "include_phase_4": true,
+      "local_file": "PX_Data/clinicaltrials/clinicaltrials_interventions.csv"
+    },
+    "FDA_OrangeBook": {
+      "enabled": true,
+      "include_small_molecules": true,
+      "include_patent_expired": true,
+      "include_exclusivity_expired": true
+    },
+    "PubChem": {
+      "enabled": true,
+      "include_bioactive": true,
+      "include_assay_hits": true,
+      "local_file": "PX_Data/pubchem/pubchem_molecules.csv"
+    },
+    "NCATS_Repurposing": {
+      "enabled": true,
+      "include_all": true,
+      "local_file": "PX_Data/ncats_inxight/ncats_inxight.csv"
+    },
+    "ZINC": {
+      "enabled": true,
+      "include_in_stock": true,
+      "local_file": "PX_Data/zinc/zinc_molecules.csv"
+    }
+  },
+  "filters": {
+    "dedupe": true,
+    "normalize_structures": true,
+    "remove_invalid_smiles": true,
+    "remove_large_molecules": false,
+    "remove_polymers": false,
+    "remove_inorganics": false
+  },
+  "scientific_filters": {
+    "lipinski": true,
+    "veber": true,
+    "ghose": true,
+    "pains": true,
+    "structural_alerts": true,
+    "admet_prefilter": true,
+    "bbb_prediction": true,
+    "efflux_prediction": true,
+    "synthetic_accessibility": true
+  },
+  "output": {
+    "queue_file": "prv_24h_queue.json",
+    "max_items": "unbounded",
+    "shuffle": true
+  },
+  "governance": {
+    "provenance_required": true,
+    "timestamp_required": true,
+    "reproducibility_required": true
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "metadata": {
+    "run_id": "20533dceee2b",
+    "name": "Benzene",
+    "id": "BENZENE-001",
+    "smiles": "c1ccccc1",
+    "timestamp": "2026-02-05T16:23:47.265633+00:00",
+    "version": "3.0",
+    "pipeline_version": "2.0.0-CORE-FIXED"
+  },
+  "ope": {
+    "molecular_weight": 78.11399999999999,
+    "logp": 1.6866,
+    "hbd": 0,
+    "hba": 0,
+    "tpsa": 0.0,
+    "ec50": 4.04719793,
+    "emax": 0.8,
+    "clearance_estimate_L_per_h": 4.5299,
+    "vd_estimate_L": 73.732,
+    "binding_affinity_nM": 3.23775835,
+    "note": "OPE engine using RDKit deterministic molecular descriptors (v3.0-CORE-RDKIT)",
+    "version": "3.0-CORE-RDKIT"
+  },
+  "admet": {
+    "absorption": {
+      "oral_bioavailability_percent": 90.0,
+      "intestinal_permeability": "high",
+      "predicted_bioavailability": 0.9,
+      "bcs_class": "I",
+      "note": "Calculated from Rule of Five and TPSA"
+    },
+    "distribution": {
+      "plasma_protein_binding_percent": 56.866,
+      "vd_L": 73.732,
+      "blood_brain_barrier": "permeable",
+      "predicted_vd_L_per_kg": 1.05331429,
+      "bbb_penetration": "HIGH"
+    },
+    "metabolism": {
+      "hepatic_extraction_ratio": 0.05033222,
+      "clearance_L_per_h": 4.5299,
+      "half_life_h": 11.27978013
+    },
+    "excretion": {
+      "renal_clearance_fraction": 0.05,
+      "hepatic_clearance_fraction": 0.95
+    },
+    "toxicity": {
+      "toxicity_index": 0.257763,
+      "herg_risk": 0.46866,
+      "hepatotoxicity_risk": 0.18433,
+      "ames_mutagenicity": 0.05,
+      "risk_level": "TOXICITY_FAILURE"
+    },
+    "toxicity_flags": {
+      "hepatotoxicity_risk": "LOW",
+      "cardiotoxicity_risk": "LOW"
+    },
+    "constitutional": {
+      "status": "VERIFIED",
+      "engine": "OPE_ADMET_V3_DETERMINISTIC",
+      "law_basis": [
+        "L11",
+        "U27"
+      ]
+    },
+    "safety_margins": {
+      "max_tolerated_cmax_mg_per_L": 279.51465076,
+      "max_tolerated_auc_mg_h_per_L": 6708.35161825
+    },
+    "toxicity_threshold": 279.51465076,
+    "note": "ADMET engine using deterministic physical laws (v3.0-CORE-DETERMINISTIC)",
+    "version": "3.0-CORE-DETERMINISTIC"
+  },
+  "pkpd": {
+    "auc": {
+      "mean": 138.4,
+      "sd": 31.49,
+      "cv": 25.0
+    },
+    "cmax": {
+      "mean": 1.6,
+      "sd": 0.36
+    }
+  },
+  "pd": {
+    "max_effect": {
+      "mean": 0.227,
+      "sd": 0.034
+    }
+  },
+  "dose_optimization": {
+    "best_dose_mg": 130.5,
+    "best_interval_h": 24.0,
+    "target_auc": 300.0,
+    "predicted_auc": 288.0,
+    "target_concentration": 7.5,
+    "score": 0.867,
+    "safety_margin": 157.97,
+    "status": "optimized",
+    "optimization_method": "target_EC90",
+    "best_regimen": {
+      "dose_mg": 130.5,
+      "interval_hours": 24.0,
+      "safety_margin": 157.97
+    },
+    "note": "Simplified optimization targeting EC90 with safety constraints"
+  },
+  "virtual_efficacy": {
+    "pk_pta": {
+      "auc_mg_h_per_L": {
+        "pta": 8.9,
+        "threshold": 300.0,
+        "predicted_value": 180.62,
+        "achievement_ratio": 0.6
+      }
+    },
+    "responder_rate": {
+      "effect_ge_threshold": 0.08,
+      "threshold": 0.5,
+      "mean_effect_achieved": 0.272,
+      "response_ratio": 0.54
+    },
+    "therapeutic_window": {
+      "time_above_ec50_h": 0.0,
+      "total_time_h": 168.0,
+      "coverage_percent": 0.0
+    },
+    "variability_risk": {
+      "pk_cv_percent": 25.0,
+      "pd_cv_percent": 15.0,
+      "risk_level": "low"
+    },
+    "note": "Efficacy calculated on OPTIMIZED dose (corrected pipeline)",
+    "version": "2.0-CORE-SIMPLE"
+  },
+  "output_directory": "PX_Warehouse/TrialSimulations/LiveRuns/run_20260205_162347",
+  "predator_x_v3": {
+    "grade": "DIAMOND",
+    "dominance_score": 0.6249934534610734,
+    "metrics": {
+      "sm": 157.97,
+      "rr": 0.54,
+      "ba": 3.23775835,
+      "bio": 90.0
+    },
+    "audit_date": "2026-02-05"
+  }
+}

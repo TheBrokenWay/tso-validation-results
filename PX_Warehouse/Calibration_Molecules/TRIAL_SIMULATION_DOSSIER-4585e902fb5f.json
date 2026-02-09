@@ -1,0 +1,150 @@
+{
+  "metadata": {
+    "run_id": "4585e902fb5f",
+    "name": "Paracetamol",
+    "id": "PARACETAMOL-001",
+    "smiles": "CC(=O)Nc1ccc(cc1)O",
+    "timestamp": "2026-02-05T16:23:47.101201+00:00",
+    "version": "3.0",
+    "pipeline_version": "2.0.0-CORE-FIXED"
+  },
+  "ope": {
+    "molecular_weight": 151.165,
+    "logp": 1.3506,
+    "hbd": 2,
+    "hba": 2,
+    "tpsa": 49.33,
+    "ec50": 9.2832586,
+    "emax": 0.95,
+    "clearance_estimate_L_per_h": 4.0259,
+    "vd_estimate_L": 67.012,
+    "binding_affinity_nM": 7.42660688,
+    "note": "OPE engine using RDKit deterministic molecular descriptors (v3.0-CORE-RDKIT)",
+    "version": "3.0-CORE-RDKIT"
+  },
+  "admet": {
+    "absorption": {
+      "oral_bioavailability_percent": 90.0,
+      "intestinal_permeability": "high",
+      "predicted_bioavailability": 0.9,
+      "bcs_class": "I",
+      "note": "Calculated from Rule of Five and TPSA"
+    },
+    "distribution": {
+      "plasma_protein_binding_percent": 53.506,
+      "vd_L": 67.012,
+      "blood_brain_barrier": "permeable",
+      "predicted_vd_L_per_kg": 0.95731429,
+      "bbb_penetration": "HIGH"
+    },
+    "metabolism": {
+      "hepatic_extraction_ratio": 0.04473222,
+      "clearance_L_per_h": 4.0259,
+      "half_life_h": 11.53513898
+    },
+    "excretion": {
+      "renal_clearance_fraction": 0.27912,
+      "hepatic_clearance_fraction": 0.72088
+    },
+    "toxicity": {
+      "toxicity_index": 0.159283,
+      "herg_risk": 0.23506,
+      "hepatotoxicity_risk": 0.16753,
+      "ames_mutagenicity": 0.05,
+      "risk_level": "TOXICITY_FAILURE"
+    },
+    "toxicity_flags": {
+      "hepatotoxicity_risk": "LOW",
+      "cardiotoxicity_risk": "LOW"
+    },
+    "constitutional": {
+      "status": "VERIFIED",
+      "engine": "OPE_ADMET_V3_DETERMINISTIC",
+      "law_basis": [
+        "L11",
+        "U27"
+      ]
+    },
+    "safety_margins": {
+      "max_tolerated_cmax_mg_per_L": 385.67896854,
+      "max_tolerated_auc_mg_h_per_L": 9256.29524496
+    },
+    "toxicity_threshold": 385.67896854,
+    "note": "ADMET engine using deterministic physical laws (v3.0-CORE-DETERMINISTIC)",
+    "version": "3.0-CORE-DETERMINISTIC"
+  },
+  "pkpd": {
+    "auc": {
+      "mean": 203.14,
+      "sd": 60.43,
+      "cv": 25.0
+    },
+    "cmax": {
+      "mean": 2.33,
+      "sd": 0.69
+    }
+  },
+  "pd": {
+    "max_effect": {
+      "mean": 0.19,
+      "sd": 0.029
+    }
+  },
+  "dose_optimization": {
+    "best_dose_mg": 125.6,
+    "best_interval_h": 24.0,
+    "target_auc": 300.0,
+    "predicted_auc": 312.0,
+    "target_concentration": 7.5,
+    "score": 0.865,
+    "safety_margin": 205.76,
+    "status": "optimized",
+    "optimization_method": "target_EC90",
+    "best_regimen": {
+      "dose_mg": 125.6,
+      "interval_hours": 24.0,
+      "safety_margin": 205.76
+    },
+    "note": "Simplified optimization targeting EC90 with safety constraints"
+  },
+  "virtual_efficacy": {
+    "pk_pta": {
+      "auc_mg_h_per_L": {
+        "pta": 30.4,
+        "threshold": 300.0,
+        "predicted_value": 255.15,
+        "achievement_ratio": 0.85
+      }
+    },
+    "responder_rate": {
+      "effect_ge_threshold": 0.067,
+      "threshold": 0.5,
+      "mean_effect_achieved": 0.227,
+      "response_ratio": 0.45
+    },
+    "therapeutic_window": {
+      "time_above_ec50_h": 0.0,
+      "total_time_h": 168.0,
+      "coverage_percent": 0.0
+    },
+    "variability_risk": {
+      "pk_cv_percent": 25.0,
+      "pd_cv_percent": 15.0,
+      "risk_level": "low"
+    },
+    "note": "Efficacy calculated on OPTIMIZED dose (corrected pipeline)",
+    "version": "2.0-CORE-SIMPLE"
+  },
+  "output_directory": "PX_Warehouse/TrialSimulations/LiveRuns/run_20260205_162347",
+  "predator_x_v3": {
+    "grade": "DIAMOND",
+    "dominance_score": 0.5596679320110872,
+    "metrics": {
+      "sm": 205.76,
+      "rr": 0.45,
+      "ba": 7.42660688,
+      "bio": 90.0
+    },
+    "audit_date": "2026-02-05"
+  }
+}

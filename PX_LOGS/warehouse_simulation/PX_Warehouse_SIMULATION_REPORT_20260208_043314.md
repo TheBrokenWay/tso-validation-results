@@ -1,0 +1,722 @@
+# WAREHOUSE SIMULATION REPORT (PHASE 1 — NO CHANGES)
+
+**Generated:** 2026-02-08T04:34:03.347621+00:00
+**Warehouse:** /mnt/e/foundation/PX_Warehouse
+
+## 1. Summary
+
+- Total items scanned: **23026**
+- Classifications: {'LEGACY': 22989, 'REFERENCED': 20, 'ACTIVE': 8, 'VALIDATED': 9}
+- Proposed non-KEEP actions: **22989**
+- Action breakdown: {'ARCHIVE': 22830, 'DELETE': 151, 'MOVE': 8}
+- Non-canonical top-level folders: **13**
+- Scripts referencing warehouse: **173**
+
+## 2. Non-Canonical Top-Level Folders
+
+- `Archive_Novel` — not in §1 canonical structure
+- `Archive_Primary` — not in §1 canonical structure
+- `Backup_Pre_Refinery` — not in §1 canonical structure
+- `Calibration_Molecules` — not in §1 canonical structure
+- `Feeder` — not in §1 canonical structure
+- `Finalized_Dossiers` — not in §1 canonical structure
+- `Learning_Material` — not in §1 canonical structure
+- `Novel_Dossiers` — not in §1 canonical structure
+- `PX_LOGS` — not in §1 canonical structure
+- `PX_Warehouse` — not in §1 canonical structure
+- `Prv_Dossiers` — not in §1 canonical structure
+- `__pycache__` — not in §1 canonical structure
+- `placement_gate` — not in §1 canonical structure
+
+## 3. Proposed Actions (MOVE / RENAME / ARCHIVE / DELETE / REVIEW)
+
+- **ARCHIVE** `aas_circuit_breaker.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `analyze_warehouse_rejections.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `Archive_Novel` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `Archive_Primary` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `archive_state.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `Backup_Pre_Refinery` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `bootstrap_canonical_warehouse.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `Calibration_Molecules` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `chembl_molecules.csv` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `clinicaltrials_interventions.csv` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `config_snapshot.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `consolidate_warehouse.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `convert_drugbank_to_intake.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `DataLineage.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `DOSSIER_SCHEMA_v2.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `e2e_test_queue.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `Enforce_Architecture.ps1` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `execute_pipeline_batch.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `extract_reprocess_candidates.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `extract_reprocess_candidates_v2.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `Feeder` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `fetch_chembl_csv.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `fetch_clinicaltrials_csv.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `fetch_ncats_inxight_csv.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `fetch_pubchem_csv.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `fetch_zinc_csv.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **DELETE** `Finalization_Pipeline.cpython-311.pyc` — Cache
+- **DELETE** `Finalization_Pipeline.cpython-313.pyc` — Cache
+- **ARCHIVE** `Finalization_Pipeline.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **DELETE** `Finalization_Spec.cpython-311.pyc` — Cache
+- **DELETE** `Finalization_Spec.cpython-313.pyc` — Cache
+- **ARCHIVE** `Finalization_Spec.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `Finalized_Dossiers` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `fix_double_prefix_and_recover_misplaced.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `flatten_tier_folders.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `generate_analytics.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `Genesis_35D_Test_001.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `implement_research_plan_v2.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `intake_policy.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **MOVE** `Learning_Material` — Canonical location per §1 → `PX_Warehouse/CommercialAssets/Learning_Material/`
+- **ARCHIVE** `Manifold_Normalizer.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `Manufacturing_Manifest.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `master_fix_calibration_and_prv_recovery.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `metrics.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `migrate_legacy_labels.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `ncats_inxight.csv` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `Novel_Dossiers` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `one_hour_pipeline.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PATH_TEST_2026-02-05.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `pipeline_log.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `placement_gate` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **DELETE** `placement_gate.cpython-311.pyc` — Cache
+- **DELETE** `placement_gate.cpython-313.pyc` — Cache
+- **DELETE** `placement_gate.cpython-314.pyc` — Cache
+- **ARCHIVE** `placement_gate.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `process_learning_material.py` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PROTOCOL-ZERO-IGNITION.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PROTOCOL-ZERO-TEST.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `prv_24h_queue.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `Prv_Dossiers` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00044c2c.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00044c2c.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_001a1ea9.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_001a1ea9.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_002cd11a.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_002cd11a.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_003875fb.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_003875fb.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_003e4370.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_003e4370.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0040a367.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0040a367.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00533b16.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00533b16.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00584cb8.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00584cb8.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0065da47.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0065da47.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_006655be.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_006655be.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_006b382f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_006b382f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_006c2201.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_006c2201.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0070138d.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0070138d.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_007746ff.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_007746ff.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00ac4645.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00ac4645.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00b2edc4.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00b2edc4.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00b48841.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00b48841.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00cbcbef.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00cbcbef.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00d921dd.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00d921dd.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00def0cb.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00def0cb.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00e1977f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00e1977f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00efa64b.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00efa64b.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00f347aa.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00f347aa.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00f41625.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00f41625.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00f9b454.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_00f9b454.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0104ba80.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0104ba80.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_010de4da.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_010de4da.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0113da2d.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0113da2d.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01141953.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01141953.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_011caad6.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_011caad6.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01288669.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01288669.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0134cf9f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0134cf9f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01362c76.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01362c76.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0140fee3.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0140fee3.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0145231e.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0145231e.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01577da8.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01577da8.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_016d7c06.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_016d7c06.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01923578.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01923578.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0192ec5d.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0192ec5d.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01a6d261.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01a6d261.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01a75555.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01a75555.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01af5e99.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01af5e99.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01b66394.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01b66394.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01da175f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01da175f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01e04c89.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_01e04c89.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_020163df.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_020163df.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_021f673e.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_021f673e.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0226c0a9.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0226c0a9.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_022bb209.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_022bb209.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0234f727.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0234f727.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_025cac62.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_025cac62.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_025cdb7f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_025cdb7f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_026171d5.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_026171d5.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0267dacd.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0267dacd.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_026fb9f0.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_026fb9f0.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0276b377.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0276b377.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02865cc0.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02865cc0.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02896971.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02896971.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_028dc6ee.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_028dc6ee.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02b149cc.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02b149cc.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02bf5ea0.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02bf5ea0.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02c78fb6.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02c78fb6.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02e3e85a.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02e3e85a.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02e69531.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02e69531.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02ee44cb.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02ee44cb.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02f2f1f0.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02f2f1f0.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02fb701f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_02fb701f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0322ca3f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0322ca3f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_032a2956.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_032a2956.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_032aea85.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_032aea85.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_032c305e.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_032c305e.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_033077be.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_033077be.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0338d31a.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0338d31a.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_036a1165.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_036a1165.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03831eea.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03831eea.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03849067.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03849067.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_038fe59d.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_038fe59d.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0397b7d5.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0397b7d5.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03a91222.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03a91222.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03aa2aba.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03aa2aba.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03b5775c.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03b5775c.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03c4e64f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03c4e64f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03d66763.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03d66763.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03d66943.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03d66943.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03dc8aef.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03dc8aef.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03de9a34.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03de9a34.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03e6f39d.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03e6f39d.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03e869ad.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03e869ad.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03ff0081.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_03ff0081.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_040eee6f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_040eee6f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0411756e.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0411756e.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0433bf93.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0433bf93.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_043ffa82.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_043ffa82.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_04576986.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_04576986.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0469b4cb.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0469b4cb.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0476b2ce.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0476b2ce.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0479dc6f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0479dc6f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0495150f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0495150f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_04a03f05.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_04a03f05.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_04b34dee.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_04b34dee.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_04ba23fb.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_04ba23fb.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_04c1c35c.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_04c1c35c.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_04c42595.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_04c42595.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_04fd242d.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_04fd242d.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05096d5b.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05096d5b.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_050a8ae3.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_050a8ae3.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_050fb71c.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_050fb71c.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0524b2a6.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0524b2a6.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_053b2cbf.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_053b2cbf.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_053c3ed6.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_053c3ed6.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_054c85df.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_054c85df.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_054cd13f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_054cd13f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0553afc6.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0553afc6.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05679b7f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05679b7f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0569c07b.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0569c07b.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_058ca992.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_058ca992.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_058de2e2.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_058de2e2.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_059405bd.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_059405bd.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_059daa2c.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_059daa2c.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_059e2fce.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_059e2fce.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05a2deb2.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05a2deb2.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05a488a9.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05a488a9.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05c25f12.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05c25f12.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05ca65b8.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05ca65b8.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05cba476.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05cba476.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05ccaff0.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05ccaff0.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05cf6788.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05cf6788.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05f8194c.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05f8194c.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05f9ed05.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_05f9ed05.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0601d722.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0601d722.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0609366e.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0609366e.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06094f08.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06094f08.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_060c65f5.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_060c65f5.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06194104.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06194104.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_061ad60b.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_061ad60b.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_062c4d6c.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_062c4d6c.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06361980.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06361980.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_063d8534.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_063d8534.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0642d958.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0642d958.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_065bae06.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_065bae06.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_065d508b.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_065d508b.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_065eab03.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_065eab03.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0668da68.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0668da68.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_069d98a5.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_069d98a5.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06bad847.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06bad847.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06c6a58c.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06c6a58c.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06cc6402.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06cc6402.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06e285d3.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06e285d3.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06e379e2.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06e379e2.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06e45383.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06e45383.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06fbe6b9.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_06fbe6b9.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_070222c6.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_070222c6.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07058778.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07058778.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_070a55d9.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_070a55d9.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_070d85dd.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_070d85dd.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07203e6a.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07203e6a.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07344afd.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07344afd.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07436687.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07436687.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0743b9ab.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0743b9ab.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0748894f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0748894f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_074ea2c8.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_074ea2c8.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0763debe.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0763debe.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0767501b.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0767501b.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0771fe90.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0771fe90.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_077e89e7.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_077e89e7.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07886520.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07886520.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_079a9162.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_079a9162.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07a44433.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07a44433.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07a822d3.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07a822d3.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07b9dce8.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07b9dce8.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07c60375.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07c60375.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07c96fd6.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07c96fd6.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07cf678f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07cf678f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07d77651.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07d77651.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07e79407.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07e79407.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07f2ab0a.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_07f2ab0a.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08040d69.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08040d69.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_080febf5.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_080febf5.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_081192fe.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_081192fe.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0812e48f.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0812e48f.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_081991ba.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_081991ba.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0834a8ca.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0834a8ca.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_085ecf09.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_085ecf09.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08692340.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08692340.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0874ef28.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0874ef28.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0879445a.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0879445a.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_087d7c41.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_087d7c41.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0884d0a1.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0884d0a1.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08946700.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08946700.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08a2aafb.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08a2aafb.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08aaf0d8.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08aaf0d8.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08b6aed1.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08b6aed1.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08c0d712.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08c0d712.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08cd460e.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08cd460e.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08e753ce.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08e753ce.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08f10222.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08f10222.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08f91b0d.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_08f91b0d.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0919e134.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0919e134.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09255166.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09255166.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_092f6910.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_092f6910.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0935561e.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0935561e.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0937098a.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0937098a.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09596075.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09596075.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_097bf230.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_097bf230.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09ab89c4.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09ab89c4.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09ab8db0.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09ab8db0.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09d2b8d9.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09d2b8d9.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09d414d1.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09d414d1.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09d42dcb.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09d42dcb.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09e9bc35.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09e9bc35.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09e9c4c7.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09e9c4c7.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09f1bfe0.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09f1bfe0.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09fb4847.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09fb4847.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09fce66e.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_09fce66e.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0a12c597.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0a12c597.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0a1fe94b.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0a1fe94b.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0a2ba7de.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0a2ba7de.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0a2fa56b.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0a2fa56b.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0a45aeaa.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0a45aeaa.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0a4ae0e7.json` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- **ARCHIVE** `PRV_NOV_0a4ae0e7.worldline` — Legacy folder/file → `PX_Warehouse/Archive/Legacy/`
+- ... and 22489 more (see full list in script output)
+
+## 4. Scripts / Systems to Update (System-Wide Reference Update)
+
+- `Nipah_Analysis/adapters/nipah_miner_adapter.py`
+- `PX_Audit/Affinity_Audit.py`
+- `PX_Audit/Autonomous_Research_Cycle.py`
+- `PX_Audit/Batch_Expansion_Protocol.py`
+- `PX_Audit/Common_Denominator_Probe.py`
+- `PX_Audit/Continuous_Monitor.py`
+- `PX_Audit/Dashboard_Plotter.py`
+- `PX_Audit/Final_Mural_Update.py`
+- `PX_Audit/Final_System_Seal.py`
+- `PX_Audit/Full_Research_Cycle.py`
+- `PX_Audit/Global_Smoke_Test.py`
+- `PX_Audit/Lead_Optimization_Protocol.py`
+- `PX_Audit/Legacy_Scrubber.py`
+- `PX_Audit/Manifold_Explorer.py`
+- `PX_Audit/Manifold_Health.py`
+- `PX_Audit/Manifold_Health_Summary.py`
+- `PX_Audit/Manifold_Normalizer.py`
+- `PX_Audit/Mass_Warehouse_Scrubber.py`
+- `PX_Audit/PX_Mural.py`
+- `PX_Audit/Promote_Golden_Dossier.py`
+- `PX_Audit/Protocol_Zero.py`
+- `PX_Audit/Recovery_Scrubber_Final.py`
+- `PX_Audit/Refinement_Engine.py`
+- `PX_Audit/Scrub_Final_Report.py`
+- `PX_Audit/Stage_Correlation.py`
+- `PX_Constitution/Constitutional_Tests.py`
+- `PX_Constitution/Filing_Rules.py`
+- `PX_Engine/Block_Orchestrator.py`
+- `PX_Engine/Metabolism.py`
+- `PX_Engine/Trajectory_Predictor.py`
+- `PX_Executive/Acquisition/olympus_bridge_v2.py`
+- `PX_Executive/Acquisition/patent_harvester.py`
+- `PX_Executive/Gold_Rush_Miner.py`
+- `PX_Executive/PRV_24H_Orchestrator.py`
+- `PX_Executive/PX_Refinery.py`
+- `PX_Executive/Sovereign_Commercial_Pipeline.py`
+- `PX_Executive/UniversalPipelineRunner.py`
+- `PX_Executive/batch/pipeline_batch_runner.py`
+- `PX_Executive/batch/universal_pipeline_batch.py`
+- `PX_Executive/debug_factory.py`
+- `PX_Executive/diagnose_fto_failure_rate.py`
+- `PX_Executive/generators/Generate_BARDA_Brief.py`
+- `PX_Executive/generators/Rank_Diamonds.py`
+- `PX_Executive/generators/SMART_Antiviral_Fork.py`
+- `PX_Executive/harvest_leads.py`
+- `PX_Executive/monitor_warehouse.py`
+- `PX_Executive/orchestrators/PX_Live_Orchestrator_v2.py`
+- `PX_Executive/reprocess_warehouse_lifecycle.py`
+- `PX_Executive/run_calibration_ingest.py`
+- `PX_Executive/run_finalize_dossiers.py`
+- `PX_Executive/run_genesis_feed.py`
+- `PX_Executive/run_one_cycle_test.py`
+- `PX_Executive/run_repurposed_feed.py`
+- `PX_Executive/tools/dossier_summarizer.py`
+- `PX_Laboratory/Manufacturing_Manifest.py`
+- `PX_Laboratory/Simulation_Engine.py`
+- `PX_Security/AAS_CircuitBreaker.py`
+- `PX_Security/Immune_Test.py`
+- `PX_Security/LogForensics.py`
+- `PX_System/foundation/Evidence_Package.py`
+- `PX_System/foundation/Intake_Policy.py`
+- `PX_System/governance/Placement_Gatekeeper.py`
+- `PX_Validation/benchmarks/accuracy.py`
+- `PX_Validation/benchmarks/comparative.py`
+- `PX_Validation/benchmarks/dashboard.py`
+- `PX_Validation/benchmarks/drift.py`
+- `PX_Validation/benchmarks/report_generator.py`
+- `PX_Validation/benchmarks/reproducibility.py`
+- `PX_Validation/benchmarks/run_benchmarks.py`
+- `PX_Validation/benchmarks/stability.py`
+- `PX_Validation/final_validation_FINAL.py`
+- `PX_Validation/system_inventory.py`
+- `PX_Validation/tests/PX_System_Test.py`
+- `PX_Validation/tests/test_performance_regression.py`
+- `PX_Validation/tests/test_pk_engine.py`
+- `PX_Validation/tests/test_trial_evidence_package.py`
+- `PX_Validation/tests/test_warehouse_integrity.py`
+- `PX_Validation/warehouse_consolidation_audit.py`
+- `PX_Warehouse/DataLineage.py`
+- `PX_Warehouse/Finalization_Pipeline.py`
+- `PX_Warehouse/Finalization_Spec.py`
+- `PX_Warehouse/Manifold_Normalizer.py`
+- `PX_Warehouse/Manufacturing_Manifest.py`
+- `PX_Warehouse/SystemTelemetry.py`
+- `PX_Warehouse/WorldLine_Database.py`
+- `PX_Warehouse/Worldline_Indexer.py`
+- `PX_Warehouse/__init__.py`
+- `PX_Warehouse/analyze_warehouse_rejections.py`
+- `PX_Warehouse/archive_state.py`
+- `PX_Warehouse/bootstrap_canonical_warehouse.py`
+- `PX_Warehouse/consolidate_warehouse.py`
+- `PX_Warehouse/extract_reprocess_candidates.py`
+- `PX_Warehouse/extract_reprocess_candidates_v2.py`
+- `PX_Warehouse/fix_double_prefix_and_recover_misplaced.py`
+- `PX_Warehouse/flatten_tier_folders.py`
+- `PX_Warehouse/generate_analytics.py`
+- `PX_Warehouse/implement_research_plan_v2.py`
+- `PX_Warehouse/master_fix_calibration_and_prv_recovery.py`
+- `PX_Warehouse/migrate_legacy_labels.py`
+- `PX_Warehouse/one_hour_pipeline.py`
+- `PX_Warehouse/placement_gate.py`
+- `PX_Warehouse/placement_gate/Gold/recover_gold_assets.py`
+- `PX_Warehouse/placement_gate/Staging/DataLineage.py`
+- `PX_Warehouse/placement_gate/Staging/Finalization_Pipeline.py`
+- `PX_Warehouse/placement_gate/Staging/Finalization_Spec.py`
+- `PX_Warehouse/placement_gate/Staging/Manifold_Normalizer.py`
+- `PX_Warehouse/placement_gate/Staging/Manufacturing_Manifest.py`
+- `PX_Warehouse/placement_gate/Staging/SystemTelemetry.py`
+- `PX_Warehouse/placement_gate/Staging/WorldLine_Database.py`
+- `PX_Warehouse/placement_gate/Staging/Worldline_Indexer.py`
+- `PX_Warehouse/placement_gate/Staging/__init__.py`
+- `PX_Warehouse/placement_gate/Staging/analyze_warehouse_rejections.py`
+- `PX_Warehouse/placement_gate/Staging/archive_state.py`
+- `PX_Warehouse/placement_gate/Staging/bootstrap_canonical_warehouse.py`
+- `PX_Warehouse/placement_gate/Staging/consolidate_warehouse.py`
+- `PX_Warehouse/placement_gate/Staging/extract_reprocess_candidates.py`
+- `PX_Warehouse/placement_gate/Staging/extract_reprocess_candidates_v2.py`
+- `PX_Warehouse/placement_gate/Staging/fix_double_prefix_and_recover_misplaced.py`
+- `PX_Warehouse/placement_gate/Staging/flatten_tier_folders.py`
+- `PX_Warehouse/placement_gate/Staging/generate_analytics.py`
+- `PX_Warehouse/placement_gate/Staging/implement_research_plan_v2.py`
+- `PX_Warehouse/placement_gate/Staging/master_fix_calibration_and_prv_recovery.py`
+- `PX_Warehouse/placement_gate/Staging/migrate_legacy_labels.py`
+- `PX_Warehouse/placement_gate/Staging/one_hour_pipeline.py`
+- `PX_Warehouse/placement_gate/Staging/placement_gate.py`
+- `PX_Warehouse/placement_gate/Staging/process_learning_material.py`
+- `PX_Warehouse/placement_gate/Staging/purge_hallucinations.py`
+- `PX_Warehouse/placement_gate/Staging/recover_misplaced_warehouse_data.py`
+- `PX_Warehouse/placement_gate/Staging/recover_prv_repo_wide.py`
+- `PX_Warehouse/placement_gate/Staging/reprocess_commercial_assets.py`
+- `PX_Warehouse/placement_gate/Staging/reprocess_dossier_final.py`
+- `PX_Warehouse/placement_gate/Staging/reprocess_pipeline.py`
+- `PX_Warehouse/placement_gate/Staging/reprocess_pipeline_direct.py`
+- `PX_Warehouse/placement_gate/Staging/rollback_audit.py`
+- `PX_Warehouse/placement_gate/Staging/run_finalized_through_schema.py`
+- `PX_Warehouse/placement_gate/Staging/run_intake_harvester.py`
+- `PX_Warehouse/placement_gate/Staging/run_warehouse_execution.py`
+- `PX_Warehouse/placement_gate/Staging/run_warehouse_simulation.py`
+- `PX_Warehouse/placement_gate/Staging/sort_live_results.py`
+- `PX_Warehouse/placement_gate/Staging/sort_live_runs.py`
+- `PX_Warehouse/placement_gate/Staging/test_35d_ignition.py`
+- `PX_Warehouse/placement_gate/Staging/unified_warehouse_consolidation.py`
+- `PX_Warehouse/placement_gate/Staging/warehouse_architect.py`
+- `PX_Warehouse/placement_gate/Staging/warehouse_architect_phase2.py`
+- `PX_Warehouse/placement_gate/Staging/warehouse_layout.py`
+- `PX_Warehouse/placement_gate/__init__.py`
+- `PX_Warehouse/process_learning_material.py`
+- `PX_Warehouse/purge_hallucinations.py`
+- `PX_Warehouse/recover_misplaced_warehouse_data.py`
+- `PX_Warehouse/recover_prv_repo_wide.py`
+- `PX_Warehouse/reprocess_commercial_assets.py`
+- `PX_Warehouse/reprocess_dossier_final.py`
+- `PX_Warehouse/reprocess_pipeline.py`
+- `PX_Warehouse/reprocess_pipeline_direct.py`
+- `PX_Warehouse/rollback_audit.py`
+- `PX_Warehouse/run_finalized_through_schema.py`
+- `PX_Warehouse/run_intake_harvester.py`
+- `PX_Warehouse/run_warehouse_execution.py`
+- `PX_Warehouse/run_warehouse_simulation.py`
+- `PX_Warehouse/sort_live_results.py`
+- `PX_Warehouse/sort_live_runs.py`
+- `PX_Warehouse/test_35d_ignition.py`
+- `PX_Warehouse/unified_warehouse_consolidation.py`
+- `PX_Warehouse/warehouse_architect.py`
+- `PX_Warehouse/warehouse_architect_phase2.py`
+- `PX_Warehouse/warehouse_layout.py`
+- `governance/poison_pill_gate.py`
+- `run_e2e_layers.py`
+- `tests/run_genesis_e2e_test.py`
+- `tests/run_warehouse_path_test.py`
+- `tests/test_finalization_spec.py`
+- `tests/test_orchestrator_warehouse_paths.py`
+- `tests/verify_all_imports.py`
+
+## 5. Tier Assignment (from path)
+
+Tiers used: Diamond, Gold, Silver, Bronze (default Bronze when unknown).
+
+## 6. Lifecycle
+
+Created → CommercialAssets; Validated → WorldLines; Dossier → Archive.
+
+## 7. Certification
+
+**Phase 1 complete. No files or folders were modified.**
+After approval, run Phase 2 (execution) to apply MOVE, RENAME, ARCHIVE, DELETE, TIER, LIFECYCLE, and script updates.

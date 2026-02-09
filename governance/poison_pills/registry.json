@@ -1,0 +1,67 @@
+{
+  "convention": "governance/poison_pills",
+  "description": "CI-wide poison-pill registry. IDE can scan this to run governance gates.",
+  "pills": [
+    {
+      "id": "nipah_cfr_envelope",
+      "payload": "Nipah_Analysis/data/raw/toxic_nipah_candidate.json",
+      "sidecar": "Nipah_Analysis/data/raw/toxic_nipah_candidate.px_classification.json",
+      "test_runner": "run_poison_pill_test.py",
+      "expected_failure_class": "ONTOLOGY_VIOLATION",
+      "expected_failure_layer": "PX_Validation"
+    },
+    {
+      "id": "temporal_paradox",
+      "payload": "Nipah_Analysis/data/raw/temporal_paradox_nipah.json",
+      "sidecar": "Nipah_Analysis/data/raw/temporal_paradox_nipah.px_classification.json",
+      "test_runner": "run_temporal_paradox_test.py",
+      "expected_failure_class": "TEMPORAL_VIOLATION",
+      "expected_failure_layer": "PX_Validation"
+    },
+    {
+      "id": "duplicate_domain_truth",
+      "payload": null,
+      "sidecar": null,
+      "test_runner": null,
+      "expected_failure_class": "DOMAIN_VIOLATION",
+      "expected_failure_layer": null,
+      "status": "reserved"
+    },
+    {
+      "id": "shadow_validation",
+      "payload": null,
+      "sidecar": null,
+      "test_runner": null,
+      "expected_failure_class": "SHADOW_VALIDATION",
+      "expected_failure_layer": null,
+      "status": "reserved"
+    },
+    {
+      "id": "energy_paradox",
+      "payload": null,
+      "sidecar": null,
+      "test_runner": null,
+      "expected_failure_class": "ENERGY_VIOLATION",
+      "expected_failure_layer": "PX_Engine",
+      "status": "reserved"
+    },
+    {
+      "id": "shadow_ontology",
+      "payload": null,
+      "sidecar": null,
+      "test_runner": null,
+      "expected_failure_class": "SHADOW_ONTOLOGY",
+      "expected_failure_layer": "PX_Validation",
+      "status": "reserved"
+    },
+    {
+      "id": "dual_truth_collision",
+      "payload": null,
+      "sidecar": null,
+      "test_runner": null,
+      "expected_failure_class": "DUAL_TRUTH_VIOLATION",
+      "expected_failure_layer": "PX_Validation",
+      "status": "reserved"
+    }
+  ]
+}
