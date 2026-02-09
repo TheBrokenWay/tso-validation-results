@@ -1,6 +1,6 @@
 # Governance Readiness Certificate
 
-**Generated:** 2026-02-09T20:04:04.791681+00:00
+**Generated:** 2026-02-09T20:27:45.241405+00:00
 
 ## Coverage
 - Total pills: 7
