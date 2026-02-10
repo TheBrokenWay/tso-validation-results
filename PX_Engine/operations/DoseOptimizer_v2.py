@@ -11,9 +11,11 @@ Production implementation with Whole Product view:
 Constitutional: All optimization based on virtual trial simulations. L51/L34 compliant.
 """
 
+import time
 from typing import Dict, Any, List, Tuple, Optional
 import statistics
 from PX_Engine.operations.TrialEngine import TrialEngine
+from PX_System.foundation.sign_off import create_sign_off
 
 
 def optimize_dose(
@@ -69,6 +71,8 @@ def optimize_dose(
         >>> print(f"Optimal dose: {result['best_regimen']['dose_mg']}mg")
     """
     
+    _t0 = time.monotonic()
+
     if interval_options is None:
         interval_options = [24.0, 12.0, 8.0]  # QD, BID, TID
 
@@ -81,7 +85,7 @@ def optimize_dose(
         if target_pk_range and len(target_pk_range) == 1:
             metric = list(target_pk_range.keys())[0]
             if is_monotonic_metric(metric):
-                return binary_search_dose(
+                return _attach_sign_off(binary_search_dose(
                     admet=admet,
                     protocol_template=protocol_template,
                     target_pk_range=target_pk_range,
@@ -90,12 +94,12 @@ def optimize_dose(
                     variability=variability,
                     pd_params=pd_params,
                     n_eval_patients=n_eval_patients,
-                )
+                ), smiles, _t0)
         # Fall back to coarse-to-fine if not suitable for binary search
         search_strategy = "coarse_to_fine"
-    
+
     if search_strategy == "coarse_to_fine":
-        return coarse_to_fine_search(
+        return _attach_sign_off(coarse_to_fine_search(
             admet=admet,
             protocol_template=protocol_template,
             target_pk_range=target_pk_range,
@@ -105,9 +109,24 @@ def optimize_dose(
             variability=variability,
             pd_params=pd_params,
             n_eval_patients=n_eval_patients,
-        )
-    
+        ), smiles, _t0)
+
     raise ValueError(f"Unknown search strategy: {search_strategy}")
+
+
+def _attach_sign_off(result: Dict[str, Any], smiles: str, _t0: float) -> Dict[str, Any]:
+    """Attach sign-off block to optimize_dose result."""
+    _elapsed_ms = int((time.monotonic() - _t0) * 1000)
+    result["sign_off"] = create_sign_off(
+        engine_id="DOSE_OPT_V2",
+        version="2.1-HOLISTIC",
+        inputs={"smiles": smiles},
+        outputs=result,
+        laws_checked=["L11"],
+        laws_results={"L11": result.get("best_regimen") is not None},
+        execution_time_ms=_elapsed_ms,
+    )
+    return result
 
 
 def evaluate_regimen(

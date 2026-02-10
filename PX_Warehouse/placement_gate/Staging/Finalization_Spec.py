@@ -16,7 +16,7 @@
 # ============================================================
 
 # Version tag: recorded on every finalized dossier for re-finalization and governance evolution
-FINALIZATION_VERSION = "1.0.0"
+FINALIZATION_VERSION = "3.0.0"
 
 FINALIZATION_SPEC = {
 
@@ -59,6 +59,10 @@ FINALIZATION_SPEC = {
         "soc_benchmarking_score",
         "novelty_fingerprint_score",
         "synthetic_accessibility_score",
+        # Authorization chain (v3.0.0: 12-engine sign-off blocks)
+        "authorization_chain",
+        "authorization_chain.all_engines_authorized",
+        "authorization_chain.authorization_count",
         # Constitutional
         "constitutional_risk_overrides",
         "zeus_verdict",
@@ -187,7 +191,7 @@ FINALIZATION_SPEC = {
     # 6. Backfill / Bootstrap Requirements
     # --------------------------------------------------------
     "bootstrap": {
-        "script": "PX_Executive/run_finalize_dossiers.py",
+        "script": "PX_Executive/px_finalize.py",
         "behavior": [
             "scan_all_existing_dossiers",
             "skip_if_already_finalized",
@@ -213,7 +217,75 @@ FINALIZATION_SPEC = {
         ],
         "failure_behavior": "DO_NOT_WRITE_FINALIZED_DOSSIER",
         "note_zeus_gate": "zeus_gate_passed is NOT in must_pass; only the WRITE to Finalized_Dossiers is gated by Zeus. Full dossier is always produced; caller gates write on zeus_verdict.authorized."
-    }
+    },
+
+    # --------------------------------------------------------
+    # 8. Authorization Chain (v3.0.0)
+    # --------------------------------------------------------
+    "authorization_chain_spec": {
+        "description": "Every finalized dossier must contain an authorization_chain proving all 12 mandatory engines executed and signed off.",
+        "required_engines": [
+            "OPE_V3_DETERMINISTIC",
+            "OBE_V3_DETERMINISTIC",
+            "OCE_V3_DETERMINISTIC",
+            "OLE_V3_DETERMINISTIC",
+            "OME_V3_DETERMINISTIC",
+            "OSE_V3_DETERMINISTIC",
+            "OPE_ADMET_V3_DETERMINISTIC",
+            "PKPD_EMAX_V2.0",
+            "DOSE_OPTIMIZER_V2.1",
+            "TRIAL_ENGINE_V1",
+            "GRADING_ENGINE_V1",
+        ],
+        "sign_off_fields": [
+            "engine_id", "version", "timestamp", "execution_time_ms",
+            "status", "authorized", "laws_checked", "laws_passed",
+            "laws_failed", "reason", "input_hash", "output_hash", "signature",
+        ],
+        "chain_summary_fields": [
+            "authorization_chain",
+            "all_engines_authorized",
+            "authorization_count",
+        ],
+    },
+
+    # --------------------------------------------------------
+    # 9. Disease Constraint Binding (v3.0.0)
+    # --------------------------------------------------------
+    "disease_constraint_spec": {
+        "description": "Each dossier targeting a PRV-eligible disease should reference a validated disease constraint file from PX_Domain/PRV_Diseases/.",
+        "constraint_dir": "PX_Domain/PRV_Diseases/",
+        "manifest": "PX_Domain/PRV_Diseases/manifest.json",
+        "required_fields": [
+            "disease_name", "disease_id", "pathogen_type", "target_classes",
+            "ic50_max_um", "toxicity_threshold", "prv_eligible",
+            "constitutional_compliance",
+        ],
+    },
+
+    # --------------------------------------------------------
+    # 10. External Data Sources (v3.0.0)
+    # --------------------------------------------------------
+    "external_data_sources": {
+        "clinicaltrials": {
+            "client": "PX_Data/clinicaltrials/client.py",
+            "refresh_interval_days": 7,
+            "data_file": "PX_Data/clinicaltrials/clinicaltrials_interventions.csv",
+        },
+        "fda": {
+            "client": "PX_Data/fda/client.py",
+            "refresh_interval_days": 7,
+            "data_files": [
+                "PX_Data/fda/fda_prv_approvals.jsonl",
+                "PX_Data/fda/fda_prv_guidance.jsonl",
+            ],
+        },
+        "patents": {
+            "client": "PX_Data/patents/client.py",
+            "refresh_interval_days": 7,
+            "data_file": "PX_Data/patents/patent_index.db",
+        },
+    },
 }
 
 # ============================================================

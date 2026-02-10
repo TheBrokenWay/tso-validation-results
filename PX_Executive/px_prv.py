@@ -34,6 +34,12 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from PX_System.foundation.sign_off import (
+    require_authorization,
+    build_authorization_chain,
+    AuthorizationError,
+)
+
 
 # Complete PRV disease list (alphabetical)
 PRV_DISEASES = [
@@ -178,23 +184,29 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
     item_id = item.get("id", "UNKNOWN")
     indication = item.get("indication") or item.get("name") or ""
     is_novel = item.get("type") == "N"
+    sign_offs: list[Dict[str, Any]] = []
 
     # ── 1. OPE: Molecular descriptors ──
     from PX_Engine.operations.OPE import run_ope
     ope_result = run_ope(smiles)
+    if isinstance(ope_result, dict) and "sign_off" in ope_result:
+        sign_offs.append(ope_result["sign_off"])
 
     # ── 2. OBE: Binding energy / harm energy ──
     from PX_Engine.operations.OBE import execute as obe_execute
     obe_result = obe_execute({"smiles": smiles})
+    if isinstance(obe_result, dict) and "sign_off" in obe_result:
+        sign_offs.append(obe_result["sign_off"])
 
     # ── 3. OCE: 35D manifold coherence + physics snapshot ──
     from PX_Engine.operations.OCE import execute as oce_execute
-    import numpy as np
     # Build p_vector for 35D manifold (Law U34: global sum = 36.1, energy_delta = 0)
     p0 = 36.1 - (0.0 + 35.0 + 1.0 + 0.85)
     p_vector = [p0, 0.0, 35.0, 1.0, 0.85]
     csa_scores = [1.0, 1.0, 1.0, 1.0, 1.0]
     oce_result = oce_execute({"p_vector": p_vector, "csa_scores": csa_scores})
+    if isinstance(oce_result, dict) and "sign_off" in oce_result:
+        sign_offs.append(oce_result["sign_off"])
 
     physics_snapshot = {
         "p_vector": p_vector,
@@ -210,18 +222,26 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
         "indication": indication,
         "disease_context": [indication] if indication else [],
     })
+    if isinstance(ole_result, dict) and "sign_off" in ole_result:
+        sign_offs.append(ole_result["sign_off"])
 
     # ── 5. OME: Metabolic pathway ──
     from PX_Engine.operations.OME import execute as ome_execute
     ome_result = ome_execute({"smiles": smiles})
+    if isinstance(ome_result, dict) and "sign_off" in ome_result:
+        sign_offs.append(ome_result["sign_off"])
 
     # ── 6. OSE: Safety / selectivity ──
     from PX_Engine.operations.OSE import execute as ose_execute
     ose_result = ose_execute({"smiles": smiles})
+    if isinstance(ose_result, dict) and "sign_off" in ose_result:
+        sign_offs.append(ose_result["sign_off"])
 
     # ── 7. ADMET: Full pharmacokinetic safety profile ──
     from PX_Engine.operations.ADMET import run_admet
     admet_result = run_admet(smiles, ope_result, ome_result=ome_result, ose_result=ose_result)
+    if isinstance(admet_result, dict) and "sign_off" in admet_result:
+        sign_offs.append(admet_result["sign_off"])
 
     # ── 8. PKPD: Sigmoid Emax PK/PD modeling ──
     from PX_Engine.operations.PKPD import link_pk_to_pd
@@ -240,9 +260,14 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
     emax = ope_result.get("emax", 0.9)
     ec50 = ope_result.get("ec50", 5.0)
     pkpd_result = link_pk_to_pd(pk_profile, {"emax": emax, "ec50": ec50, "hill": 1.5})
+    if isinstance(pkpd_result, dict) and "sign_off" in pkpd_result:
+        sign_offs.append(pkpd_result["sign_off"])
 
     # ── 9. DoseOptimizer_v2: Coarse-to-fine dose search ──
     from PX_Engine.operations.DoseOptimizer_v2 import optimize_dose
+    clearance = (admet_result.get("metabolism") or {}).get("clearance_L_per_h", 5.0)
+    vd = (admet_result.get("distribution") or {}).get("vd_L", 50.0)
+    ka = (admet_result.get("absorption") or {}).get("ka_per_h", 1.0)
     protocol_template = {
         "dose_mg": dose_mg,
         "interval_h": 24.0,
@@ -258,6 +283,8 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
         pd_params={"emax": emax, "ec50": ec50, "hill": 1.5},
         n_eval_patients=10,
     )
+    if isinstance(dose_result, dict) and "sign_off" in dose_result:
+        sign_offs.append(dose_result["sign_off"])
 
     # ── 10. VirtualEfficacyAnalytics: PTA, responder rate ──
     from PX_Engine.operations.VirtualEfficacyAnalytics import compute_pta, virtual_responder_rate, effect_variability_risk
@@ -281,6 +308,8 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
         pd_params={"emax": emax, "ec50": ec50, "hill": 1.5},
         variability=variability_params,
     )
+    if isinstance(trial_result, dict) and "sign_off" in trial_result:
+        sign_offs.append(trial_result["sign_off"])
 
     pta_result = compute_pta(trial_result, metric="auc_mg_h_per_L", target_threshold=200.0)
     responder_result = virtual_responder_rate(trial_result, response_metric="max_effect", responder_threshold=0.5)
@@ -294,10 +323,6 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
 
     # ── 11. GradingEngine: 5-tier classification ──
     from PX_Engine.operations.GradingEngine import GradingEngine as GE
-
-    # Build dossier-like dict for grading
-    tox_idx = (admet_result.get("toxicity") or {}).get("toxicity_index", 0.5)
-    harm_energy = obe_result.get("harm_energy", tox_idx)
 
     from PX_System.foundation.Evidence_Package import generate_dossier
     candidate = {"name": item.get("name") or item_id, "smiles": smiles}
@@ -339,6 +364,8 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
     ge = GE(verbose=False)
     grade_result = ge.grade_dossier(dossier)
     dossier["discovery_grading"] = grade_result
+    if isinstance(grade_result, dict) and "sign_off" in grade_result:
+        sign_offs.append(grade_result["sign_off"])
 
     # ── 12. ZeusLaws: Constitutional governance (full gate) ──
     from PX_System.foundation.ZeusLaws import run_zeus_gate
@@ -349,6 +376,10 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
     if not zeus_verdict.get("authorized"):
         _STATS["zeus_rejected"] += 1
         # Still save dossier (Zeus runs at end, dossier is preserved with verdict)
+
+    # ── Build authorization chain from all engine sign-offs ──
+    auth_chain = build_authorization_chain(sign_offs)
+    dossier["authorization_chain"] = auth_chain
 
     return dossier, None
 

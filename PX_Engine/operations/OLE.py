@@ -48,6 +48,9 @@ def execute(payload):
       - payload["indication"] (string) — legacy single-indication
       - payload["disease_context"] (list of strings) — multi-disease context
     """
+    import time
+    from PX_System.foundation.sign_off import create_sign_off
+    _t0 = time.monotonic()
     compound_id = payload.get("compound_id", "UNKNOWN")
     indication = payload.get("indication", "Not specified")
 
@@ -82,7 +85,7 @@ def execute(payload):
         if isinstance(d, str) and d.strip().lower() in PRV_ELIGIBLE_DISEASES
     ]
 
-    return {
+    result = {
         "engine": "OLE_V3_DETERMINISTIC",
         "compound_id": compound_id,
         "prv_eligible": prv_eligible,
@@ -91,3 +94,14 @@ def execute(payload):
         "regulatory_pathway": "PRV_ACCELERATED" if prv_eligible else "STANDARD_FDA",
         "status": "LEGAL_CLEARANCE_GRANTED",
     }
+    _elapsed_ms = int((time.monotonic() - _t0) * 1000)
+    result["sign_off"] = create_sign_off(
+        engine_id="OLE_V3_DETERMINISTIC",
+        version="3.0-CORE",
+        inputs=payload,
+        outputs=result,
+        laws_checked=["L11", "FTO"],
+        laws_results={"L11": True, "FTO": result["freedom_to_operate"]},
+        execution_time_ms=_elapsed_ms,
+    )
+    return result

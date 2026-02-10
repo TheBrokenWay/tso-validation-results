@@ -3,13 +3,16 @@ OCE - Operational Coherence Engine
 Calculates real 35D manifold coherence based on physical and ethical invariants
 """
 
+import time
 import numpy as np
 from PX_Constitution.Block_Universe import BlockUniverse
+from PX_System.foundation.sign_off import create_sign_off
 
 def execute(payload):
     """
     Calculates 35D manifold coherence for a given physical realization.
     """
+    _t0 = time.monotonic()
     universe = BlockUniverse()
     
     # Extract parameters from payload or use defaults for the 35D vector
@@ -27,7 +30,7 @@ def execute(payload):
     coherence = universe.calculate_coherence(block)
     drift_score = max(0.0, 1.0 - coherence)
     
-    return {
+    result = {
         "engine": "OCE_V3_DETERMINISTIC",
         "coherence": float(f"{coherence:.8f}"),
         "drift_score": float(f"{drift_score:.8f}"),
@@ -35,3 +38,14 @@ def execute(payload):
         "manifold_id": "35D_GAIP_CORE",
         "status": "STABLE" if coherence >= 0.85 else "UNSTABLE"
     }
+    _elapsed_ms = int((time.monotonic() - _t0) * 1000)
+    result["sign_off"] = create_sign_off(
+        engine_id="OCE_V3_DETERMINISTIC",
+        version="3.0-CORE",
+        inputs=payload,
+        outputs=result,
+        laws_checked=["L1"],
+        laws_results={"L1": coherence >= 0.85},
+        execution_time_ms=_elapsed_ms,
+    )
+    return result

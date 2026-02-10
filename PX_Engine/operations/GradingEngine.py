@@ -14,9 +14,11 @@ Updated: 2026-01-26 - Discovery-stage thresholds (10-30% range)
 
 import json
 import sys
+import time
 from pathlib import Path
 from typing import Dict, Any, Tuple
 from datetime import datetime, UTC
+from PX_System.foundation.sign_off import create_sign_off
 
 
 class GradingEngine:
@@ -315,6 +317,7 @@ class GradingEngine:
         Returns:
             Grading result with grade, metrics, reasoning, and metadata.
         """
+        _t0 = time.monotonic()
         if isinstance(dossier_path, dict):
             dossier = dossier_path
             dossier_ref = "<in-memory>"
@@ -355,6 +358,16 @@ class GradingEngine:
             "grading_engine_version": self.version,
             "thresholds_used": self.THRESHOLDS,
         }
+        _elapsed_ms = int((time.monotonic() - _t0) * 1000)
+        result["sign_off"] = create_sign_off(
+            engine_id="GRADING_ENGINE_V2",
+            version="v2.0-discovery",
+            inputs={},
+            outputs=result,
+            laws_checked=["GRADE_RULES"],
+            laws_results={"GRADE_RULES": grade != "REJECTED"},
+            execution_time_ms=_elapsed_ms,
+        )
         self.grading_history.append({
             "dossier": dossier_ref,
             "grade": grade,

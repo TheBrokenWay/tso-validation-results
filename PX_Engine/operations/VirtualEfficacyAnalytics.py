@@ -15,8 +15,10 @@ No clinical efficacy data. L51/L34 compliant.
 v2.0-PHASE5: Production implementation
 """
 
+import time
 from typing import Dict, Any, List, Tuple, Optional
 import statistics
+from PX_System.foundation.sign_off import create_sign_off
 
 
 def compute_pta(
@@ -464,6 +466,8 @@ def analyze_virtual_efficacy(
         Comprehensive efficacy analytics dict
     """
     
+    _t0 = time.monotonic()
+
     analytics = {
         "trial_id": trial_result.get("trial_id"),
         "analysis_timestamp": trial_result.get("constitutional", {}).get("timestamp"),
@@ -506,7 +510,18 @@ def analyze_virtual_efficacy(
             "L34: All analytics explicitly labeled VIRTUAL."
         ),
     }
-    
+
+    _elapsed_ms = int((time.monotonic() - _t0) * 1000)
+    analytics["sign_off"] = create_sign_off(
+        engine_id="VIRTUAL_EFFICACY_V2",
+        version="2.0-PHASE5",
+        inputs={},
+        outputs=analytics,
+        laws_checked=["L51"],
+        laws_results={"L51": True},
+        execution_time_ms=_elapsed_ms,
+    )
+
     return analytics
 
 

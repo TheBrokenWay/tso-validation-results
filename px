@@ -1,0 +1,153 @@
+#!/bin/sh
+# px — Predator X CLI wrapper
+# Works in Git Bash (MSYS2), WSL, and native *nix shells.
+# All paths are relative to the repository root.
+
+set -e
+
+# Resolve repo root from this script's location
+REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
+
+# ── Helpers ──────────────────────────────────────────────────────────
+
+show_help() {
+    cat <<'USAGE'
+px — Predator X command-line interface
+
+Engine loops:
+  px feed [--count N] [--high-chaos] [--interval S] [--seed N]
+      Run Genesis feed (novel SMILES generation).
+
+  px feed-rep [--replace]
+      Run repurposed feed (existing drugs -> queue).
+
+  px mine [--type T] [--disease D] [--limit N] [--dry-run]
+      Run PRV 12-engine evaluation pipeline.
+      --type: novel | repurpose | all (default: all)
+
+  px finalize [--dry-run] [--limit N] [--reprocess] [-v]
+      Run finalization pipeline on unfinalized dossiers.
+
+  px cycle
+      Full cycle test: Feed -> PRV -> Finalize.
+
+Validation and governance:
+  px test
+      Run full validation suite (all tests).
+
+  px govern
+      Run governance stress test (E2E layers).
+
+  px tso
+      Run TSO_Validator standalone safety gate.
+
+  px status
+      Show quick status: run tests, governance, git summary.
+
+  px help
+      Show this message.
+
+Examples:
+  px feed --count 50 --high-chaos
+  px mine --type novel --disease nipah --limit 10
+  px finalize --dry-run -v
+  px status
+USAGE
+}
+
+# ── Command dispatch ─────────────────────────────────────────────────
+
+cmd="${1:-help}"
+shift 2>/dev/null || true
+
+case "$cmd" in
+
+  feed)
+    exec python "$REPO_ROOT/PX_Executive/px_feed.py" --mode novel "$@"
+    ;;
+
+  feed-rep)
+    exec python "$REPO_ROOT/PX_Executive/px_feed.py" --mode repurpose "$@"
+    ;;
+
+  mine)
+    exec python "$REPO_ROOT/PX_Executive/px_prv.py" "$@"
+    ;;
+
+  finalize)
+    exec python "$REPO_ROOT/PX_Executive/px_finalize.py" "$@"
+    ;;
+
+  cycle)
+    exec python "$REPO_ROOT/PX_Executive/run_one_cycle_test.py" "$@"
+    ;;
+
+  test)
+    exec python "$REPO_ROOT/PX_Validation/tests/run_all_tests.py" "$@"
+    ;;
+
+  govern)
+    exec python "$REPO_ROOT/run_e2e_layers.py" "$@"
+    ;;
+
+  tso)
+    exec python "$REPO_ROOT/TSO_Validator/run_validation.py" "$@"
+    ;;
+
+  status)
+    echo "================================================================"
+    echo "  PREDATOR X STATUS"
+    echo "================================================================"
+    echo ""
+
+    # Git summary
+    echo "-- Git --"
+    branch="$(git -C "$REPO_ROOT" rev-parse --abbrev-ref HEAD 2>/dev/null || echo '(unknown)')"
+    commit="$(git -C "$REPO_ROOT" log -1 --format='%h %s' 2>/dev/null || echo '(no commits)')"
+    dirty="$(git -C "$REPO_ROOT" status --porcelain 2>/dev/null | wc -l | tr -d ' ')"
+    echo "  Branch: $branch"
+    echo "  Latest: $commit"
+    echo "  Dirty files: $dirty"
+    echo ""
+
+    # Validation suite
+    echo "-- Validation Suite --"
+    if python "$REPO_ROOT/PX_Validation/tests/run_all_tests.py" > "$REPO_ROOT/.px_test_out" 2>&1; then
+      test_ok=PASS
+    else
+      test_ok=FAIL
+    fi
+    # Extract summary line if present
+    test_summary="$(tail -5 "$REPO_ROOT/.px_test_out" 2>/dev/null || echo '(no output)')"
+    echo "  Result: $test_ok"
+    echo "$test_summary" | while IFS= read -r line; do echo "  $line"; done
+    echo ""
+
+    # Governance
+    echo "-- Governance (E2E) --"
+    if python "$REPO_ROOT/run_e2e_layers.py" > "$REPO_ROOT/.px_gov_out" 2>&1; then
+      gov_ok=PASS
+    else
+      gov_ok=FAIL
+    fi
+    gov_summary="$(tail -5 "$REPO_ROOT/.px_gov_out" 2>/dev/null || echo '(no output)')"
+    echo "  Result: $gov_ok"
+    echo "$gov_summary" | while IFS= read -r line; do echo "  $line"; done
+    echo ""
+
+    # Cleanup temp files
+    rm -f "$REPO_ROOT/.px_test_out" "$REPO_ROOT/.px_gov_out"
+
+    echo "================================================================"
+    ;;
+
+  help|--help|-h)
+    show_help
+    ;;
+
+  *)
+    echo "px: unknown command '$cmd'" >&2
+    echo "Run 'px help' for usage." >&2
+    exit 1
+    ;;
+esac

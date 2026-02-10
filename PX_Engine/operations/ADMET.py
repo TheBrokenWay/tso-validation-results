@@ -9,7 +9,9 @@ TAXONOMY: 4-TIER SYSTEM (Diamond, Gold, Silver, Failure).
   TOXICITY_FAILURE — Hard stop (tox >= 0.0210)
 """
 
+import time
 from typing import Dict, Any
+from PX_System.foundation.sign_off import create_sign_off
 
 
 def run_admet(
@@ -26,6 +28,7 @@ def run_admet(
     in the toxicity/risk level label (mandatory field for final risk level).
     Returns full structure for pipeline (absorption, distribution, metabolism, excretion, toxicity, etc.).
     """
+    _t0 = time.monotonic()
     logp_provided = "logp" in ope_analysis
     logp = ope_analysis.get("logp", 2.0)
     mw = ope_analysis.get("molecular_weight", 350.0)
@@ -102,7 +105,7 @@ def run_admet(
         else (0.693 * ope_analysis.get("vd_estimate_L", 70.0) / max(0.1, clearance))
     )
 
-    return {
+    result = {
         "absorption": {
             "oral_bioavailability_percent": float(f"{absorption:.8f}"),
             "intestinal_permeability": "high" if absorption > 70 else "moderate",
@@ -160,3 +163,14 @@ def run_admet(
         "note": "ADMET engine using deterministic physical laws (v3.0-CORE-DETERMINISTIC)",
         "version": "3.0-CORE-DETERMINISTIC"
     }
+    _elapsed_ms = int((time.monotonic() - _t0) * 1000)
+    result["sign_off"] = create_sign_off(
+        engine_id="OPE_ADMET_V3_DETERMINISTIC",
+        version="3.0-CORE-DETERMINISTIC",
+        inputs={"smiles": smiles},
+        outputs=result,
+        laws_checked=["L11"],
+        laws_results={"L11": toxicity_index < 0.0210},
+        execution_time_ms=_elapsed_ms,
+    )
+    return result

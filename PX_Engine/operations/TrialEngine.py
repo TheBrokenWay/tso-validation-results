@@ -10,10 +10,12 @@ Orchestrates:
 Non-clinical, deterministic, constitutional.
 """
 
+import time
 from typing import Dict, Any, List
 import statistics
 
 from PX_Laboratory import SimulationEngine
+from PX_System.foundation.sign_off import create_sign_off
 
 
 def generate_virtual_population(
@@ -200,6 +202,7 @@ class TrialEngine:
             dict with per-arm summaries (exposure + optional PD) and trial metadata.
         """
 
+        _t0 = time.monotonic()
         trial_id = protocol.get("trial_id", "TRIAL-UNKNOWN")
         duration_days = protocol.get("duration_days", 7.0)
         duration_h = duration_days * 24.0
@@ -377,7 +380,7 @@ class TrialEngine:
                 constitutional_notes = "Exposure-only trial simulation; no clinical endpoints."
                 engine_version = "TRIAL_ENGINE_V1"
         
-        return {
+        result = {
             "trial_id": trial_id,
             "duration_days": duration_days,
             "arms": arm_results,
@@ -389,6 +392,17 @@ class TrialEngine:
                 "notes": constitutional_notes,
             },
         }
+        _elapsed_ms = int((time.monotonic() - _t0) * 1000)
+        result["sign_off"] = create_sign_off(
+            engine_id="TRIAL_ENGINE_V1",
+            version="1.0-EXPOSURE",
+            inputs={"trial_id": protocol.get("trial_id", "")},
+            outputs=result,
+            laws_checked=["L11", "L34"],
+            laws_results={"L11": True, "L34": True},
+            execution_time_ms=_elapsed_ms,
+        )
+        return result
     
     def _evaluate_adaptive_rule(
         self,

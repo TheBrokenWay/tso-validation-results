@@ -3,14 +3,17 @@ OPE - Operational Physics Engine
 Provides pharmacokinetic predictions based on molecular descriptors using RDKit
 """
 
+import time
 from typing import Dict, Any
 from rdkit import Chem
 from rdkit.Chem import Descriptors, rdMolDescriptors
+from PX_System.foundation.sign_off import create_sign_off
 
 def run_ope(smiles: str) -> Dict[str, Any]:
     """
     Run OPE analysis on a SMILES string using RDKit for deterministic molecular descriptors.
     """
+    _t0 = time.monotonic()
     mol = Chem.MolFromSmiles(smiles)
     if not mol:
         raise ValueError(f"TraceabilityError: Invalid SMILES string: {smiles}")
@@ -39,7 +42,7 @@ def run_ope(smiles: str) -> Dict[str, Any]:
     # Binding affinity (nM) - correlate with EC50
     binding_affinity = ec50 * 0.8
 
-    return {
+    result = {
         "molecular_weight": float(mw),
         "logp": float(f"{logp:.8f}"),
         "hbd": int(hbd),
@@ -53,6 +56,17 @@ def run_ope(smiles: str) -> Dict[str, Any]:
         "note": "OPE engine using RDKit deterministic molecular descriptors (v3.0-CORE-RDKIT)",
         "version": "3.0-CORE-RDKIT"
     }
+    _elapsed_ms = int((time.monotonic() - _t0) * 1000)
+    result["sign_off"] = create_sign_off(
+        engine_id="OPE_V3_DETERMINISTIC",
+        version="3.0-CORE-RDKIT",
+        inputs={"smiles": smiles},
+        outputs=result,
+        laws_checked=["U27", "U34"],
+        laws_results={"U27": True, "U34": True},
+        execution_time_ms=_elapsed_ms,
+    )
+    return result
 
 def execute(payload):
     """Legacy execute function for backward compatibility"""

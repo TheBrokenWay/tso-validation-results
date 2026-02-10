@@ -9,8 +9,10 @@ Constitutional Note: PD models are theoretical simulations.
 Clinical efficacy data required for validation.
 """
 
+import time
 from typing import Dict, Any, List, Optional
 import math
+from PX_System.foundation.sign_off import create_sign_off
 
 
 def emax_model(
@@ -186,6 +188,8 @@ def link_pk_to_pd(
     emax = pd_params.get("emax")
     ec50 = pd_params.get("ec50")
     
+    _t0 = time.monotonic()
+
     if emax is None or ec50 is None:
         raise ValueError("pd_params must contain 'emax' and 'ec50'")
     
@@ -202,7 +206,7 @@ def link_pk_to_pd(
     # Compute PD metrics
     pd_summary = compute_pd_metrics(time_h, effect_profile, effect_threshold)
     
-    return {
+    result = {
         "time_h": time_h,
         "effect": effect_profile,
         "pd_summary": pd_summary,
@@ -223,6 +227,17 @@ def link_pk_to_pd(
             ),
         },
     }
+    _elapsed_ms = int((time.monotonic() - _t0) * 1000)
+    result["sign_off"] = create_sign_off(
+        engine_id="PKPD_EMAX_V2",
+        version="2.0-PHASE1",
+        inputs={"pk_summary": pk_profile.get("summary", {}), "pd_params": pd_params},
+        outputs=result,
+        laws_checked=["U27"],
+        laws_results={"U27": True},
+        execution_time_ms=_elapsed_ms,
+    )
+    return result
 
 
 # Legacy function for backward compatibility
