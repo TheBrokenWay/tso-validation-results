@@ -13,6 +13,7 @@ Updated: 2026-01-26 - Discovery-stage thresholds (10-30% range)
 """
 
 import json
+import sys
 from pathlib import Path
 from typing import Dict, Any, Tuple
 from datetime import datetime, UTC
@@ -103,8 +104,8 @@ class GradingEngine:
                     pk_pta = ve["pk_pta"]
                     if "auc_mg_h_per_L" in pk_pta:
                         metrics["pta"] = pk_pta["auc_mg_h_per_L"].get("pta", 0.0)
-        except (KeyError, TypeError, AttributeError):
-            pass
+        except (KeyError, TypeError, AttributeError) as e:
+            print(f"    WARN: PTA extraction failed: {e}", file=sys.stderr)
         
         # Extract Responder Rate (effect_ge_threshold or pd_responders path)
         try:
@@ -118,8 +119,8 @@ class GradingEngine:
                     pd = ve["pd_responders"]
                     if "max_effect" in pd and "responder_rate" in pd["max_effect"]:
                         metrics["responder_rate"] = pd["max_effect"]["responder_rate"] * 100.0
-        except (KeyError, TypeError, AttributeError):
-            pass
+        except (KeyError, TypeError, AttributeError) as e:
+            print(f"    WARN: responder_rate extraction failed: {e}", file=sys.stderr)
         
         # Extract Toxicity Index (from ADMET: toxicity_index or toxicity sub-dict)
         # Resolve ADMET from multiple dossier schemas:
@@ -144,8 +145,8 @@ class GradingEngine:
                         metrics["toxicity"] = float(tox["toxicity_index"])
                     else:
                         metrics["toxicity"] = 0.5
-        except (KeyError, TypeError, AttributeError):
-            pass
+        except (KeyError, TypeError, AttributeError) as e:
+            print(f"    WARN: toxicity extraction failed (defaults to 0.5 → REJECTED): {e}", file=sys.stderr)
 
         # Fallback: top-level harm_energy (present in PRV_NOV_ and PRV_REP_ dossiers)
         if metrics["toxicity"] == 0.5 and "harm_energy" in dossier:
@@ -153,8 +154,8 @@ class GradingEngine:
                 he = dossier["harm_energy"]
                 if isinstance(he, (int, float)):
                     metrics["toxicity"] = float(he)
-            except (TypeError, ValueError):
-                pass
+            except (TypeError, ValueError) as e:
+                print(f"    WARN: harm_energy fallback failed: {e}", file=sys.stderr)
 
         # Extract Dose Optimization Score (safety_margin or optimization_score)
         try:
@@ -166,8 +167,8 @@ class GradingEngine:
                         metrics["dose_score"] = min(1.0, best_regimen["safety_margin"] / 2.0)
                     elif "optimization_score" in best_regimen:
                         metrics["dose_score"] = float(best_regimen["optimization_score"])
-        except (KeyError, TypeError, AttributeError):
-            pass
+        except (KeyError, TypeError, AttributeError) as e:
+            print(f"    WARN: dose_score extraction failed: {e}", file=sys.stderr)
         
         # Extract Variability CV (pkpd.auc.cv or trial_result.arms[0].exposure_summary.auc_mg_h_per_L.sd)
         try:
@@ -182,8 +183,8 @@ class GradingEngine:
                     auc = es.get("auc_mg_h_per_L", {})
                     if "sd" in auc and "mean" in auc and auc["mean"]:
                         metrics["variability_cv"] = (auc["sd"] / auc["mean"]) * 100.0
-        except (KeyError, TypeError, AttributeError, ZeroDivisionError):
-            pass
+        except (KeyError, TypeError, AttributeError, ZeroDivisionError) as e:
+            print(f"    WARN: variability_cv extraction failed: {e}", file=sys.stderr)
         
         # Extract Binding Affinity (binding_affinity_nM or score 0-1 or 0-100)
         # Resolve OPE from multiple dossier schemas:
@@ -205,8 +206,8 @@ class GradingEngine:
                 elif "binding_affinity_nM" in ope:
                     nM = ope["binding_affinity_nM"]
                     metrics["binding_affinity"] = min(1.0, 1.0 - (float(nM) / 1000.0)) if isinstance(nM, (int, float)) else 0.5
-        except (KeyError, TypeError, AttributeError):
-            pass
+        except (KeyError, TypeError, AttributeError) as e:
+            print(f"    WARN: binding_affinity extraction failed: {e}", file=sys.stderr)
 
         # Coerce all metrics to float so classify_metrics never sees dict
         for k in list(metrics.keys()):

@@ -6,29 +6,9 @@ from pathlib import Path
 from typing import Any, Dict, Tuple
 
 def _get_tier(dossier: Dict[str, Any]) -> str:
-    """Derive tier from dossier (toxicity_index + safety_margin for Diamond)."""
-    try:
-        from PX_Warehouse.warehouse_layout import get_tier
-        return get_tier(dossier)
-    except Exception:
-        pass
-    tox = 1.0
-    engines = dossier.get("engines") or {}
-    admet = engines.get("admet") or {}
-    if isinstance(admet, dict):
-        t = (admet.get("toxicity") or {}).get("toxicity_index")
-        if t is not None:
-            tox = float(t)
-        elif admet.get("toxicity_index") is not None:
-            tox = float(admet["toxicity_index"])
-    safety = float(dossier.get("safety_margin") or 0)
-    if tox < 0.0100 or (tox > 0.0200 and safety > 50.0):
-        return "Diamond"
-    if tox < 0.0200:
-        return "Gold"
-    if tox < 0.0210:
-        return "Silver"
-    return "Bronze"
+    """Delegates to canonical PX_Warehouse.warehouse_layout.get_tier."""
+    from PX_Warehouse.warehouse_layout import get_tier
+    return get_tier(dossier)
 
 
 class PlacementGatekeeper:

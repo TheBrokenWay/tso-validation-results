@@ -51,8 +51,9 @@ def generate_governance_coverage() -> dict:
     try:
         from governance.certificate import generate_governance_readiness_certificate
         generate_governance_readiness_certificate()
-    except Exception:
-        pass
+    except Exception as e:
+        import sys
+        print(f"    WARN: governance certificate generation failed: {e}", file=sys.stderr)
 
     return out
 

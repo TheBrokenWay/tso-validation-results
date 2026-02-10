@@ -29,25 +29,9 @@ CANONICAL_UNDER = ("Prv_Dossiers", "Novel_Dossiers", "WorldLines", "Calibration_
 
 
 def get_tier_from_dossier(data: dict) -> str:
-    """Tier from dossier dict (same logic as warehouse_layout.get_tier)."""
-    try:
-        tox = 1.0
-        if isinstance(data.get("engines"), dict) and isinstance(data["engines"].get("admet"), dict):
-            admet_tox = (data["engines"]["admet"].get("toxicity") or {}).get("toxicity_index")
-            if admet_tox is not None:
-                tox = float(admet_tox)
-        if tox == 1.0 and data.get("toxicity_index") is not None:
-            tox = float(data["toxicity_index"])
-        safety_margin = float(data.get("safety_margin", 0))
-        if tox < 0.01 or (tox > 0.02 and safety_margin > 50.0):
-            return "Diamond"
-        if tox < 0.021:
-            return "Gold"
-        if tox < 0.10:
-            return "Silver"
-        return "Bronze"
-    except Exception:
-        return "Bronze"
+    """Delegates to canonical PX_Warehouse.warehouse_layout.get_tier."""
+    from PX_Warehouse.warehouse_layout import get_tier
+    return get_tier(data)
 
 
 def fix_double_prefix(dry_run: bool = True) -> list[tuple[Path, Path]]:

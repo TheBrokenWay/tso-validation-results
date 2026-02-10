@@ -201,7 +201,7 @@ def validate_cfr_envelope(
                     code="CFR_ANOMALY",
                 )
         except (TypeError, ValueError):
-            pass
+            pass  # schema validation ensures numeric; defensive only
 
 
 def validate_temporal_consistency(
@@ -233,7 +233,7 @@ def validate_temporal_consistency(
                     code="TEMPORAL_DRIFT",
                 )
         except (TypeError, ValueError):
-            pass
+            pass  # schema validation ensures integer; defensive only
 
 
 def _cfr_drift_summary(accepted: list[dict[str, Any]]) -> dict[str, Any]:

@@ -26,29 +26,9 @@ CANONICAL_PARTS = ("Prv_Dossiers", "Novel_Dossiers", "Learning_Material")
 
 
 def get_tier(data: dict) -> str:
-    try:
-        physics = data.get("physics") or {}
-        engines = data.get("engines") or {}
-        ope = engines.get("ope") or {}
-        admet = data.get("admet") or engines.get("admet") or {}
-        tox_obj = admet.get("toxicity") if isinstance(admet, dict) else {}
-        tox = 1.0
-        if isinstance(physics, dict) and physics.get("toxicity_index") is not None:
-            tox = float(physics["toxicity_index"])
-        elif isinstance(ope, dict) and ope.get("toxicity_index") is not None:
-            tox = float(ope["toxicity_index"])
-        elif isinstance(tox_obj, dict) and tox_obj.get("toxicity_index") is not None:
-            tox = float(tox_obj["toxicity_index"])
-        safety_margin = float(data.get("safety_margin") or data.get("dose_optimization", {}).get("safety_margin") or 0)
-        if tox < 0.01 or (tox > 0.02 and safety_margin > 50.0):
-            return "Diamond"
-        if tox < 0.021:
-            return "Gold"
-        if tox < 0.10:
-            return "Silver"
-        return "Bronze"
-    except Exception:
-        return "Bronze"
+    """Delegates to canonical PX_Warehouse.warehouse_layout.get_tier."""
+    from PX_Warehouse.warehouse_layout import get_tier as _canonical
+    return _canonical(data)
 
 
 def ensure_warehouse_dirs() -> None:

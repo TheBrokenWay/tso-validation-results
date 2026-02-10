@@ -52,8 +52,9 @@ def run_evolutionary_drift_early_warning(
             with open(prior_drift_path, encoding="utf-8") as f:
                 prior_data = json.load(f)
             prior = prior_data.get("current_cfr_by_strain") or prior_data.get("cfr_by_strain")
-        except (json.JSONDecodeError, IOError):
-            pass
+        except (json.JSONDecodeError, IOError) as e:
+            import sys
+            print(f"    WARN: prior drift data unreadable, skipping comparison: {e}", file=sys.stderr)
     if prior:
         out["prior_cfr_by_strain"] = prior
         for strain in set(current) | set(prior):

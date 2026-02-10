@@ -63,6 +63,14 @@ def main():
         ("PX_Validation/tests/test_performance_regression.py", "Phase 7: Performance Regression"),
         ("PX_Validation/tests/test_orchestrator_v2.py", "Phase 8: Orchestrator v2"),
         ("PX_Validation/tests/PX_System_Test.py", "System Tests"),
+        ("PX_Validation/tests/test_admet_engine.py", "ADMET Engine"),
+        ("PX_Validation/tests/test_grading_engine.py", "Grading Engine"),
+        ("PX_Validation/tests/test_pk_engine.py", "PK Engine"),
+        ("PX_Validation/tests/test_pk_integration.py", "PK Integration"),
+        ("PX_Validation/tests/test_trial_engine.py", "Trial Engine"),
+        ("PX_Validation/tests/test_trial_evidence_package.py", "Trial Evidence Package"),
+        ("PX_Validation/tests/test_system_trial_evidence_package.py", "System Trial Evidence Package"),
+        ("PX_Validation/tests/test_warehouse_integrity.py", "Warehouse Integrity"),
     ]
     
     results = []

@@ -29,27 +29,9 @@ NEW_STRUCTURE = {
 
 
 def get_tier(data: dict) -> str:
-    try:
-        physics = data.get("physics", {}) or data.get("engines", {}).get("ope", {}) or {}
-        tox = physics.get("toxicity_index", 1.0)
-        if isinstance(data.get("engines"), dict) and isinstance(data["engines"].get("admet"), dict):
-            admet_tox = (data["engines"]["admet"].get("toxicity") or {}).get("toxicity_index")
-            if admet_tox is not None:
-                tox = float(admet_tox)
-        if "candidate_profile" in data and data["candidate_profile"]:
-            cp_tox = data["candidate_profile"].get("toxicity_index")
-            if cp_tox is not None:
-                tox = float(cp_tox)
-        safety_margin = float(data.get("safety_margin", 0))
-        if tox < 0.01 or (tox > 0.02 and safety_margin > 50.0):
-            return "Diamond"
-        if tox < 0.021:
-            return "Gold"
-        if tox < 0.10:
-            return "Silver"
-        return "Bronze"
-    except Exception:
-        return "Bronze"
+    """Delegates to canonical PX_Warehouse.warehouse_layout.get_tier."""
+    from PX_Warehouse.warehouse_layout import get_tier as _canonical
+    return _canonical(data)
 
 
 def main() -> int:
