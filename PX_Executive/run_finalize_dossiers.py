@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 """
-Finalize existing dossiers: scan Prv_Dossiers and Novel_Dossiers, run the full
-finalization checklist (all engines), and write to Finalized_Dossiers/<tier>/.
+DEPRECATED: Use px_finalize.py instead.
 
-Use this to backfill: everything that went into Prv/Novel gets run through
-finalization and, if it passes, is placed into the final layer.
+  python PX_Executive/px_finalize.py
+  python PX_Executive/px_finalize.py --dry-run
+  python PX_Executive/px_finalize.py --limit 100
+  python PX_Executive/px_finalize.py --reprocess
 
-Run from repo root:
-  python PX_Executive/run_finalize_dossiers.py
-  python PX_Executive/run_finalize_dossiers.py --dry-run
-  python PX_Executive/run_finalize_dossiers.py --limit 100
-  python PX_Executive/run_finalize_dossiers.py --reprocess   # Process all including already-finalized (add new metrics, version, report; Zeus at end)
+This file is kept for backward compatibility and still works.
 """
 from __future__ import annotations
 

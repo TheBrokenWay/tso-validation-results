@@ -18,27 +18,26 @@ just govern        # Governance stress test (python run_e2e_layers.py)
 # Run a single test file directly
 python PX_Validation/tests/test_admet_engine.py
 
-# Engine loops
-just feed          # Genesis feed — invent novel SMILES, write to Feeder queue
-just feed-rep      # Repurposed feed — populate queue from repurposed sources
-just novel         # Novel 24H orchestrator (processes type N from queue)
-just repurpose     # Repurposed 24H orchestrator (processes type R from queue)
-just finalize      # Finalization pipeline on unfinalized dossiers
-just cycle         # Full cycle test: Feed -> Novel -> Repurposed -> Finalize
+# Engine loops (consolidated orchestrators)
+just feed          # Genesis feed → px_feed.py --mode novel
+just feed-rep      # Repurposed feed → px_feed.py --mode repurpose
+just novel         # 12-engine PRV pipeline → px_prv.py --type novel
+just repurpose     # 12-engine PRV pipeline → px_prv.py --type repurpose
+just prv-all       # Both novel + repurposed → px_prv.py --type all
+just finalize      # Finalization pipeline → px_finalize.py
+just cycle         # Full cycle test: Feed → PRV → Finalize
 
 # Batch operations
 just reprocess-lifecycle            # Push all unfinalized dossiers through grading + finalization
 just reprocess-lifecycle-validated  # Same with validation before/after (recommended before version lock)
 
-# Finalization options
-python PX_Executive/run_finalize_dossiers.py --dry-run     # Report only, no writes
-python PX_Executive/run_finalize_dossiers.py --limit 100   # Process max 100
-python PX_Executive/run_finalize_dossiers.py --reprocess   # Re-process all including already-finalized
-python PX_Executive/run_finalize_dossiers.py -v            # Verbose Zeus failure reasons
-
-# Genesis configuration (env vars)
-GENESIS_COUNT=20 GENESIS_INTERVAL=0 python PX_Executive/run_genesis_feed.py  # Single batch of 20
-GENESIS_HIGH_CHAOS=1 python PX_Executive/run_genesis_feed.py                 # High-entropy mode
+# Consolidated orchestrator direct usage
+python PX_Executive/px_feed.py --mode novel --count 20 --interval 0      # Single batch of 20
+python PX_Executive/px_feed.py --mode novel --high-chaos                  # High-entropy mode
+python PX_Executive/px_prv.py --type novel --limit 100                    # Process up to 100 novel
+python PX_Executive/px_prv.py --type all --disease nipah                  # Filter by disease
+python PX_Executive/px_finalize.py --dry-run                              # Report only
+python PX_Executive/px_finalize.py --limit 100 --reprocess -v             # Reprocess with verbose
 
 # DVC lineage
 just lineage       # dvc status — tracked Physics Maps / worldlines
@@ -63,8 +62,8 @@ Feed Stage (Genesis_Engine, Vector_Core, Metabolism, Trajectory_Predictor)
 
 | Directory | Role |
 |-----------|------|
-| `PX_Executive/` | Orchestrator entrypoints: `run_genesis_feed.py`, `run_repurposed_feed.py`, `run_prv_novel.py`, `run_prv_repurposed.py`, `run_finalize_dossiers.py`, `run_one_cycle_test.py`, `PRV_24H_Orchestrator.py`, `reprocess_warehouse_lifecycle.py` |
-| `PX_Executive/orchestrators/` | `PX_Live_Orchestrator_v2.py` (canonical live orchestrator) |
+| `PX_Executive/` | **Consolidated orchestrators**: `px_feed.py` (novel+repurposed feed), `px_prv.py` (12-engine PRV pipeline), `px_finalize.py` (finalization). Legacy wrappers: `run_genesis_feed.py`, `run_prv_novel.py`, `run_prv_repurposed.py`, `run_finalize_dossiers.py` (deprecated, delegate to consolidated). Also: `PRV_24H_Orchestrator.py` (legacy 24H), `run_one_cycle_test.py`, `reprocess_warehouse_lifecycle.py` |
+| `PX_Executive/orchestrators/` | `PX_Live_Orchestrator_v2.py` (legacy live orchestrator) |
 | `PX_Engine/` | Core physics engines: `Genesis_Engine.py`, `Vector_Core.py`, `Metabolism.py`, `Trajectory_Predictor.py`, `Block_Orchestrator.py`, `Engine_Orchestrator.py` |
 | `PX_Engine/operations/` | Operational engines: OBE, OCE, OLE, OME, OPE, OSE, `ADMET.py`, `PKPD.py`, `TrialEngine.py`, `DoseOptimizer_v2.py`, `VirtualEfficacyAnalytics.py`, `GradingEngine.py`, `GradingSchema_Discovery.json` |
 | `PX_Laboratory/` | `Simulation_Engine.py` (1-compartment PK sim), `Manufacturing_Manifest.py`, `Synthetic_Expansion.py` |
@@ -166,7 +165,9 @@ These are hard rules from `.cursor/rules/00_constitution.mdc` through `07_lean_r
 | PKPD | `PKPD.py` (canonical) | `PKPD_Simple` (deprecated) |
 | Dose optimizer | `DoseOptimizer_v2.py` | `DoseOptimizer_Simple` (deprecated) |
 | Virtual efficacy | `VirtualEfficacyAnalytics.py` | `VirtualEfficacy_Simple` (deprecated) |
-| Orchestrator 24H | `PX_Executive/PRV_24H_Orchestrator.py` | `Predator_X_v3_Orchestrator.py` |
+| Feed orchestrator | `PX_Executive/px_feed.py` | `run_genesis_feed.py`, `run_repurposed_feed.py` (deprecated) |
+| PRV orchestrator | `PX_Executive/px_prv.py` (12-engine) | `PRV_24H_Orchestrator.py` (6-engine, legacy) |
+| Finalize orchestrator | `PX_Executive/px_finalize.py` | `run_finalize_dossiers.py` (deprecated) |
 | Live orchestrator | `PX_Executive/orchestrators/PX_Live_Orchestrator_v2.py` | v1 |
 | WorldLine DB | `PX_Warehouse.WorldLine_Database` | `99_WAREHOUSE_ARCHIVE.WorldLine_Database` |
 | Toxicity hard limit | `0.0210` | Any rounding above |

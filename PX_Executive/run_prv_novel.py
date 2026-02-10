@@ -1,6 +1,10 @@
 """
-PX_Executive/run_prv_novel.py
-WRAPPER: Launches the 24H Orchestrator in NOVEL mode.
+DEPRECATED: Use px_prv.py --type novel instead.
+
+  python PX_Executive/px_prv.py --type novel
+  python PX_Executive/px_prv.py --type novel --limit 100
+
+This file is kept for backward compatibility and still works.
 """
 import os
 import sys

@@ -1,25 +1,12 @@
 #!/usr/bin/env python3
 """
-Genesis Feed (Continuous) — The Perpetual Creation Engine.
+DEPRECATED: Use px_feed.py --mode novel instead.
 
-Purpose:
-  Runs continuously to invent novel molecules (SMILES) via the Genesis Engine.
-  Appends them to the PRV queue so the Novel Pipeline never starves.
+  python PX_Executive/px_feed.py --mode novel
+  python PX_Executive/px_feed.py --mode novel --high-chaos
+  python PX_Executive/px_feed.py --mode novel --count 50 --interval 0
 
-Configuration (Env Vars):
-  GENESIS_COUNT=20        Molecules to invent per batch (default 50 in high-chaos)
-  GENESIS_INTERVAL=60     Seconds to wait between batches (omit or 0 = run once and exit)
-  GENESIS_QUEUE           Target queue file (default: prv_24h_queue.json)
-  GENESIS_SKIP_VECTOR_CORE  Set to "1" to bypass Vector Core physics checks (not recommended)
-  GENESIS_SEED            Optional fixed random seed (if set, use only for first batch in continuous mode)
-  GENESIS_HIGH_CHAOS=1    High-entropy mode: expanded chemical space, wilder molecules, more per batch
-  GENESIS_ENTROPY=high    Same as GENESIS_HIGH_CHAOS=1
-
-Run (perpetual):
-  python PX_Executive/run_genesis_feed.py
-
-Run (single batch then exit):
-  GENESIS_INTERVAL=0 python PX_Executive/run_genesis_feed.py
+This file is kept for backward compatibility and delegates to px_feed.py.
 """
 from __future__ import annotations
 

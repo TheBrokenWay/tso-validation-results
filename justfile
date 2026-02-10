@@ -4,29 +4,33 @@
 default:
     @just --list
 
-# ---- Engine loops (canonical entry points) ----
+# ---- Engine loops (consolidated orchestrators) ----
 
 # Genesis feeder: invent novel SMILES and write to Feeder queue
 feed:
-    python PX_Executive/run_genesis_feed.py
+    python PX_Executive/px_feed.py --mode novel
 
 # Repurposed feed: populate queue from repurposed sources (run before repurpose if needed)
 feed-rep:
-    python PX_Executive/run_repurposed_feed.py
+    python PX_Executive/px_feed.py --mode repurpose
 
-# Novel engine: 24H orchestrator in NOVEL mode (processes type N from queue)
+# Novel engine: full 12-engine PRV pipeline (processes type N from queue)
 novel:
-    python PX_Executive/run_prv_novel.py
+    python PX_Executive/px_prv.py --type novel
 
-# Repurposed engine: 24H orchestrator in REPURPOSED mode (processes type R from queue)
+# Repurposed engine: full 12-engine PRV pipeline (processes type R from queue)
 repurpose:
-    python PX_Executive/run_prv_repurposed.py
+    python PX_Executive/px_prv.py --type repurpose
+
+# All PRV candidates: novel + repurposed
+prv-all:
+    python PX_Executive/px_prv.py --type all
 
 # Finalization: run finalization pipeline on unfinalized dossiers
 finalize:
-    python PX_Executive/run_finalize_dossiers.py
+    python PX_Executive/px_finalize.py
 
-# Full cycle: Feeder → Novel (1 item) → Repurposed (1 item) → Finalize (1) — for testing
+# Full cycle: Feed → PRV (1 novel + 1 repurposed) → Finalize — for testing
 cycle:
     python PX_Executive/run_one_cycle_test.py
 

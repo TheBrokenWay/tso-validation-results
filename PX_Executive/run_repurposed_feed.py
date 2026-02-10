@@ -1,18 +1,11 @@
 #!/usr/bin/env python3
 """
-Repurposed feed — populate the PRV queue with repurposed (R) candidates from seed libraries.
+DEPRECATED: Use px_feed.py --mode repurpose instead.
 
-Sources (from intake_policy.json): ChEMBL, DrugBank, ClinicalTrials, FDA_OrangeBook,
-PubChem, NCATS_Repurposing, ZINC. Data is read from PX_Data/<source>/ and written to
-PX_Warehouse/Feeder/prv_24h_queue.json (canonical queue for the 24H orchestrator).
+  python PX_Executive/px_feed.py --mode repurpose
+  python PX_Executive/px_feed.py --mode repurpose --replace
 
-Usage:
-  python PX_Executive/run_repurposed_feed.py         # merge into existing queue (keeps novel N)
-  python PX_Executive/run_repurposed_feed.py --replace   # overwrite queue with harvest only
-
-The repurposed orchestrator (run_prv_repurposed.py) reads from the same Feeder queue
-and processes only type "R". Run this feed before or alongside the orchestrator so
-the repurposed pipeline has candidates.
+This file is kept for backward compatibility.
 """
 from __future__ import annotations
 

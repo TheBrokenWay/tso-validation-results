@@ -799,6 +799,12 @@ def run_finalization(
     # Spec 4: recompute tier from trial outcomes when COMPLETED
     tier = _get_tier_from_trial_outcome(trial_binding.get("trial_outcome_summary") or {}, tier)
 
+    # Grade/tier consistency gate: NEEDS_REVIEW and REJECTED grades cannot go to Diamond or Gold
+    _grade = (discovery_grading or {}).get("grade", "")
+    if _grade in ("NEEDS_REVIEW", "REJECTED"):
+        if tier in ("Diamond", "Gold"):
+            tier = "Silver" if _grade == "NEEDS_REVIEW" else "Bronze"
+
     # Governance stage: Zeus gate at the END (IMPLEMENTATION_ROADMAP). Spec 9: pass trial_outcome_summary for Zeus trial review.
     try:
         from PX_System.foundation.ZeusLaws import run_zeus_gate

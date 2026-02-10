@@ -1,6 +1,10 @@
 """
-PX_Executive/run_prv_repurposed.py
-WRAPPER: Launches the 24H Orchestrator in REPURPOSED mode.
+DEPRECATED: Use px_prv.py --type repurpose instead.
+
+  python PX_Executive/px_prv.py --type repurpose
+  python PX_Executive/px_prv.py --type repurpose --limit 100
+
+This file is kept for backward compatibility and still works.
 """
 import os
 import sys
