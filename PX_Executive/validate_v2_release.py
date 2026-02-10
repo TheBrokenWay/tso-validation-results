@@ -32,8 +32,8 @@ def run_test_suite(test_path: str, description: str) -> dict:
     
     return {
         "description": description,
-        "exit_code": result.exit_code,
-        "passed": result.exit_code == 0,
+        "exit_code": result.returncode,
+        "passed": result.returncode == 0,
         "output": output
     }
 

@@ -94,15 +94,17 @@ def generate_dossier(
     # Log to Sovereign Chain
     if log_to_chain:
         try:
-            log_to_chain({
-                "source": "Evidence_Package",
-                "action": "DOSSIER_GENERATED",
-                "compound": candidate.get("name"),
-                "harm_energy": harm_energy,
-                "seal": dossier["constitutional_seal"]
-            })
-        except Exception:
-            pass
+            log_to_chain(
+                "DOSSIER_GENERATED",
+                {
+                    "compound": candidate.get("name"),
+                    "harm_energy": harm_energy,
+                    "seal": dossier["constitutional_seal"],
+                },
+                {"source": "Evidence_Package"}
+            )
+        except Exception as e:
+            print(f"    WARN: SLC log write failed: {e}", file=sys.stderr)
 
     return dossier
 
@@ -419,8 +421,8 @@ def wrap_trial_simulation(
                 },
                 {"source": "Evidence_Package"}
             )
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"    WARN: SLC log write failed: {e}", file=sys.stderr)
 
     return full_path
 

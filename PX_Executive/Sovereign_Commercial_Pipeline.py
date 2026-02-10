@@ -242,8 +242,8 @@ def generate_dossier(candidate_data: Dict, worldline_path: str) -> str:
         try:
             from PX_System.foundation.Sovereign_Log_Chain import append as slc_append
             slc_append("FINALIZATION_FAILURE", {"item_id": task_id, "error": str(e), "source": "Sovereign_Commercial_Pipeline"})
-        except Exception:
-            pass
+        except Exception as slc_err:
+            print(f"    WARN: SLC log write failed: {slc_err}", file=sys.stderr)
 
     return str(dossier_path)
 

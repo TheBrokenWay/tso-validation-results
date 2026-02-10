@@ -449,8 +449,8 @@ def main() -> int:
             try:
                 from PX_System.foundation.Sovereign_Log_Chain import append as slc_append
                 slc_append("FINALIZATION_FAILURE", {"item_id": item_id, "error": str(e), "source": "PRV_24H_Orchestrator"})
-            except Exception:
-                pass
+            except Exception as slc_err:
+                print(f"    WARN: SLC log write failed: {slc_err}", file=sys.stderr)
 
     return 0
 

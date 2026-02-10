@@ -38,6 +38,7 @@ from PX_Engine.Metabolism import Metabolism
 from PX_Engine.operations.OPE import run_ope
 from PX_Engine.operations import OBE, OME, OLE, OSE, ADMET, OCE
 from PX_Engine.operations.DoseOptimizer_v2 import optimize_dose
+from PX_System.foundation.ZeusLaws import run_zeus_gate
 
 vector_gate = VectorCore(threshold=0.95, dims_limit=35.0, global_sum_target=36.1)
 metabolism = Metabolism()
@@ -310,6 +311,12 @@ def run_refinery() -> None:
         try:
             new_data = reforge_artifact(file_path)
             if new_data is not None:
+                # Zeus governance gate before warehouse write (fail-closed)
+                zeus = run_zeus_gate(new_data)
+                if not zeus.get("authorized", False):
+                    print(f"    [ZEUS REJECT] {file_path.name}: {zeus.get('verdict', 'UNKNOWN')}")
+                    collapse_count += 1
+                    continue
                 with open(file_path, "w", encoding="utf-8") as f:
                     json.dump(new_data, f, indent=2)
                 status_val = new_data.get("status", "")

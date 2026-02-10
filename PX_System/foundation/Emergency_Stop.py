@@ -12,7 +12,7 @@ from typing import Any, Dict
 
 
 try:
-    from foundation.Sovereign_Log_Chain import append as log_append
+    from PX_System.foundation.Sovereign_Log_Chain import append as log_append
     _HAS_LOG_CHAIN = True
 except Exception:
     _HAS_LOG_CHAIN = False
@@ -108,15 +108,13 @@ class EmergencyStop:
         if _HAS_LOG_CHAIN:
             try:
                 log_append(
+                    "EMERGENCY_STOP_TRIGGERED",
                     {
-                        "source": "Emergency_Stop",
-                        "function": "manual_trigger",
-                        "operation": "STOP_TRIGGERED",
                         "reason": status["trigger_reason"],
                         "authorized_by": status["authorized_by"],
                         "severity": status["trigger_severity"],
-                        "timestamp": status["trigger_time"],
-                    }
+                    },
+                    {"source": "Emergency_Stop", "function": "manual_trigger"}
                 )
             except Exception:
                 # Never let audit logging failure re-break emergency stop.

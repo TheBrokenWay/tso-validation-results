@@ -57,7 +57,7 @@ def harvest():
         if FEEDER_FILE.exists():
             try:
                 current_queue = json.loads(FEEDER_FILE.read_text())
-            except:
+            except Exception:
                 current_queue = []
         
         # Merge (avoid duplicates based on SMILES)

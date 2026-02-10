@@ -240,8 +240,8 @@ class DiamondFork:
             try:
                 from PX_System.foundation.Sovereign_Log_Chain import append as slc_append
                 slc_append("FINALIZATION_FAILURE", {"item_id": dossier['candidate_id'], "error": str(e), "source": "SMART_Antiviral_Fork"})
-            except Exception:
-                pass
+            except Exception as slc_err:
+                print(f"    WARN: SLC log write failed: {slc_err}", file=sys.stderr)
 
 if __name__ == "__main__":
     fork = DiamondFork()

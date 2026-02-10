@@ -116,8 +116,8 @@ def run_pipeline(molecule: dict, batch_id: str, verbose: bool = False) -> dict:
         "indication": molecule.get("indication", "Not specified"),
         "timestamp": timestamp,
         "run_directory": run_dir,
-        "exit_code": result.exit_code,
-        "success": result.exit_code == 0,
+        "exit_code": result.returncode,
+        "success": result.returncode == 0,
         "stdout": result.stdout,
         "stderr": result.stderr,
     }

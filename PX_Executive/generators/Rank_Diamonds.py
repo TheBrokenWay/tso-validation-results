@@ -5,7 +5,7 @@ import glob
 
 # CONFIGURATION — resolve paths relative to repo root (portable)
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-TARGET_DIR = os.path.join(_REPO_ROOT, "PX_Warehouse", "Finalized_Dossiers", "DIAMOND")
+TARGET_DIR = os.path.join(_REPO_ROOT, "PX_Warehouse", "Finalized_Dossiers", "Diamond")
 REPORT_FILE = os.path.join(_REPO_ROOT, "PX_Warehouse", "SMART_DIAMOND_LEADERBOARD.csv")
 
 def rank_diamonds():

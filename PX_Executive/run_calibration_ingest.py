@@ -31,7 +31,7 @@ except ImportError as e:
     sys.exit(1)
 
 # --- CONFIGURATION ---
-SOURCE_DIR = Path(r"E:\foundation\PX_Data")
+SOURCE_DIR = repo_root / "PX_Data"
 DB = WorldLineDatabase(str(repo_root / "PX_Warehouse" / "WorldLines"))
 
 # Setup Logging
