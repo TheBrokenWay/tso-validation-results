@@ -1,0 +1,1 @@
+"""Rabies data adapters."""

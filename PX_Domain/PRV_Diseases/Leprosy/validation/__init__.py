@@ -1,0 +1,1 @@
+"""Leprosy data validation."""

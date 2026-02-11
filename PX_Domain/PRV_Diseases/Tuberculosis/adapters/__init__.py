@@ -1,0 +1,1 @@
+"""Tuberculosis data adapters."""

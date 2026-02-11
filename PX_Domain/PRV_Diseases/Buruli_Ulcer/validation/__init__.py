@@ -1,0 +1,1 @@
+"""Buruli ulcer data validation."""

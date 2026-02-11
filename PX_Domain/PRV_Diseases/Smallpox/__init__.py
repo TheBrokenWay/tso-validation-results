@@ -1,0 +1,1 @@
+"""Smallpox analysis module."""

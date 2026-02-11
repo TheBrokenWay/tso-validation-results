@@ -1,0 +1,1 @@
+"""Leishmaniasis data validation."""

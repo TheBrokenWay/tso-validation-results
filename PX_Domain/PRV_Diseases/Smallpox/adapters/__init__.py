@@ -1,0 +1,1 @@
+"""Smallpox data adapters."""

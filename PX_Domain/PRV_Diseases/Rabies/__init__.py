@@ -1,0 +1,1 @@
+"""Rabies analysis module."""

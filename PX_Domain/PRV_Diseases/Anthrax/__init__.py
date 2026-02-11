@@ -1,0 +1,1 @@
+"""Anthrax analysis module."""

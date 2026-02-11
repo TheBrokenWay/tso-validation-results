@@ -427,7 +427,132 @@ def wrap_trial_simulation(
     return full_path
 
 
-__all__ = ["generate_dossier", "validate_dossier", "wrap_trial_simulation"]
+def generate_pharma_dossier(
+    dossier: Dict[str, Any],
+    tier: str,
+    disease_id: str,
+    repo_root: Optional[str] = None,
+) -> Optional[Dict[str, Any]]:
+    """
+    Generate tier-appropriate pharma-grade dossier package.
+
+    Tier routing:
+        DIAMOND → Full 11-section dossier package + document reports
+        GOLD    → Summary report (passing/failing metrics + gaps-to-diamond)
+        SILVER/BRONZE → WorldLine record only (no dossier generation)
+
+    Args:
+        dossier: Finalized dossier dict with engines, candidate, etc.
+        tier: One of DIAMOND, GOLD, SILVER, BRONZE (or Diamond, Gold, etc.)
+        disease_id: Disease identifier for constraint loading
+        repo_root: Repository root path (optional)
+
+    Returns:
+        Dict with package data, or None for SILVER/BRONZE.
+    """
+    tier_upper = tier.upper()
+
+    if tier_upper in ("SILVER", "BRONZE"):
+        return None
+
+    compound_data = dossier.get("candidate", {})
+    compound_data["stages"] = dossier.get("engines", {})
+    compound_data["compound_id"] = compound_data.get("name", compound_data.get("smiles", "UNKNOWN"))
+
+    if tier_upper == "DIAMOND":
+        try:
+            from PX_System.foundation.dossier_collectors.orchestrator import (
+                DossierCollectorOrchestrator,
+            )
+            orchestrator = DossierCollectorOrchestrator(
+                compound_data=compound_data,
+                disease_id=disease_id,
+                tier="DIAMOND",
+            )
+            package = orchestrator.collect_all()
+
+            # Generate document reports
+            try:
+                from PX_System.foundation.dossier_pdf.package_assembler import (
+                    DossierPackageAssembler,
+                )
+                assembler = DossierPackageAssembler(package)
+                package["documents"] = assembler.generate_all()
+            except (ImportError, Exception) as e:
+                package["documents"] = {"error": str(e)}
+                print(f"    WARN: Document generation failed: {e}", file=sys.stderr)
+
+            if log_to_chain:
+                try:
+                    log_to_chain(
+                        "PHARMA_DOSSIER_DIAMOND",
+                        {
+                            "compound_id": compound_data.get("compound_id"),
+                            "disease_id": disease_id,
+                            "sections": len(package.get("sections", {})),
+                            "complete": package.get("complete", False),
+                        },
+                        {"source": "Evidence_Package"},
+                    )
+                except Exception:
+                    pass
+
+            return package
+        except (ImportError, Exception) as e:
+            print(f"    ERROR: DIAMOND dossier generation failed: {e}", file=sys.stderr)
+            return {"error": str(e), "tier": "DIAMOND", "incomplete": True}
+
+    elif tier_upper == "GOLD":
+        # Gold summary: passing/failing metrics + gaps
+        engines = dossier.get("engines", {})
+        admet = engines.get("admet", {})
+        ope = engines.get("ope", {})
+        tox_raw = admet.get("toxicity", {})
+        tox_index = tox_raw.get("toxicity_index", 0) if isinstance(tox_raw, dict) else 0
+
+        passing = []
+        failing = []
+        if tox_index < 0.0200:
+            passing.append({"name": "Toxicity", "value": tox_index, "target": 0.0200})
+        else:
+            failing.append({"name": "Toxicity", "value": tox_index, "target": 0.0200})
+
+        gaps = []
+        if failing:
+            gaps.append("Reduce toxicity index below 0.0200 for Diamond eligibility")
+        gaps.append("Complete full 12-engine pipeline evaluation")
+
+        summary = {
+            "tier": "GOLD",
+            "compound_id": compound_data.get("compound_id"),
+            "disease_id": disease_id,
+            "passing_metrics": passing,
+            "failing_metrics": failing,
+            "gaps_to_diamond": gaps,
+            "optimization_suggestions": ["Re-evaluate with expanded ADMET panel"],
+        }
+
+        if log_to_chain:
+            try:
+                log_to_chain(
+                    "PHARMA_DOSSIER_GOLD",
+                    {"compound_id": compound_data.get("compound_id"), "disease_id": disease_id},
+                    {"source": "Evidence_Package"},
+                )
+            except Exception:
+                pass
+
+        return summary
+
+    return None
+
+
+__all__ = [
+    "generate_dossier",
+    "validate_dossier",
+    "wrap_trial_simulation",
+    "generate_pharma_dossier",
+]
 
 
 def _enforce_law_l1(internal_snapshot, external_snapshot):

@@ -133,6 +133,10 @@ def main() -> int:
 
         out_path = write_finalized_dossier(finalized, item_id, tier, REPO_ROOT)
         print(f"  {item_id} -> {out_path}")
+
+        # ── Pharma-grade dossier generation (tier-routed) ──
+        _generate_pharma_package(finalized, item_id, tier, REPO_ROOT)
+
         ok += 1
 
     print("\n" + "=" * 64)
@@ -144,6 +148,43 @@ def main() -> int:
     print("=" * 64)
 
     return 0 if fail == 0 else 1
+
+
+def _generate_pharma_package(finalized: dict, item_id: str, tier: str, repo_root: Path) -> None:
+    """Generate pharma-grade dossier package based on tier routing."""
+    tier_upper = tier.upper()
+    if tier_upper in ("SILVER", "BRONZE"):
+        return  # WorldLine record only
+
+    try:
+        from PX_System.foundation.Evidence_Package import generate_pharma_dossier
+
+        # Extract disease_id from finalization metadata
+        fin = finalized.get("finalization", {})
+        disease_context = fin.get("disease_context", [])
+        indication = fin.get("disease_space_anchoring", {})
+        disease_id = ""
+        if isinstance(disease_context, list) and disease_context:
+            disease_id = str(disease_context[0]).strip().lower().replace(" ", "_")
+        if not disease_id:
+            disease_id = (finalized.get("candidate") or {}).get("indication", "unknown")
+            disease_id = disease_id.strip().lower().replace(" ", "_")
+
+        package = generate_pharma_dossier(
+            dossier=finalized,
+            tier=tier_upper,
+            disease_id=disease_id,
+            repo_root=str(repo_root),
+        )
+        if package:
+            # Write package alongside finalized dossier
+            pkg_dir = repo_root / "PX_Warehouse" / "Finalized_Dossiers" / tier / "packages"
+            pkg_dir.mkdir(parents=True, exist_ok=True)
+            pkg_path = pkg_dir / f"{item_id}_pharma_package.json"
+            pkg_path.write_text(json.dumps(package, indent=2, default=str), encoding="utf-8")
+            print(f"    Pharma package ({tier_upper}) -> {pkg_path.name}")
+    except Exception as e:
+        print(f"    WARN: Pharma package generation failed for {item_id}: {e}", file=sys.stderr)
 
 
 def _log_failure(item_id: str, error: str, context: str) -> None:

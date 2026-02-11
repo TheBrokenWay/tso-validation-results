@@ -1,0 +1,1 @@
+"""Chikungunya data validation."""
