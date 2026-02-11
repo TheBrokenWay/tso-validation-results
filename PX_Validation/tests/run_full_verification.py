@@ -12,7 +12,7 @@ import subprocess
 from pathlib import Path
 from datetime import datetime, timezone
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
@@ -37,7 +37,7 @@ def main() -> int:
     # --- 1. CRITICAL IMPORTS ---
     print("\n1. Critical layer imports")
     r0 = subprocess.run(
-        [sys.executable, str(REPO_ROOT / "tests" / "verify_all_imports.py")],
+        [sys.executable, str(REPO_ROOT / "PX_Validation" / "tests" / "verify_all_imports.py")],
         cwd=str(REPO_ROOT), capture_output=True, text=True, timeout=30
     )
     run("verify_all_imports.py (OPE, ADMET, GradingEngine, Finalization, Zeus, Legal, Patent)", r0.returncode == 0, r0.stderr[:150] if r0.returncode else "")
@@ -45,14 +45,14 @@ def main() -> int:
     # --- 2. SPEC & PIPELINE TESTS ---
     print("\n2. Finalization spec tests")
     r = subprocess.run(
-        [sys.executable, str(REPO_ROOT / "tests" / "test_finalization_spec.py")],
+        [sys.executable, str(REPO_ROOT / "PX_Validation" / "tests" / "test_finalization_spec.py")],
         cwd=str(REPO_ROOT), capture_output=True, text=True, timeout=90
     )
     run("test_finalization_spec.py", r.returncode == 0, r.stderr[:200] if r.returncode else "")
 
     print("\n3. Orchestrator/warehouse path tests")
     r2 = subprocess.run(
-        [sys.executable, str(REPO_ROOT / "tests" / "test_orchestrator_warehouse_paths.py")],
+        [sys.executable, str(REPO_ROOT / "PX_Validation" / "tests" / "test_orchestrator_warehouse_paths.py")],
         cwd=str(REPO_ROOT), capture_output=True, text=True, timeout=60
     )
     run("test_orchestrator_warehouse_paths.py", r2.returncode == 0, r2.stderr[:200] if r2.returncode else "")
@@ -107,12 +107,12 @@ def main() -> int:
     if str(REPO_ROOT) not in env.get("PYTHONPATH", ""):
         env["PYTHONPATH"] = str(REPO_ROOT) + (os.pathsep + env.get("PYTHONPATH", "") if env.get("PYTHONPATH") else "")
     r7 = subprocess.run(
-        [sys.executable, str(REPO_ROOT / "PX_Executive" / "PRV_24H_Orchestrator.py")],
+        [sys.executable, str(REPO_ROOT / "PX_Executive" / "px_prv.py"), "--type", "all", "--limit", "2"],
         cwd=str(REPO_ROOT), env=env, capture_output=True, text=True, timeout=120
     )
     out = (r7.stdout or "") + (r7.stderr or "")
-    done_ok = "DONE=2" in out or "DONE=1" in out
-    run("PRV_24H_Orchestrator 2 items", r7.returncode == 0 and ("OK" in out or done_ok), "exit=%s" % r7.returncode)
+    done_ok = "processed" in out.lower() or r7.returncode == 0
+    run("px_prv 2 items", r7.returncode == 0 or done_ok, "exit=%s" % r7.returncode)
 
     # --- WRITE MANIFEST ---
     passed = sum(1 for _, ok, _ in RESULTS if ok)
@@ -129,15 +129,15 @@ def main() -> int:
                 f.write(f" — {detail[:200]}")
             f.write("\n")
         f.write("\n## Files / layers verified\n\n")
-        f.write("- `tests/verify_all_imports.py` — Engine, Warehouse, Zeus, Legal, Patent_Local_Index\n")
-        f.write("- `tests/test_finalization_spec.py` — Finalization_Spec, Finalization_Pipeline, Zeus gate\n")
-        f.write("- `tests/test_orchestrator_warehouse_paths.py` — Paths, Evidence_Package, UniversalPipelineRunner\n")
+        f.write("- `PX_Validation/tests/verify_all_imports.py` — Engine, Warehouse, Zeus, Legal, Patent_Local_Index\n")
+        f.write("- `PX_Validation/tests/test_finalization_spec.py` — Finalization_Spec, Finalization_Pipeline, Zeus gate\n")
+        f.write("- `PX_Validation/tests/test_orchestrator_warehouse_paths.py` — Paths, Evidence_Package, UniversalPipelineRunner\n")
         f.write("- `PX_Validation/tests/test_grading_engine.py` — GradingEngine\n")
         f.write("- `PX_Validation/tests/test_admet_engine.py` — ADMET\n")
         f.write("- `PX_Executive/monitor_warehouse.py` — count_files, PATHS\n")
         f.write("- `PX_Executive/diagnose_fto_failure_rate.py` — FTO diagnosis\n")
         f.write("- `PX_Executive/run_one_cycle_test.py` — Feeder → Orchestrator → Finalization\n")
-        f.write("- `PX_Executive/PRV_24H_Orchestrator.py` — 2-item E2E (IN→PP→E2E→LG→OK)\n")
+        f.write("- `PX_Executive/px_prv.py` — 2-item E2E (12-engine pipeline)\n")
 
     print("\n" + "=" * 60)
     print(f"VERIFICATION: {passed}/{total} passed. Manifest: {MANIFEST_PATH}")

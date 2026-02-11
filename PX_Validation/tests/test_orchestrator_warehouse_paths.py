@@ -6,7 +6,7 @@ import os
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
@@ -35,9 +35,9 @@ def test_px_live_orchestrator_v2_paths():
     assert (cal_root / "LiveRuns").resolve().is_relative_to(ROOT.resolve()), "LiveRuns must be under repo"
 
 
-def test_prv_24h_orchestrator_paths():
-    """PRV_24H_Orchestrator must write dossiers to Prv_Dossiers/<tier> or Novel_Dossiers/<tier>"""
-    from PX_Executive.PRV_24H_Orchestrator import REPO_ROOT
+def test_prv_orchestrator_paths():
+    """px_prv.py must write dossiers to Prv_Dossiers/<tier> or Novel_Dossiers/<tier>"""
+    from PX_Executive.px_prv import REPO_ROOT
     from PX_Warehouse.warehouse_layout import get_prv_dossier_dir
     assert REPO_ROOT == ROOT, f"REPO_ROOT should be repo root, got {REPO_ROOT}"
     out_rep = get_prv_dossier_dir(False, "Gold", REPO_ROOT)
@@ -105,7 +105,7 @@ def run_all():
     errors = []
     tests = [
         ("PX_Live_Orchestrator_v2 paths", test_px_live_orchestrator_v2_paths),
-        ("PRV_24H_Orchestrator paths", test_prv_24h_orchestrator_paths),
+        ("px_prv orchestrator paths", test_prv_orchestrator_paths),
         ("Sovereign_Commercial_Pipeline paths", test_sovereign_commercial_pipeline_paths),
         ("Evidence_Package default output_dir", test_evidence_package_wrap_trial_simulation_default),
         ("pipeline_batch_runner paths", test_batch_runner_paths),

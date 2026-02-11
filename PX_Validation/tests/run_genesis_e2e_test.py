@@ -15,7 +15,7 @@ import sys
 import json
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
@@ -53,9 +53,14 @@ def main() -> int:
     if "PRV_API_PACING_SEC" not in os.environ:
         os.environ["PRV_API_PACING_SEC"] = "2"
 
-    print(f"3. Running novel PRV orchestrator (PRV_MAX_ITEMS={GENESIS_COUNT}, pacing 2s)...\n")
-    from PX_Executive.PRV_24H_Orchestrator import main as orchestrator_main
-    code = orchestrator_main()
+    print(f"3. Running novel PRV orchestrator (limit={GENESIS_COUNT}, pacing 2s)...\n")
+    import subprocess
+    result = subprocess.run(
+        [sys.executable, str(REPO_ROOT / "PX_Executive" / "px_prv.py"), "--type", "novel", "--limit", str(GENESIS_COUNT)],
+        cwd=str(REPO_ROOT),
+        env={**os.environ, "PRV_QUEUE_FILE": E2E_QUEUE_NAME, "PRV_API_PACING_SEC": os.environ.get("PRV_API_PACING_SEC", "2")},
+    )
+    code = result.returncode
     if code != 0:
         print(f"\nE2E: Orchestrator exited with code {code}.")
         return code

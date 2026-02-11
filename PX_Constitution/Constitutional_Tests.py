@@ -7,10 +7,10 @@ writes, or PX_Engine invocation.
 """
 
 # Mandatory pre-execution tests: run these at pipeline entry; block if any fail
-# Paths relative to repo root (filed under tests/ per Root Filing Plan)
+# Paths relative to repo root
 mandatory_pre_execution_tests = [
-    "tests/run_poison_pill_test.py",
-    "tests/run_temporal_paradox_test.py",
+    "PX_Validation/tests/run_poison_pill_test.py",
+    "PX_Validation/tests/run_temporal_paradox_test.py",
 ]
 
 # Layer-monotonicity invariant (evolutionary; generalize beyond Nipah when ready):

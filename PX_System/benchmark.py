@@ -1,29 +1,19 @@
 import asyncio
 import time
-import importlib.util
-import os
-import json
+import sys
 from pathlib import Path
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
 
-def load_mod(n, p):
-    path = _REPO_ROOT / p.replace("/", os.sep)
-    if not path.exists():
-        raise FileNotFoundError(f"Benchmark organ not found: {path}")
-    s = importlib.util.spec_from_file_location(n, str(path))
-    m = importlib.util.module_from_spec(s)
-    s.loader.exec_module(m)
-    return m
-
-# Load the Sealed Organs (01_Executive = CSA, 02_Audit = AAS)
-CSA = load_mod("CSA", "01_Executive/CSA_Pentarchy.py")
-AAS = load_mod("AAS", "02_Audit/AAS_Verification.py")
+from PX_Executive.CSA_Pentarchy import CSAPentarchy
+from PX_Audit.AAS_Verification import AASVerification
 
 async def pipeline(prop):
     # Direct departmental handshake
-    c = await CSA.CSAPentarchy().evaluate_action(prop)
-    a = AAS.AASVerification().verify_invariants(prop)
+    c = await CSAPentarchy().evaluate_action(prop)
+    a = AASVerification().verify_invariants(prop)
     authorized = (c["status"] == "COHERENT" and a["status"] == "SUCCESS")
     return {"authorized": authorized, "csa": c, "aas": a}
 

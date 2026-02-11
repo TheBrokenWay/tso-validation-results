@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 from datetime import datetime, timezone
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 WAREHOUSE = ROOT / "PX_Warehouse"
 
 # Canonical classification folders (align with warehouse_layout)

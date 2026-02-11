@@ -105,8 +105,7 @@ def main() -> int:
     # 2. Feeder (Novel): one batch of Genesis, then exit
     print("\n  --- Cycle 1: Feeder (Novel) ---")
     code, out = run(
-        [sys.executable, "PX_Executive/run_genesis_feed.py"],
-        env={**os.environ, "GENESIS_INTERVAL": "0", "GENESIS_COUNT": "3"},
+        [sys.executable, "PX_Executive/px_feed.py", "--mode", "novel", "--count", "3", "--interval", "0"],
         timeout=90,
     )
     if code != 0:
@@ -126,10 +125,9 @@ def main() -> int:
     print(f"  Queue: {queue_path} exists={queue_ok}, candidates={queue_n}")
 
     # 3. Engine (Novel): process 1 novel item
-    print("\n  --- Cycle 2: Engine (Novel — 24H Orchestrator, 1 item) ---")
+    print("\n  --- Cycle 2: Engine (Novel — px_prv, 1 item) ---")
     code, out = run(
-        [sys.executable, "PX_Executive/PRV_24H_Orchestrator.py"],
-        env={**os.environ, "PRV_MODE": "NOVEL", "PRV_MAX_ITEMS": "1", "PRV_24H_DURATION_SEC": "60"},
+        [sys.executable, "PX_Executive/px_prv.py", "--type", "novel", "--limit", "1"],
         timeout=60,
     )
     if code != 0:
@@ -142,14 +140,13 @@ def main() -> int:
 
     # 4. Repurposed: feed then engine 1 item (if queue has R)
     print("\n  --- Cycle 3: Repurposed feed + engine (1 item) ---")
-    code, _ = run([sys.executable, "PX_Executive/run_repurposed_feed.py"], timeout=60)
+    code, _ = run([sys.executable, "PX_Executive/px_feed.py", "--mode", "repurpose"], timeout=60)
     if code != 0:
         print("  [WARN] Repurposed feed exit", code, "(may have no source data)")
     else:
         print("  [OK] Repurposed feed ran")
     code, out = run(
-        [sys.executable, "PX_Executive/PRV_24H_Orchestrator.py"],
-        env={**os.environ, "PRV_MODE": "REPURPOSED", "PRV_MAX_ITEMS": "1", "PRV_24H_DURATION_SEC": "60"},
+        [sys.executable, "PX_Executive/px_prv.py", "--type", "repurpose", "--limit", "1"],
         timeout=60,
     )
     if code != 0:
@@ -163,7 +160,7 @@ def main() -> int:
     # 5. Finalization: run 1 dossier through pipeline
     print("\n  --- Cycle 4: Finalization (limit 1) ---")
     code, out = run(
-        [sys.executable, "PX_Executive/run_finalize_dossiers.py", "--limit", "1"],
+        [sys.executable, "PX_Executive/px_finalize.py", "--limit", "1"],
         timeout=90,
     )
     if code not in (0, 1):

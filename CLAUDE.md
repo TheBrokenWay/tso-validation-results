@@ -62,7 +62,7 @@ Feed Stage (Genesis_Engine, Vector_Core, Metabolism, Trajectory_Predictor)
 
 | Directory | Role |
 |-----------|------|
-| `PX_Executive/` | **Consolidated orchestrators**: `px_feed.py` (novel+repurposed feed), `px_prv.py` (12-engine PRV pipeline), `px_finalize.py` (finalization). Legacy wrappers: `run_genesis_feed.py`, `run_prv_novel.py`, `run_prv_repurposed.py`, `run_finalize_dossiers.py` (deprecated, delegate to consolidated). Also: `PRV_24H_Orchestrator.py` (legacy 24H), `run_one_cycle_test.py`, `reprocess_warehouse_lifecycle.py` |
+| `PX_Executive/` | **Consolidated orchestrators**: `px_feed.py` (novel+repurposed feed), `px_prv.py` (12-engine PRV pipeline), `px_finalize.py` (finalization). Also: `run_one_cycle_test.py`, `reprocess_warehouse_lifecycle.py` |
 | `PX_Executive/orchestrators/` | `PX_Live_Orchestrator_v2.py` (legacy live orchestrator) |
 | `PX_Engine/` | Core physics engines: `Genesis_Engine.py`, `Vector_Core.py`, `Metabolism.py`, `Trajectory_Predictor.py`, `Block_Orchestrator.py`, `Engine_Orchestrator.py` |
 | `PX_Engine/operations/` | Operational engines: OBE, OCE, OLE, OME, OPE, OSE, `ADMET.py`, `PKPD.py`, `TrialEngine.py`, `DoseOptimizer_v2.py`, `VirtualEfficacyAnalytics.py`, `GradingEngine.py`, `GradingSchema_Discovery.json` |
@@ -78,8 +78,10 @@ Feed Stage (Genesis_Engine, Vector_Core, Metabolism, Trajectory_Predictor)
 | `PX_Security/` | `IP_LOCK.json`, `PredatorImmune_Block.py`, `RedSurface.py`, `AAS_CircuitBreaker.py` |
 | `PX_Domain/` | Disease constraint models (`PRV_Diseases/`) |
 | `PX_Data/` | External data sources: ChEMBL, PubChem, DrugBank, ClinicalTrials, Patents, ZINC, NCATS InXight |
-| `governance/` | `poison_pill_gate.py` — mandatory pre-execution gate before PX_System init, PX_Warehouse writes, or PX_Engine invocation |
+| `governance/` | `poison_pill_gate.py` — mandatory pre-execution gate before PX_System init, PX_Warehouse writes, or PX_Engine invocation. Also: `setup_guides/`, `manifest_forks/` |
+| `scripts/` | `lineage_status.py` (lineage reporting), `pre_commit_check.py` (git hook) |
 | `Nipah_Analysis/` | Disease-specific analysis module (NiV Malaysia) |
+| `TSO_Validator/` | Standalone safety gate (zero PX_* imports, stdlib only) |
 | `99_LEGACY_CODE/` | Archived. **Never import from here.** |
 
 ### Engine Signatures and Data Flow
@@ -165,9 +167,9 @@ These are hard rules from `.cursor/rules/00_constitution.mdc` through `07_lean_r
 | PKPD | `PKPD.py` (canonical) | `PKPD_Simple` (deprecated) |
 | Dose optimizer | `DoseOptimizer_v2.py` | `DoseOptimizer_Simple` (deprecated) |
 | Virtual efficacy | `VirtualEfficacyAnalytics.py` | `VirtualEfficacy_Simple` (deprecated) |
-| Feed orchestrator | `PX_Executive/px_feed.py` | `run_genesis_feed.py`, `run_repurposed_feed.py` (deprecated) |
-| PRV orchestrator | `PX_Executive/px_prv.py` (12-engine) | `PRV_24H_Orchestrator.py` (6-engine, legacy) |
-| Finalize orchestrator | `PX_Executive/px_finalize.py` | `run_finalize_dossiers.py` (deprecated) |
+| Feed orchestrator | `PX_Executive/px_feed.py` | Legacy wrappers (removed) |
+| PRV orchestrator | `PX_Executive/px_prv.py` (12-engine) | Legacy 6-engine (removed) |
+| Finalize orchestrator | `PX_Executive/px_finalize.py` | Legacy wrappers (removed) |
 | Live orchestrator | `PX_Executive/orchestrators/PX_Live_Orchestrator_v2.py` | v1 |
 | WorldLine DB | `PX_Warehouse.WorldLine_Database` | `99_WAREHOUSE_ARCHIVE.WorldLine_Database` |
 | Toxicity hard limit | `0.0210` | Any rounding above |
