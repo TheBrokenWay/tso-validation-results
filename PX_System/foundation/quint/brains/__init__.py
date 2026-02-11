@@ -1,9 +1,1 @@
-"""
-foundation.quint.brains
-Package marker for QUINT brains subtree.
-
-Submodules are loaded via `foundation.quint` path-bridge.
-"""
-
-__all__ = []
-
+"""QUINT Brains — Domain-specific QUINT bridges and evaluators."""
