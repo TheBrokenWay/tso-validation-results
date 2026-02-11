@@ -3,17 +3,20 @@ import sys
 import json
 import uuid
 from datetime import datetime, timezone
+from pathlib import Path
 
 # Root Calibration
-ROOT_DIR = "E:/foundation"
+ROOT_DIR = str(Path(__file__).resolve().parents[1])
 if ROOT_DIR not in sys.path:
     sys.path.append(ROOT_DIR)
+
+from PX_System.foundation.Sovereign_Log_Chain import append as slc_append
 
 def promote_candidate():
     print("=== OLYMPUS: CANDIDATE PROMOTION PROTOCOL ===")
     
     # 1. LOAD GOLDEN ARTIFACT
-    source_file = "E:/foundation/PX_Warehouse/WorldLines/BATCH-GLP1-00-OPT-GOLD.worldline"
+    source_file = os.path.join(ROOT_DIR, "PX_Warehouse", "WorldLines", "BATCH-GLP1-00-OPT-GOLD.worldline")
     print(f"Loading Artifact: {os.path.basename(source_file)}")
     
     if not os.path.exists(source_file):
@@ -74,13 +77,21 @@ def promote_candidate():
     }
 
     # 4. PERSIST TO DOSSIER WAREHOUSE
-    target_dir = "E:/foundation/PX_Warehouse/Dossiers"
+    target_dir = os.path.join(ROOT_DIR, "PX_Warehouse", "Dossiers")
     if not os.path.exists(target_dir):
         os.makedirs(target_dir)
 
     target_file = os.path.join(target_dir, f"{dossier_id}.json")
     with open(target_file, "w") as f:
         json.dump(dossier, f, indent=4)
+
+    slc_append("GOLDEN_DOSSIER_PROMOTION", {
+        "dossier_id": dossier_id,
+        "worldline_id": wl_data["header"]["worldline_id"],
+        "toxicity_index": wl_data["physical_realization"]["toxicity_index"],
+        "decoy_override": dossier["module_5_clinical_study_reports"]["risk_assessment"]["decoy_override"],
+        "regulatory_status": dossier["administrative_information"]["regulatory_status"],
+    })
 
     print(f">>> DOSSIER CREATED: {target_file}")
     print(f"    Status: {dossier['administrative_information']['regulatory_status']}")
