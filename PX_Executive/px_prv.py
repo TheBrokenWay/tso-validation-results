@@ -192,6 +192,25 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
     if isinstance(ope_result, dict) and "sign_off" in ope_result:
         sign_offs.append(ope_result["sign_off"])
 
+    # ── 1b. Disease Constraint Check (Olympus pattern) ──
+    constraint_violations: list[Dict[str, Any]] = []
+    if indication:
+        try:
+            from PX_Domain.PRV_Diseases.disease_registry import evaluate_candidate
+            mol_props = {
+                "smiles": smiles,
+                "mw": ope_result.get("molecular_weight", 0),
+                "logp": ope_result.get("logp", 0),
+                "hbd": ope_result.get("hbd", 0),
+                "hba": ope_result.get("hba", 0),
+            }
+            disease_id = indication.strip().lower().replace(" ", "_")
+            constraint_result = evaluate_candidate(mol_props, disease_id)
+            if constraint_result and not constraint_result.get("passed", True):
+                constraint_violations = constraint_result.get("violations", [])
+        except (ImportError, FileNotFoundError):
+            pass  # Constraint file may not exist for this disease
+
     # ── 2. OBE: Binding energy / harm energy ──
     from PX_Engine.operations.OBE import execute as obe_execute
     obe_result = obe_execute({"smiles": smiles})
@@ -359,6 +378,10 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
     # PRV eligibility from OLE
     dossier["prv_eligible"] = ole_result.get("prv_eligible", False)
     dossier["regulatory_pathway"] = ole_result.get("regulatory_pathway", "STANDARD_FDA")
+
+    # Disease constraint violations (Olympus pattern)
+    if constraint_violations:
+        dossier["constraint_violations"] = constraint_violations
 
     # Grade
     ge = GE(verbose=False)

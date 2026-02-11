@@ -4,40 +4,48 @@ Verifies patent freedom and PRV eligibility
 
 PRV eligibility: FDA Priority Review Voucher program for neglected tropical diseases.
 Full disease list per FDA guidance and 21 CFR 356.
+Disease list loaded dynamically from PX_Domain/PRV_Diseases/manifest.json via disease_registry.
 """
 
-# Complete PRV-eligible disease set (lowercase for matching)
-PRV_ELIGIBLE_DISEASES = {
-    "buruli ulcer",
-    "chagas disease",
-    "chagas",
-    "chikungunya",
-    "cholera",
-    "dengue",
-    "dracunculiasis",
-    "ebola virus disease",
-    "ebola",
-    "lassa fever",
-    "leishmaniasis",
-    "leprosy",
-    "lymphatic filariasis",
-    "malaria",
-    "marburg virus disease",
-    "marburg",
-    "nipah virus infection",
-    "nipah",
-    "onchocerciasis",
-    "rabies",
-    "schistosomiasis",
-    "sleeping sickness",
-    "african sleeping sickness",
-    "trachoma",
-    "tuberculosis",
-    "yaws",
-    "yellow fever",
-    "zika virus disease",
-    "zika",
+import sys
+
+# Hardcoded fallback — used only if disease_registry import fails
+_FALLBACK_PRV_DISEASES = {
+    "buruli ulcer", "chagas disease", "chagas", "chikungunya", "cholera",
+    "dengue", "dracunculiasis", "ebola virus disease", "ebola", "lassa fever",
+    "leishmaniasis", "leprosy", "lymphatic filariasis", "malaria",
+    "marburg virus disease", "marburg", "nipah virus infection", "nipah",
+    "onchocerciasis", "rabies", "schistosomiasis", "sleeping sickness",
+    "african sleeping sickness", "trachoma", "tuberculosis", "yaws",
+    "yellow fever", "zika virus disease", "zika",
 }
+
+
+def _load_prv_diseases():
+    """Build PRV-eligible disease set from registry manifest, with fallback."""
+    try:
+        from PX_Domain.PRV_Diseases.disease_registry import get_prv_diseases
+        diseases = get_prv_diseases()
+        if not diseases:
+            return set(_FALLBACK_PRV_DISEASES)
+        result = set()
+        for d in diseases:
+            name = d.get("name", "")
+            if name:
+                result.add(name.lower())
+                # Add common short names (first word for multi-word names)
+                words = name.lower().split()
+                if len(words) > 1 and words[0] not in ("african",):
+                    result.add(words[0])
+        # Merge with fallback to preserve aliases like "chagas", "ebola", "nipah"
+        result.update(_FALLBACK_PRV_DISEASES)
+        return result
+    except Exception:
+        print("[OLE] Warning: disease_registry unavailable, using fallback PRV list", file=sys.stderr)
+        return set(_FALLBACK_PRV_DISEASES)
+
+
+PRV_ELIGIBLE_DISEASES = _load_prv_diseases()
 
 
 def execute(payload):

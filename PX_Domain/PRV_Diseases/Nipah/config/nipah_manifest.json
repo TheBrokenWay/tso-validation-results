@@ -1,0 +1,61 @@
+{
+  "analysis_id": "NIPAH_ANALYSIS",
+  "version": "2.0.0",
+  "purpose": "Nipah virus outbreak and antiviral constraint analysis — strain-aware.",
+  "pathogen": {
+    "species": "Nipah virus",
+    "family": "Paramyxoviridae",
+    "genus": "Henipavirus",
+    "abbrev": "NiV",
+    "strains": {
+      "NiV_Malaysia": {
+        "cfr_range": [0.35, 0.45],
+        "primary_vectors": ["pig"],
+        "human_to_human": false,
+        "spillover_pattern": "agricultural amplification",
+        "first_outbreak_year": 1998
+      },
+      "NiV_Bangladesh": {
+        "cfr_range": [0.70, 1.00],
+        "primary_vectors": ["bat", "human"],
+        "human_to_human": true,
+        "spillover_pattern": "zoonotic + direct transmission",
+        "first_outbreak_year": 2001
+      }
+    }
+  },
+  "data_expected": {
+    "raw": ["outbreak_series", "assay_results", "literature_tables", "genomic_metadata"],
+    "formats": ["JSON", "CSV"],
+    "required_strain_annotation": true
+  },
+  "constraint_axes": {
+    "efficacy": {
+      "description": "Antiviral activity vs NiV (strain-specific)",
+      "potency_metric": "EC50 or IC50",
+      "unit": "nM or uM"
+    },
+    "safety": {
+      "selectivity_index_min": 10,
+      "toxicity_tier": "GOLD"
+    },
+    "targets": {
+      "viral": ["NiV_F", "NiV_G", "NiV_N", "NiV_P", "NiV_L"],
+      "host": ["EPHRIN_B2", "EPHRIN_B3"]
+    }
+  },
+  "validation": {
+    "blocking": true,
+    "schema_required": true,
+    "strain_classification_required": true,
+    "cfr_within_strain_envelope": true,
+    "temporal_consistency": true
+  },
+  "analytics_config": {
+    "max_mean_cfr_drift": 0.05
+  },
+  "outputs": {
+    "results_dir": "results",
+    "reports": ["summary_json", "constraint_report", "validation_report"]
+  }
+}

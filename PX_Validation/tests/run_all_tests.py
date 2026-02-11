@@ -90,6 +90,8 @@ def main():
         ("PX_Validation/tests/test_performance_regression.py", "Performance Regression Tests"),
         # QUINT internal language
         ("PX_Validation/tests/test_quint.py", "QUINT Language Tests"),
+        # Disease registry
+        ("PX_Validation/tests/test_disease_registry.py", "Disease Registry Tests"),
         # TSO_Validator standalone safety gate
         ("TSO_Validator/tests/test_ethical_guard.py", "TSO Ethical Guard Tests"),
         ("TSO_Validator/tests/test_provenance.py", "TSO Provenance Tests"),

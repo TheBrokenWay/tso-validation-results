@@ -344,6 +344,15 @@ class GradingEngine:
             metrics["trial_effect_size"] = None
             metrics["trial_toxicity_rate"] = None
         grade, reasoning = self.classify_metrics(metrics)
+
+        # Olympus constraint enforcement: cap grade if disease constraint violations exist
+        constraint_violations = dossier.get("constraint_violations")
+        if constraint_violations and isinstance(constraint_violations, list) and len(constraint_violations) > 0:
+            if grade in ("GOLD_TIER", "DIAMOND_TIER"):
+                grade = "SILVER_TIER"
+                reasoning["constraint_cap_applied"] = True
+                reasoning["constraint_violations_count"] = len(constraint_violations)
+
         if metrics.get("trial_pta") is not None or metrics.get("trial_toxicity_rate") is not None:
             reasoning["trial_integrated"] = True
             reasoning["trial_responder_rate"] = metrics.get("trial_responder_rate")

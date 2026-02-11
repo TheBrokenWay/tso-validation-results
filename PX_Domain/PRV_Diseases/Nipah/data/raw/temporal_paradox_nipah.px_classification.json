@@ -1,0 +1,23 @@
+{
+  "artifact": "temporal_paradox_nipah.json",
+  "type": "GOVERNANCE_POISON_PILL",
+  "violation": "TEMPORAL_DRIFT",
+  "expected_behavior": "HARD_REJECT",
+  "adapter_contract": "returns None",
+  "downstream_calls": "NONE",
+  "expected_failure_class": "TEMPORAL_VIOLATION",
+  "expected_failure_layer": "PX_Validation",
+  "purpose": "Outbreak year 1998 for NiV_Bangladesh (first outbreak 2001). Must be rejected at PX_Validation (TEMPORAL_DRIFT).",
+  "ide_instructions": {
+    "test_type": "GOVERNANCE_POISON_PILL",
+    "layer_expected_to_fail": "PX_Validation",
+    "failure_class": "TEMPORAL_VIOLATION",
+    "artifact_expected": false,
+    "state_mutation_expected": false,
+    "retry_allowed": false,
+    "non_optional": true,
+    "non_skippable": true,
+    "pre_execution_gate": true,
+    "pipeline_policy": "If this ever passes incorrectly → block the entire pipeline."
+  }
+}

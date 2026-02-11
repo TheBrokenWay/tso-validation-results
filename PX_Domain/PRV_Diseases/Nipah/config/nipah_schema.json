@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Nipah Analysis Raw Dataset",
+  "description": "Disease-specific schema for NiV outbreak/assay data. Strain must be explicit.",
+  "type": "object",
+  "required": ["strain", "records"],
+  "properties": {
+    "strain": {
+      "type": "string",
+      "enum": ["NiV_Malaysia", "NiV_Bangladesh"],
+      "description": "Strain identifier; no generic NiV. Prevents cross-strain mixing."
+    },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/record" }
+    },
+    "source": { "type": "string" },
+    "year_collected": { "type": "integer" },
+    "ontology_context": { "type": "string" }
+  },
+  "definitions": {
+    "record": {
+      "type": "object",
+      "required": ["outbreak_year", "cfr"],
+      "properties": {
+        "outbreak_year": { "type": "integer", "minimum": 1998, "maximum": 2030 },
+        "cfr": { "type": "number", "minimum": 0, "maximum": 1 },
+        "cases": { "type": "integer", "minimum": 0 },
+        "location": { "type": "string" },
+        "vector": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": false
+}
