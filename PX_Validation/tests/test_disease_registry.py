@@ -3,10 +3,11 @@ Tests for PX_Domain.PRV_Diseases.disease_registry — thin adapter over QUINT di
 
 Validates:
   - Manifest loading (31 diseases from manifest.json)
-  - Constraint loading (22 JSON files via QUINT)
+  - Constraint loading (33 JSON files via QUINT)
   - Candidate evaluation (pass/fail/unknown disease)
+  - Enhanced schema (molecular_constraints, target_profile, clinical, regulatory)
   - OLE integration (dynamic PRV disease set)
-  - GradingEngine constraint cap
+  - All manifest diseases have constraint files (coverage)
 """
 
 import os
@@ -113,6 +114,81 @@ class TestCandidateEvaluation(unittest.TestCase):
         # A well-behaved molecule should pass most constraints
         passed = sum(1 for r in results.values() if r["passed"])
         self.assertGreater(passed, 0)
+
+
+class TestEnhancedSchema(unittest.TestCase):
+    """Tests for the enriched constraint schema (v2.0.0)."""
+
+    def test_all_constraints_have_category(self):
+        from PX_Domain.PRV_Diseases.disease_registry import get_all_constraints
+        for disease_id, frame in get_all_constraints().items():
+            self.assertIn("category", frame.payload, f"{disease_id} missing category")
+
+    def test_all_constraints_have_molecular_constraints(self):
+        from PX_Domain.PRV_Diseases.disease_registry import get_all_constraints
+        for disease_id, frame in get_all_constraints().items():
+            mc = frame.payload.get("molecular_constraints")
+            self.assertIsNotNone(mc, f"{disease_id} missing molecular_constraints")
+            self.assertIn("mw_max", mc)
+            self.assertIn("toxicity_max", mc)
+
+    def test_all_constraints_have_target_profile(self):
+        from PX_Domain.PRV_Diseases.disease_registry import get_all_constraints
+        for disease_id, frame in get_all_constraints().items():
+            tp = frame.payload.get("target_profile")
+            self.assertIsNotNone(tp, f"{disease_id} missing target_profile")
+            self.assertIn("pathogen_type", tp)
+            self.assertIn("mechanism_classes", tp)
+            self.assertIn("tissue_targets", tp)
+
+    def test_all_constraints_have_clinical_requirements(self):
+        from PX_Domain.PRV_Diseases.disease_registry import get_all_constraints
+        for disease_id, frame in get_all_constraints().items():
+            cr = frame.payload.get("clinical_requirements")
+            self.assertIsNotNone(cr, f"{disease_id} missing clinical_requirements")
+            self.assertIn("route", cr)
+            self.assertIn("treatment_setting", cr)
+
+    def test_all_constraints_have_regulatory(self):
+        from PX_Domain.PRV_Diseases.disease_registry import get_all_constraints
+        for disease_id, frame in get_all_constraints().items():
+            reg = frame.payload.get("regulatory")
+            self.assertIsNotNone(reg, f"{disease_id} missing regulatory")
+            self.assertEqual(reg["fda_pathway"], "PRV")
+
+    def test_pediatric_have_lower_toxicity(self):
+        from PX_Domain.PRV_Diseases.disease_registry import get_all_constraints
+        for disease_id, frame in get_all_constraints().items():
+            if frame.payload.get("category") == "rare_pediatric":
+                tox = frame.payload["molecular_constraints"]["toxicity_max"]
+                self.assertLessEqual(tox, 0.018,
+                    f"{disease_id}: pediatric toxicity_max {tox} > 0.018")
+
+    def test_all_toxicity_below_constitutional_limit(self):
+        from PX_Domain.PRV_Diseases.disease_registry import get_all_constraints
+        for disease_id, frame in get_all_constraints().items():
+            tox = frame.payload["molecular_constraints"]["toxicity_max"]
+            self.assertLessEqual(tox, 0.0210,
+                f"{disease_id}: toxicity_max {tox} exceeds constitutional limit 0.0210")
+
+    def test_constraint_version_is_2(self):
+        from PX_Domain.PRV_Diseases.disease_registry import get_all_constraints
+        for disease_id, frame in get_all_constraints().items():
+            self.assertEqual(frame.payload.get("constraint_version"), "2.0.0",
+                f"{disease_id} still on old constraint_version")
+
+
+class TestManifestCoverage(unittest.TestCase):
+    """Tests that all manifest diseases have constraint files."""
+
+    def test_all_manifest_diseases_have_constraints(self):
+        from PX_Domain.PRV_Diseases.disease_registry import get_prv_diseases, get_all_constraints
+        diseases = get_prv_diseases()
+        constraints = get_all_constraints()
+        for d in diseases:
+            disease_id = d["name"].lower().replace(" ", "_")
+            self.assertIn(disease_id, constraints,
+                f"Missing constraint for {d['name']}")
 
 
 class TestOLEIntegration(unittest.TestCase):
