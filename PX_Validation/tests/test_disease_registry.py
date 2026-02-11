@@ -51,12 +51,12 @@ class TestConstraintLoading(unittest.TestCase):
     def test_get_all_constraints(self):
         from PX_Domain.PRV_Diseases.disease_registry import get_all_constraints
         constraints = get_all_constraints()
-        self.assertEqual(len(constraints), 22)
+        self.assertEqual(len(constraints), 33)
 
     def test_get_constraint_summary(self):
         from PX_Domain.PRV_Diseases.disease_registry import get_constraint_summary
         summary = get_constraint_summary()
-        self.assertEqual(summary["count"], 22)
+        self.assertEqual(summary["count"], 33)
         self.assertIn("nipah_virus_infection", summary["disease_ids"])
 
     def test_get_single_constraint(self):
@@ -109,7 +109,7 @@ class TestCandidateEvaluation(unittest.TestCase):
         from PX_Domain.PRV_Diseases.disease_registry import evaluate_candidate_all
         mol = {"mw": 350, "logp": 2.5, "hbd": 2, "hba": 5, "toxicity": 0.01}
         results = evaluate_candidate_all(mol)
-        self.assertEqual(len(results), 22)
+        self.assertEqual(len(results), 33)
         # A well-behaved molecule should pass most constraints
         passed = sum(1 for r in results.values() if r["passed"])
         self.assertGreater(passed, 0)
