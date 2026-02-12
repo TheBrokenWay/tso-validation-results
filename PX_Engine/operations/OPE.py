@@ -7,6 +7,7 @@ import time
 from typing import Dict, Any
 from rdkit import Chem
 from rdkit.Chem import Descriptors, rdMolDescriptors
+from rdkit.Chem.QED import qed as calc_qed
 from PX_System.foundation.sign_off import create_sign_off
 
 def run_ope(smiles: str) -> Dict[str, Any]:
@@ -42,6 +43,9 @@ def run_ope(smiles: str) -> Dict[str, Any]:
     # Binding affinity (nM) - correlate with EC50
     binding_affinity = ec50 * 0.8
 
+    # QED (Quantitative Estimate of Drug-likeness) — 0 to 1, higher = more drug-like
+    qed_value = calc_qed(mol)
+
     result = {
         "molecular_weight": float(mw),
         "logp": float(f"{logp:.8f}"),
@@ -53,6 +57,7 @@ def run_ope(smiles: str) -> Dict[str, Any]:
         "clearance_estimate_L_per_h": float(f"{clearance:.8f}"),
         "vd_estimate_L": float(f"{vd:.8f}"),
         "binding_affinity_nM": float(f"{binding_affinity:.8f}"),
+        "qed": float(f"{qed_value:.8f}"),
         "note": "OPE engine using RDKit deterministic molecular descriptors (v3.0-CORE-RDKIT)",
         "version": "3.0-CORE-RDKIT"
     }

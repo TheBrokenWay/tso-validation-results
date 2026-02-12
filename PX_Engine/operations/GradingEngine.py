@@ -238,6 +238,9 @@ class WeightedGradingEngine:
         inputs["ec50"] = self._safe_float(ope.get("ec50"))
         inputs["binding_affinity_nM"] = self._safe_float(ope.get("binding_affinity_nM"))
         inputs["emax"] = self._safe_float(ope.get("emax"))
+        # OPE returns emax as 0-1 fraction; scoring expects 0-100 percentage
+        if inputs["emax"] is not None and inputs["emax"] <= 1.0:
+            inputs["emax"] = inputs["emax"] * 100.0
         inputs["molecular_weight"] = self._safe_float(ope.get("molecular_weight"))
         inputs["logp"] = self._safe_float(ope.get("logp"))
         inputs["hbd"] = self._safe_float(ope.get("hbd"))
@@ -262,6 +265,12 @@ class WeightedGradingEngine:
         # Safety margin — from ADMET toxicity sub-dict or dose_optimization
         tox_block = admet.get("toxicity") if isinstance(admet.get("toxicity"), dict) else {}
         inputs["safety_margin"] = self._safe_float(tox_block.get("safety_margin"))
+        # ADMET safety_margin formula produces tiny fractions (EC50*10/Cmax);
+        # selectivity_index is the actual fold-change safety window
+        if inputs["safety_margin"] is not None and inputs["safety_margin"] < 1.0:
+            si = self._safe_float(tox_block.get("selectivity_index"))
+            if si is not None and si >= 1.0:
+                inputs["safety_margin"] = si
         if inputs["safety_margin"] is None:
             dose_opt = dossier.get("dose_optimization") or engines.get("dose_optimization") or {}
             best = dose_opt.get("best_regimen") or {}
@@ -301,8 +310,11 @@ class WeightedGradingEngine:
                 vd = vd_L / 70.0
         inputs["vd_L_per_kg"] = vd
 
-        # QED — not computed in current pipeline
-        inputs["qed"] = self._safe_float(dossier.get("qed"))
+        # QED — from OPE (computed via RDKit) or top-level dossier
+        qed_val = self._safe_float(ope.get("qed"))
+        if qed_val is None:
+            qed_val = self._safe_float(dossier.get("qed"))
+        inputs["qed"] = qed_val
 
         # Lipinski violations — compute from OPE
         inputs["lipinski_violations"] = self._count_lipinski_violations(inputs)
