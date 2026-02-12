@@ -1,6 +1,6 @@
 # Governance Readiness Certificate
 
-**Generated:** 2026-02-12T15:09:08.786222+00:00
+**Generated:** 2026-02-12T16:13:42.189922+00:00
 
 ## Coverage
 - Total pills: 7
@@ -14,4 +14,4 @@
 
 ## Gate stamp
 - Passed: True
-- Last passed: 2026-02-12T15:09:08.267246+00:00
+- Last passed: 2026-02-12T16:13:41.752312+00:00
