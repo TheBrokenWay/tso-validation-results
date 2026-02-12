@@ -1,7 +1,7 @@
 """Executive Summary document generator (Section 00)."""
 from __future__ import annotations
 
-from .base_generator import BaseDocumentGenerator
+from .base_generator import BaseDocumentGenerator, extract_compound_id, extract_disease_id
 
 
 class ExecutiveSummaryDocument(BaseDocumentGenerator):
@@ -13,14 +13,21 @@ class ExecutiveSummaryDocument(BaseDocumentGenerator):
     def generate(self) -> str:
         data = self.sections_data.get("executive_summary", {})
 
-        out = self._header(
-            f"EXECUTIVE SUMMARY -- {data.get('compound_id', 'UNKNOWN')}"
-        )
+        try:
+            cid = extract_compound_id(self.dossier)
+        except ValueError:
+            cid = data.get("compound_id", "N/A")
+        try:
+            disease = extract_disease_id(self.dossier)
+        except ValueError:
+            disease = data.get("disease_name", "N/A")
+
+        out = self._header(f"EXECUTIVE SUMMARY -- {cid}")
 
         # Compound overview
         out += self._section_header("COMPOUND OVERVIEW")
-        out += self._kv("Compound ID", data.get("compound_id", "N/A")) + "\n"
-        out += self._kv("Disease", data.get("disease_name", "N/A")) + "\n"
+        out += self._kv("Compound ID", cid) + "\n"
+        out += self._kv("Disease", disease) + "\n"
         out += self._kv("Tier", data.get("tier", "N/A")) + "\n"
         out += self._kv("Recommendation", data.get("recommendation", "N/A")) + "\n"
         out += self._kv("Confidence", f"{data.get('confidence_percent', 0)}%") + "\n"

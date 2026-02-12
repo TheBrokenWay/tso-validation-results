@@ -10,6 +10,52 @@ FOUNDATION_NAME = "Broken Way Foundation"
 REPORT_WIDTH = 80
 
 
+def extract_compound_id(dossier: Dict[str, Any]) -> str:
+    """Extract compound ID from dossier — checks all known locations.
+
+    Raises ValueError if no compound ID found anywhere (data integrity issue).
+    """
+    sections = dossier.get("sections", {})
+    candidate = dossier.get("candidate", {})
+    locations = [
+        dossier.get("compound_id"),
+        # candidate.name only if it looks like a real ID (not "Genesis")
+        candidate.get("name") if candidate.get("name", "").startswith("PRV_") else None,
+        candidate.get("compound_id"),
+        dossier.get("metadata", {}).get("compound_id"),
+        sections.get("executive_summary", {}).get("compound_id"),
+    ]
+    for loc in locations:
+        if loc and str(loc).strip() and loc != "UNKNOWN":
+            return str(loc).strip()
+    raise ValueError("Compound ID not found in dossier — data integrity issue")
+
+
+def extract_disease_id(dossier: Dict[str, Any]) -> str:
+    """Extract disease ID from dossier — checks all known locations.
+
+    Raises ValueError if no disease ID found anywhere (data integrity issue).
+    """
+    sections = dossier.get("sections", {})
+    candidate = dossier.get("candidate", {})
+    ole = dossier.get("engines", {}).get("ole", {})
+    ole_matched = ole.get("prv_diseases_matched", [])
+    fin = dossier.get("finalization", {})
+    disease_context = fin.get("disease_context", [])
+    locations = [
+        dossier.get("disease_id"),
+        dossier.get("indication"),
+        candidate.get("indication"),
+        ole_matched[0] if ole_matched else None,
+        disease_context[0] if isinstance(disease_context, list) and disease_context else None,
+        sections.get("executive_summary", {}).get("disease_name"),
+    ]
+    for loc in locations:
+        if loc and str(loc).strip() and loc not in ("UNKNOWN", "unknown"):
+            return str(loc).strip()
+    raise ValueError("Disease ID not found in dossier — data integrity issue")
+
+
 class BaseDocumentGenerator:
     """Base class for all dossier document generators.
 
@@ -28,16 +74,28 @@ class BaseDocumentGenerator:
         raise NotImplementedError
 
     def _header(self, title: str) -> str:
-        """Standard document header."""
+        """Standard document header with compound/disease/tier metadata."""
+        try:
+            compound_id = extract_compound_id(self.dossier)
+        except ValueError:
+            compound_id = ""
+        try:
+            disease = extract_disease_id(self.dossier)
+        except ValueError:
+            disease = ""
+        tier = self.dossier.get("tier", "") or self.dossier.get("finalization", {}).get("tier", "")
         lines = [
             "=" * REPORT_WIDTH,
             f"  {COMPANY_NAME} | {FOUNDATION_NAME}",
             f"  {title}",
+            f"  Compound: {compound_id}" if compound_id else None,
+            f"  Disease:  {disease}" if disease else None,
+            f"  Tier:     {tier}" if tier else None,
             f"  Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}",
             "=" * REPORT_WIDTH,
             "",
         ]
-        return "\n".join(lines)
+        return "\n".join(l for l in lines if l is not None)
 
     def _section_header(self, title: str) -> str:
         """Section divider with title."""
