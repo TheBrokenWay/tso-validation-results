@@ -190,13 +190,13 @@ def _generate_pharma_package(finalized: dict, item_id: str, tier: str, repo_root
             pkg_path.write_text(json.dumps(package, indent=2, default=str), encoding="utf-8")
             print(f"    Pharma package ({tier_upper}) -> {pkg_path.name}")
 
-            # DIAMOND: Also assemble full document folder
+            # DIAMOND: Also assemble full document folder from original dossier
             if tier_upper == "DIAMOND":
                 from PX_System.foundation.dossier_pdf.package_assembler import DossierPackageAssembler
                 diamond_dir = repo_root / "PX_Warehouse" / "Finalized_Dossiers" / "Diamond"
-                assembler = DossierPackageAssembler(package)
+                assembler = DossierPackageAssembler(finalized)
                 pkg_folder = assembler.assemble(
-                    dossier_data=package,
+                    dossier_data=finalized,
                     output_dir=str(diamond_dir),
                     compound_id=item_id,
                     disease_id=disease_id,
