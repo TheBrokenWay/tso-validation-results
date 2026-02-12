@@ -219,9 +219,8 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
 
     # ── 3. OCE: 35D manifold coherence + physics snapshot ──
     from PX_Engine.operations.OCE import execute as oce_execute
-    # Build p_vector for 35D manifold (Law U34: global sum = 36.1, energy_delta = 0)
-    p0 = 36.1 - (0.0 + 35.0 + 1.0 + 0.85)
-    p_vector = [p0, 0.0, 35.0, 1.0, 0.85]
+    # Build p_vector for 35D manifold — 4 slots: [complexity, energy, dims, valid]
+    p_vector = [0.1, 0.0, 35.0, 1.0]
     csa_scores = [1.0, 1.0, 1.0, 1.0, 1.0]
     oce_result = oce_execute({"p_vector": p_vector, "csa_scores": csa_scores})
     if isinstance(oce_result, dict) and "sign_off" in oce_result:
@@ -416,10 +415,16 @@ def save_dossier(dossier: Dict[str, Any], item: dict[str, Any]) -> Optional[Path
     ensure_structure(REPO_ROOT)
     tier = get_tier(dossier)
 
-    # Grade/tier consistency: downgrade if grade doesn't support tier
+    # Grade/tier consistency: downgrade tier if grade rank is lower
+    _GRADE_RANK = {"DIAMOND_TIER": 3, "GOLD_TIER": 2, "SILVER_TIER": 1, "BRONZE_TIER": 0,
+                   "NEEDS_REVIEW": 1, "REJECTED": -1}
+    _TIER_RANK = {"Diamond": 3, "Gold": 2, "Silver": 1, "Bronze": 0}
+    _RANK_TO_TIER = {3: "Diamond", 2: "Gold", 1: "Silver", 0: "Bronze", -1: "Bronze"}
     grade = (dossier.get("discovery_grading") or {}).get("grade", "")
-    if grade in ("NEEDS_REVIEW", "REJECTED") and tier in ("Diamond", "Gold"):
-        tier = "Silver" if grade == "NEEDS_REVIEW" else "Bronze"
+    grade_r = _GRADE_RANK.get(grade, 0)
+    tier_r = _TIER_RANK.get(tier, 0)
+    if grade_r < tier_r:
+        tier = _RANK_TO_TIER.get(grade_r, "Bronze")
 
     is_novel = item.get("type") == "N"
     out_dir = get_prv_dossier_dir(is_novel, tier, REPO_ROOT)

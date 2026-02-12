@@ -98,9 +98,15 @@ def main() -> int:
             continue
 
         # Grade/tier consistency check (defense in depth — Finalization_Pipeline also checks)
+        _GRADE_RANK = {"DIAMOND_TIER": 3, "GOLD_TIER": 2, "SILVER_TIER": 1, "BRONZE_TIER": 0,
+                       "NEEDS_REVIEW": 1, "REJECTED": -1}
+        _TIER_RANK = {"Diamond": 3, "Gold": 2, "Silver": 1, "Bronze": 0}
+        _RANK_TO_TIER = {3: "Diamond", 2: "Gold", 1: "Silver", 0: "Bronze", -1: "Bronze"}
         grade = ((finalized or {}).get("finalization") or {}).get("discovery_grading", {}).get("grade", "")
-        if grade in ("NEEDS_REVIEW", "REJECTED") and tier in ("Diamond", "Gold"):
-            tier = "Silver" if grade == "NEEDS_REVIEW" else "Bronze"
+        grade_r = _GRADE_RANK.get(grade, 0)
+        tier_r = _TIER_RANK.get(tier, 0)
+        if grade_r < tier_r:
+            tier = _RANK_TO_TIER.get(grade_r, "Bronze")
             if finalized:
                 finalized["finalization"]["tier"] = tier
 

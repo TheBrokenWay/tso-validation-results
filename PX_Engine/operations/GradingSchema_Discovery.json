@@ -1,40 +1,68 @@
 {
-  "schema_name": "Discovery-Stage Grading Schema",
-  "version": "2.0-discovery",
-  "created": "2026-01-26",
-  "description": "Discovery-stage thresholds for preclinical compounds (10-30% range)",
-  "GOLD_TIER": {
-    "pta_min": 0.30,
-    "responder_min": 0.30,
-    "toxicity_max": 0.20,
-    "dose_score_min": 0.80,
-    "variability_cv_max": 0.30,
-    "description": "Exceptional candidates with 30% efficacy and low toxicity"
+  "schema_name": "Weighted MPO Grading Schema",
+  "version": "2.0-weighted",
+  "created": "2026-02-11",
+  "description": "100-point weighted multi-parameter optimization (MPO) scoring system",
+  "max_score": 100,
+  "tier_thresholds": {
+    "DIAMOND_TIER": {"min_percentage": 85, "description": "Exceptional candidates"},
+    "GOLD_TIER": {"min_percentage": 70, "description": "Strong candidates"},
+    "SILVER_TIER": {"min_percentage": 50, "description": "Moderate candidates"},
+    "BRONZE_TIER": {"min_percentage": 0, "description": "Weak candidates"}
   },
-  "SILVER_TIER": {
-    "pta_min": 0.20,
-    "responder_min": 0.20,
-    "toxicity_max": 0.35,
-    "dose_score_min": 0.60,
-    "variability_cv_max": 0.50,
-    "description": "Strong candidates with 20% efficacy and moderate toxicity"
+  "hard_limits": {
+    "toxicity_index": {"max": 0.0210, "law": "L11", "description": "Constitutional toxicity hard limit"},
+    "herg_risk": {"max": 0.5, "description": "Cardiac safety hard limit"},
+    "zeus_gate": {"required": true, "description": "Must pass if present at grading time"},
+    "constitutional_violations": {"max_count": 0, "description": "No constitutional violations allowed"}
   },
-  "BRONZE_TIER": {
-    "pta_min": 0.10,
-    "responder_min": 0.10,
-    "toxicity_max": 0.50,
-    "dose_score_min": 0.40,
-    "variability_cv_max": 0.70,
-    "description": "Moderate candidates with 10% efficacy"
-  },
-  "NEEDS_REVIEW": {
-    "criteria_min": 2,
-    "criteria_max": 4,
-    "description": "Ambiguous candidates meeting 2-4 criteria"
-  },
-  "REJECTED": {
-    "criteria_min": 0,
-    "criteria_max": 1,
-    "description": "Candidates meeting fewer than 2 criteria"
+  "categories": {
+    "efficacy": {
+      "weight": 30,
+      "sub_scores": {
+        "ic50_ec50": {"max": 20, "missing_default": 10},
+        "emax": {"max": 10, "missing_default": 5}
+      }
+    },
+    "safety": {
+      "weight": 25,
+      "sub_scores": {
+        "toxicity": {"max": 15, "missing_default": 5},
+        "safety_margin": {"max": 7, "missing_default": 3},
+        "herg": {"max": 3, "missing_default": 2}
+      }
+    },
+    "pk": {
+      "weight": 20,
+      "sub_scores": {
+        "bioavailability": {"max": 8, "missing_default": 4},
+        "half_life": {"max": 6, "missing_default": 3},
+        "clearance": {"max": 3, "missing_default": 1.5},
+        "vd": {"max": 3, "missing_default": 1.5}
+      }
+    },
+    "druglikeness": {
+      "weight": 10,
+      "sub_scores": {
+        "lipinski": {"max": 4},
+        "qed": {"max": 6, "missing_default": 3}
+      },
+      "modifiers": {
+        "constraint_violations": {"per_violation": -1, "max_penalty": -3}
+      }
+    },
+    "manufacturability": {
+      "weight": 10,
+      "sub_scores": {
+        "synthesis_steps": {"max": 7, "missing_default": 3.5},
+        "yield": {"max": 3, "missing_default": 1.5}
+      }
+    },
+    "fto": {
+      "weight": 5,
+      "sub_scores": {
+        "fto_status": {"max": 5, "missing_default": 2.5}
+      }
+    }
   }
 }
