@@ -43,8 +43,8 @@ from PX_System.foundation.quint.converter import ingest, emit
 from PX_System.foundation.quint.kernel import QType
 from PX_System.foundation.quint.engine_adapter import (
     q_run_ope, q_run_obe, q_run_oce, q_run_ole, q_run_ome, q_run_ose,
-    q_run_admet, q_run_pkpd, q_run_dose_optimizer, q_run_virtual_efficacy,
-    q_run_grading, q_run_zeus,
+    q_run_admet, q_run_pkpd, q_run_pk_simulation, q_run_dose_optimizer,
+    q_run_virtual_efficacy, q_run_grading, q_run_zeus, q_run_trial,
 )
 
 
@@ -196,16 +196,17 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
     is_novel = item.get("type") == "N"
     sign_offs: list[Dict[str, Any]] = []
 
-    # ── QUINT GATEWAY: Ingest molecule into QFrame ──
+    # ── QUINT GATEWAY: Ingest molecule into QFrame (audit trail) ──
+    mol_input = {"smiles": smiles, "id": item_id, "indication": indication}
     mol_frame = ingest(
-        {"smiles": smiles, "id": item_id, "indication": indication},
+        mol_input,
         qtype=QType.QMOLECULE,
         qid=f"QMOL-{item_id}",
         source_label="px_prv_pipeline",
     )
 
     # ── 1. OPE: Molecular descriptors (via QUINT) ──
-    ope_qf = q_run_ope(mol_frame)
+    ope_qf = q_run_ope(mol_input)
     ope_result = emit(ope_qf, target_label="px_prv_ope")
     if "sign_off" in ope_result:
         sign_offs.append(ope_result["sign_off"])
@@ -230,7 +231,7 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
             pass  # Constraint file may not exist for this disease
 
     # ── 2. OBE: Binding energy / harm energy (via QUINT) ──
-    obe_qf = q_run_obe(mol_frame)
+    obe_qf = q_run_obe(mol_input)
     obe_result = emit(obe_qf, target_label="px_prv_obe")
     if "sign_off" in obe_result:
         sign_offs.append(obe_result["sign_off"])
@@ -261,36 +262,35 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
         sign_offs.append(ole_result["sign_off"])
 
     # ── 5. OME: Metabolic pathway (via QUINT) ──
-    ome_qf = q_run_ome(mol_frame)
+    ome_qf = q_run_ome(mol_input)
     ome_result = emit(ome_qf, target_label="px_prv_ome")
     if "sign_off" in ome_result:
         sign_offs.append(ome_result["sign_off"])
 
     # ── 6. OSE: Safety / selectivity (via QUINT) ──
-    ose_qf = q_run_ose(mol_frame)
+    ose_qf = q_run_ose(mol_input)
     ose_result = emit(ose_qf, target_label="px_prv_ose")
     if "sign_off" in ose_result:
         sign_offs.append(ose_result["sign_off"])
 
     # ── 7. ADMET: Full pharmacokinetic safety profile (via QUINT) ──
-    admet_qf = q_run_admet(mol_frame, ope_result=ope_qf, ome_result=ome_qf, ose_result=ose_qf)
+    admet_qf = q_run_admet(mol_input, ope_result=ope_result, ome_result=ome_result, ose_result=ose_result)
     admet_result = emit(admet_qf, target_label="px_prv_admet")
     if "sign_off" in admet_result:
         sign_offs.append(admet_result["sign_off"])
 
     # ── 8. PKPD: Sigmoid Emax PK/PD modeling (via QUINT) ──
-    from PX_Laboratory import SimulationEngine
-
-    sim = SimulationEngine(time_step_h=0.5)
     dose_mg = 100.0  # default starting dose
     patient = {"weight_kg": 70.0}
-    pk_profile = sim.simulate_one_compartment(
+    pk_qf = q_run_pk_simulation(
         dose_mg=dose_mg,
         duration_h=168.0,  # 7 days
         dosing_interval_h=24.0,
         patient=patient,
         admet=admet_result,
+        time_step_h=0.5,
     )
+    pk_profile = emit(pk_qf, target_label="px_prv_pk_simulation")
     emax = ope_result.get("emax", 0.9)
     ec50 = ope_result.get("ec50", 5.0)
     pd_params = {"emax": emax, "ec50": ec50, "hill": 1.5}
@@ -312,15 +312,13 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
         "ka_per_h": ka,
     }
     dose_qf = q_run_dose_optimizer(
-        mol_frame, admet_result, protocol_template, pd_params, n_eval_patients=10,
+        smiles, admet_result, protocol_template, pd_params, n_eval_patients=10,
     )
     dose_result = emit(dose_qf, target_label="px_prv_dose")
     if "sign_off" in dose_result:
         sign_offs.append(dose_result["sign_off"])
 
     # ── 10. VirtualEfficacyAnalytics: PTA, responder rate (via QUINT) ──
-    from PX_Engine.operations.TrialEngine import TrialEngine as TE
-    te = TE(time_step_h=0.5)
     best_regimen = dose_result.get("best_regimen", {})
     trial_protocol = {
         "arms": [{
@@ -332,12 +330,14 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
         "duration_days": 7.0,
     }
     variability_params = {"clearance_variation": 0.3, "vd_variation": 0.25}
-    trial_result = te.run_trial(
+    trial_qf = q_run_trial(
         trial_protocol, admet_result,
         pd_params=pd_params,
         variability=variability_params,
+        time_step_h=0.5,
     )
-    if isinstance(trial_result, dict) and "sign_off" in trial_result:
+    trial_result = emit(trial_qf, target_label="px_prv_trial")
+    if "sign_off" in trial_result:
         sign_offs.append(trial_result["sign_off"])
 
     ve_qf = q_run_virtual_efficacy(trial_result)
@@ -450,17 +450,21 @@ def save_dossier(dossier: Dict[str, Any], item: dict[str, Any]) -> Optional[Path
 
 # ─── WorldLine Persistence ───
 
-def persist_worldline(item: dict[str, Any], stage: str, passed: bool) -> None:
-    """Write WorldLine file for this attempt (pass or fail)."""
+def persist_worldline(
+    item: dict[str, Any], stage: str, passed: bool,
+    ope_result: Optional[Dict[str, Any]] = None,
+    admet_result: Optional[Dict[str, Any]] = None,
+) -> None:
+    """Write WorldLine file for this attempt (pass or fail).
+
+    When ope_result/admet_result are provided (from the pipeline), uses them
+    directly instead of re-running the engines.
+    """
     try:
-        from PX_Engine.operations import run_ope, run_admet, OME, OSE
         from PX_Warehouse.WorldLine_Database import WorldLineDatabase
 
-        smiles = item.get("smiles") or "CCO"
-        ope = run_ope(smiles)
-        ome_r = OME.execute({"smiles": smiles}) if "execute" in dir(OME) else None
-        ose_r = OSE.execute({"smiles": smiles}) if "execute" in dir(OSE) else None
-        admet = run_admet(smiles, ope, ome_result=ome_r, ose_result=ose_r)
+        ope = ope_result or {}
+        admet = admet_result or {}
         outcome = "Success" if passed else "Fail"
         route = "NOVEL" if item.get("type") == "N" else "REPURPOSED"
         wl_db = WorldLineDatabase()
@@ -608,10 +612,13 @@ def main() -> int:
 
         fto_ok = check_fto(item)
         last_api_time = time.monotonic()
+        _engines = (dossier.get("engines") or {}) if dossier else {}
         if not fto_ok:
             _log(item_id, "FTO blocked")
             _STATS["failed"] += 1
-            persist_worldline(item, "FTO_BLOCKED", False)
+            persist_worldline(item, "FTO_BLOCKED", False,
+                              ope_result=_engines.get("ope"),
+                              admet_result=_engines.get("admet"))
             continue
 
         # Save dossier to warehouse
@@ -621,7 +628,9 @@ def main() -> int:
 
         _log(item_id, f"Saved → {out_path} | grade={grade} | zeus={'OK' if zeus_ok else 'REJECTED'}")
 
-        persist_worldline(item, "OK", True)
+        persist_worldline(item, "OK", True,
+                          ope_result=_engines.get("ope"),
+                          admet_result=_engines.get("admet"))
         _STATS["passed"] += 1
 
         # Try finalization

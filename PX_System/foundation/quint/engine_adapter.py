@@ -381,6 +381,36 @@ def q_run_simulation(input_data):
 
 
 # ---------------------------------------------------------------------------
+# 14b. PK Simulation — SimulationEngine.simulate_one_compartment(...)
+# ---------------------------------------------------------------------------
+
+def q_run_pk_simulation(dose_mg, duration_h, dosing_interval_h, patient, admet, time_step_h=0.5):
+    """
+    QUINT-wrapped PK one-compartment simulation.
+
+    Args:
+        dose_mg:            Dose in mg.
+        duration_h:         Duration in hours.
+        dosing_interval_h:  Dosing interval in hours.
+        patient:            Dict with patient parameters (e.g. weight_kg).
+        admet:              QFrame or dict with ADMET output.
+        time_step_h:        Time step in hours for simulation.
+    """
+    from PX_Laboratory.Simulation_Engine import SimulationEngine
+
+    admet_dict = _unwrap(admet)
+    sim = SimulationEngine(time_step_h=time_step_h)
+    result = sim.simulate_one_compartment(
+        dose_mg=dose_mg,
+        duration_h=duration_h,
+        dosing_interval_h=dosing_interval_h,
+        patient=patient,
+        admet=admet_dict,
+    )
+    return _wrap_result(result, "PK_SIMULATION_V1", "PKSim", "PKSimulation")
+
+
+# ---------------------------------------------------------------------------
 # 15. TrialEngine — TrialEngine(time_step_h).run_trial(protocol, admet, ...)
 # ---------------------------------------------------------------------------
 
@@ -558,6 +588,7 @@ __all__ = [
     # Auxiliary (13-20)
     "q_run_vector_core",
     "q_run_simulation",
+    "q_run_pk_simulation",
     "q_run_trial",
     "q_run_check_constitutional",
     "q_run_evidence_dossier",

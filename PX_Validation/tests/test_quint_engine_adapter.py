@@ -35,9 +35,10 @@ from PX_System.foundation.quint.engine_adapter import (
     q_run_virtual_efficacy,
     q_run_grading,
     q_run_zeus,
-    # Auxiliary (13-20)
+    # Auxiliary (13-21)
     q_run_vector_core,
     q_run_simulation,
+    q_run_pk_simulation,
     q_run_trial,
     q_run_check_constitutional,
     q_run_evidence_dossier,
@@ -518,6 +519,53 @@ class TestQRunSimulation(unittest.TestCase):
         frame = q_run_simulation({"task_id": "WL-VOID", "coherence": 0.50})
         self.assertIsInstance(frame, QFrame)
         self.assertEqual(frame.payload.get("status"), "VOID")
+
+
+# ---------------------------------------------------------------------------
+# Tests: PK Simulation (14b)
+# ---------------------------------------------------------------------------
+
+class TestQRunPKSimulation(unittest.TestCase):
+    """Tests for the q_run_pk_simulation adapter."""
+
+    def test_pk_simulation_returns_qframe(self):
+        """q_run_pk_simulation returns a QFrame with QRESULT type."""
+        frame = q_run_pk_simulation(
+            dose_mg=100.0,
+            duration_h=168.0,
+            dosing_interval_h=24.0,
+            patient={"weight_kg": 70.0},
+            admet=TEST_ADMET_FULL,
+            time_step_h=0.5,
+        )
+        self.assertIsInstance(frame, QFrame)
+        self.assertEqual(frame.qtype, QType.QRESULT)
+        self.assertEqual(frame.payload.get("engine_id"), "PK_SIMULATION_V1")
+
+    def test_pk_simulation_has_lineage(self):
+        """PK simulation QFrame should have PKSimulation lineage."""
+        frame = q_run_pk_simulation(
+            dose_mg=100.0,
+            duration_h=48.0,
+            dosing_interval_h=12.0,
+            patient={"weight_kg": 70.0},
+            admet=TEST_ADMET_FULL,
+        )
+        lineage_str = " ".join(frame.lineage)
+        self.assertIn("engine:PKSimulation", lineage_str)
+
+    def test_pk_simulation_accepts_qframe_admet(self):
+        """q_run_pk_simulation accepts QFrame for admet parameter."""
+        admet_frame = ingest({**TEST_ADMET_FULL, "engine_id": "ADMET", "status": "OK"})
+        frame = q_run_pk_simulation(
+            dose_mg=100.0,
+            duration_h=48.0,
+            dosing_interval_h=24.0,
+            patient={"weight_kg": 70.0},
+            admet=admet_frame,
+        )
+        self.assertIsInstance(frame, QFrame)
+        self.assertEqual(frame.qtype, QType.QRESULT)
 
 
 # ---------------------------------------------------------------------------

@@ -23,6 +23,7 @@ if str(_REPO_ROOT) not in __import__("sys").path:
 from PX_System.foundation.quint.converter import emit
 from PX_System.foundation.quint.engine_adapter import (
     q_run_ole, q_run_grading, q_run_dose_optimizer, q_run_virtual_efficacy,
+    q_run_trial,
 )
 
 # Required keys that must be present on a dossier to be finalizable (base Evidence Package)
@@ -130,12 +131,6 @@ def _run_virtual_trial_for_dossier(dossier: Dict[str, Any], item_id: str) -> Tup
     if not admet:
         return None, None, None
     try:
-        from PX_Engine.operations.TrialEngine import TrialEngine
-        from PX_Engine.operations.VirtualEfficacyAnalytics import (
-            compute_pta,
-            virtual_responder_rate,
-            analyze_virtual_efficacy,
-        )
         ec50 = float(ope.get("ec50", 1.0) or 1.0)
         emax = float(ope.get("emax", 0.8) or 0.8)
         pd_params = {"emax": emax, "ec50": ec50, "hill": 1.0, "baseline": 0.0, "effect_threshold": 0.5}
@@ -145,8 +140,8 @@ def _run_virtual_trial_for_dossier(dossier: Dict[str, Any], item_id: str) -> Tup
             "duration_days": 7.0,
             "arms": [{"arm_id": "A1", "label": "100mg Q24h", "dose_mg": 100.0, "dosing_interval_h": 24.0, "n_patients": 21}],
         }
-        trial_engine = TrialEngine(time_step_h=1.0)
-        trial_result = trial_engine.run_trial(protocol=protocol, admet=admet, pd_params=pd_params, variability=variability)
+        trial_qf = q_run_trial(protocol, admet, pd_params, variability, time_step_h=1.0)
+        trial_result = emit(trial_qf, target_label="finalization_trial")
         dose_optimization = None
         smiles = (dossier.get("candidate") or {}).get("smiles") or ""
         if smiles:
@@ -163,22 +158,21 @@ def _run_virtual_trial_for_dossier(dossier: Dict[str, Any], item_id: str) -> Tup
                     "duration_days": 7.0,
                     "arms": [{"arm_id": "P1", "label": f"{d_mg}mg Q{d_int}h", "dose_mg": d_mg, "dosing_interval_h": d_int, "n_patients": 21}],
                 }
-                trial_result = trial_engine.run_trial(protocol=protocol_opt, admet=admet, pd_params=pd_params, variability=variability)
+                trial_qf2 = q_run_trial(protocol_opt, admet, pd_params, variability, time_step_h=1.0)
+                trial_result = emit(trial_qf2, target_label="finalization_trial_optimized")
             except Exception:
                 pass
-        ve = analyze_virtual_efficacy(
-            trial_result,
-            pk_target={"auc_mg_h_per_L": 200.0},
-            pd_target={"max_effect": 0.5},
-            safety_threshold=0.95,
-        )
-        pta_auc = compute_pta(trial_result, "auc_mg_h_per_L", 200.0)
-        responder = virtual_responder_rate(trial_result, "max_effect", 0.5)
-        ve["pta_auc"] = pta_auc
-        ve["pk_pta"] = {"auc_mg_h_per_L": pta_auc} if isinstance(pta_auc, dict) else {}
-        ve["responder_rate"] = responder
-        if isinstance(responder, dict) and "effect_ge_threshold" in responder:
-            ve["responder_rate"] = responder
+        ve_qf = q_run_virtual_efficacy(trial_result, metric="auc_mg_h_per_L", target_threshold=200.0)
+        ve_raw = emit(ve_qf, target_label="finalization_virtual_efficacy")
+        pta_auc = ve_raw.get("pta", {})
+        responder = ve_raw.get("responder_rate", {})
+        ve = {
+            "pta": pta_auc,
+            "pta_auc": pta_auc,
+            "pk_pta": {"auc_mg_h_per_L": pta_auc} if isinstance(pta_auc, dict) else {},
+            "responder_rate": responder,
+            "variability": ve_raw.get("variability"),
+        }
         return trial_result, ve, dose_optimization
     except Exception:
         return None, None, None
