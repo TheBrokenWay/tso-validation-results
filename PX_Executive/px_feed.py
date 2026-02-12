@@ -33,6 +33,9 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from PX_System.foundation.quint.converter import ingest, emit
+from PX_System.foundation.quint.kernel import QType
+
 
 def run_novel_feed(count: int, interval: int, high_chaos: bool, seed: int | None) -> int:
     """Run Genesis Engine to invent novel SMILES and write to queue."""
@@ -88,6 +91,12 @@ def run_novel_feed(count: int, interval: int, high_chaos: bool, seed: int | None
         for c in candidates:
             kid = str(c.get("id") or "").strip()
             if kid and kid not in seen_ids:
+                # QUINT gateway: ingest each molecule, emit clean dict for queue
+                try:
+                    qf = ingest(c, qtype=QType.QMOLECULE, source_label="genesis_feed")
+                    c = emit(qf, target_label="genesis_queue")
+                except Exception:
+                    pass  # Fallback: use raw candidate if QUINT ingest fails
                 seen_ids.add(kid)
                 existing.append(c)
                 added += 1

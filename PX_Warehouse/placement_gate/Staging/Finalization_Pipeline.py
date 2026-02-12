@@ -17,6 +17,13 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in __import__("sys").path:
+    __import__("sys").path.insert(0, str(_REPO_ROOT))
+
+from PX_System.foundation.quint.converter import emit
+from PX_System.foundation.quint.engine_adapter import (
+    q_run_ole, q_run_grading, q_run_dose_optimizer, q_run_virtual_efficacy,
+)
 
 # Required keys that must be present on a dossier to be finalizable (base Evidence Package)
 _REQUIRED_BASE = ["candidate", "engines", "harm_energy", "constitutional_seal", "dossier_version"]
@@ -144,19 +151,10 @@ def _run_virtual_trial_for_dossier(dossier: Dict[str, Any], item_id: str) -> Tup
         smiles = (dossier.get("candidate") or {}).get("smiles") or ""
         if smiles:
             try:
-                from PX_Engine.operations.DoseOptimizer_v2 import optimize_dose
-                dose_optimization = optimize_dose(
-                    smiles=smiles,
-                    admet=admet,
-                    protocol_template=protocol,
-                    target_pk_range={"auc_mg_h_per_L": (200.0, 400.0)},
-                    target_pd_range={"max_effect": (0.5, 0.9)},
-                    dose_bounds=(50.0, 300.0),
-                    variability=variability,
-                    pd_params=pd_params,
-                    search_strategy="coarse_to_fine",
-                    n_eval_patients=10,
+                dose_qf = q_run_dose_optimizer(
+                    smiles, admet, protocol, pd_params, n_eval_patients=10,
                 )
+                dose_optimization = emit(dose_qf, target_label="finalization_dose")
                 best = (dose_optimization or {}).get("best_regimen") or {}
                 d_mg = best.get("dose_mg", 100.0)
                 d_int = best.get("dosing_interval_h", 24.0)
@@ -433,30 +431,28 @@ def _get_tier_from_trial_outcome(trial_outcome_summary: Dict[str, Any], discover
 
 
 def _add_prv_eligibility(dossier: Dict[str, Any], repo_root: Path) -> Dict[str, Any]:
-    """Run OLE for PRV eligibility scoring."""
+    """Run OLE for PRV eligibility scoring (via QUINT)."""
     _ensure_repo_path()
     try:
-        from PX_Engine.operations.OLE import execute as ole_execute
         candidate = dossier.get("candidate") or {}
         payload = {
             "compound_id": candidate.get("name") or "UNKNOWN",
-            "indication": "PRV_eligible_disease_space",  # generic for pipeline
+            "indication": "PRV_eligible_disease_space",
         }
-        return ole_execute(payload)
+        ole_qf = q_run_ole(payload)
+        return emit(ole_qf, target_label="finalization_ole")
     except Exception as e:
         return {"prv_eligible": False, "status": "OLE_ERROR", "error": str(e)}
 
 
 def _add_discovery_grading(dossier: Dict[str, Any], repo_root: Path) -> Dict[str, Any]:
-    """Run GradingEngine for discovery-stage grade."""
+    """Run GradingEngine for discovery-stage grade (via QUINT)."""
     _ensure_repo_path()
     try:
-        from PX_Engine.operations.GradingEngine import GradingEngine
-        # GradingEngine expects top-level ope/admet
         engines = dossier.get("engines") or {}
         d = {**dossier, "ope": engines.get("ope"), "admet": engines.get("admet")}
-        ge = GradingEngine(verbose=False)
-        return ge.grade_dossier(d)
+        grade_qf = q_run_grading(d)
+        return emit(grade_qf, target_label="finalization_grading")
     except Exception as e:
         return {
             "grade": "NEEDS_REVIEW",

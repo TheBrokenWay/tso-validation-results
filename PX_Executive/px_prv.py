@@ -39,6 +39,13 @@ from PX_System.foundation.sign_off import (
     build_authorization_chain,
     AuthorizationError,
 )
+from PX_System.foundation.quint.converter import ingest, emit
+from PX_System.foundation.quint.kernel import QType
+from PX_System.foundation.quint.engine_adapter import (
+    q_run_ope, q_run_obe, q_run_oce, q_run_ole, q_run_ome, q_run_ose,
+    q_run_admet, q_run_pkpd, q_run_dose_optimizer, q_run_virtual_efficacy,
+    q_run_grading, q_run_zeus,
+)
 
 
 # Complete PRV disease list (alphabetical)
@@ -176,6 +183,9 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
     """
     Run the mandatory 12-engine pipeline for a single candidate.
 
+    All engine calls route through QUINT gateway (converter.ingest → q_run_* → converter.emit).
+    Data enters via ingest(), flows as QFrames between engines, exits via emit().
+
     Returns:
         (dossier, None) on success
         (None, error_message) on failure
@@ -186,10 +196,18 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
     is_novel = item.get("type") == "N"
     sign_offs: list[Dict[str, Any]] = []
 
-    # ── 1. OPE: Molecular descriptors ──
-    from PX_Engine.operations.OPE import run_ope
-    ope_result = run_ope(smiles)
-    if isinstance(ope_result, dict) and "sign_off" in ope_result:
+    # ── QUINT GATEWAY: Ingest molecule into QFrame ──
+    mol_frame = ingest(
+        {"smiles": smiles, "id": item_id, "indication": indication},
+        qtype=QType.QMOLECULE,
+        qid=f"QMOL-{item_id}",
+        source_label="px_prv_pipeline",
+    )
+
+    # ── 1. OPE: Molecular descriptors (via QUINT) ──
+    ope_qf = q_run_ope(mol_frame)
+    ope_result = emit(ope_qf, target_label="px_prv_ope")
+    if "sign_off" in ope_result:
         sign_offs.append(ope_result["sign_off"])
 
     # ── 1b. Disease Constraint Check (Olympus pattern) ──
@@ -211,19 +229,18 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
         except (ImportError, FileNotFoundError):
             pass  # Constraint file may not exist for this disease
 
-    # ── 2. OBE: Binding energy / harm energy ──
-    from PX_Engine.operations.OBE import execute as obe_execute
-    obe_result = obe_execute({"smiles": smiles})
-    if isinstance(obe_result, dict) and "sign_off" in obe_result:
+    # ── 2. OBE: Binding energy / harm energy (via QUINT) ──
+    obe_qf = q_run_obe(mol_frame)
+    obe_result = emit(obe_qf, target_label="px_prv_obe")
+    if "sign_off" in obe_result:
         sign_offs.append(obe_result["sign_off"])
 
-    # ── 3. OCE: 35D manifold coherence + physics snapshot ──
-    from PX_Engine.operations.OCE import execute as oce_execute
-    # Build p_vector for 35D manifold — 4 slots: [complexity, energy, dims, valid]
+    # ── 3. OCE: 35D manifold coherence + physics snapshot (via QUINT) ──
     p_vector = [0.1, 0.0, 35.0, 1.0]
     csa_scores = [1.0, 1.0, 1.0, 1.0, 1.0]
-    oce_result = oce_execute({"p_vector": p_vector, "csa_scores": csa_scores})
-    if isinstance(oce_result, dict) and "sign_off" in oce_result:
+    oce_qf = q_run_oce({"p_vector": p_vector, "csa_scores": csa_scores})
+    oce_result = emit(oce_qf, target_label="px_prv_oce")
+    if "sign_off" in oce_result:
         sign_offs.append(oce_result["sign_off"])
 
     physics_snapshot = {
@@ -233,36 +250,35 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
         "manifold_id": oce_result.get("manifold_id"),
     }
 
-    # ── 4. OLE: Legal/IP + PRV eligibility ──
-    from PX_Engine.operations.OLE import execute as ole_execute
-    ole_result = ole_execute({
+    # ── 4. OLE: Legal/IP + PRV eligibility (via QUINT) ──
+    ole_qf = q_run_ole({
         "compound_id": item_id,
         "indication": indication,
         "disease_context": [indication] if indication else [],
     })
-    if isinstance(ole_result, dict) and "sign_off" in ole_result:
+    ole_result = emit(ole_qf, target_label="px_prv_ole")
+    if "sign_off" in ole_result:
         sign_offs.append(ole_result["sign_off"])
 
-    # ── 5. OME: Metabolic pathway ──
-    from PX_Engine.operations.OME import execute as ome_execute
-    ome_result = ome_execute({"smiles": smiles})
-    if isinstance(ome_result, dict) and "sign_off" in ome_result:
+    # ── 5. OME: Metabolic pathway (via QUINT) ──
+    ome_qf = q_run_ome(mol_frame)
+    ome_result = emit(ome_qf, target_label="px_prv_ome")
+    if "sign_off" in ome_result:
         sign_offs.append(ome_result["sign_off"])
 
-    # ── 6. OSE: Safety / selectivity ──
-    from PX_Engine.operations.OSE import execute as ose_execute
-    ose_result = ose_execute({"smiles": smiles})
-    if isinstance(ose_result, dict) and "sign_off" in ose_result:
+    # ── 6. OSE: Safety / selectivity (via QUINT) ──
+    ose_qf = q_run_ose(mol_frame)
+    ose_result = emit(ose_qf, target_label="px_prv_ose")
+    if "sign_off" in ose_result:
         sign_offs.append(ose_result["sign_off"])
 
-    # ── 7. ADMET: Full pharmacokinetic safety profile ──
-    from PX_Engine.operations.ADMET import run_admet
-    admet_result = run_admet(smiles, ope_result, ome_result=ome_result, ose_result=ose_result)
-    if isinstance(admet_result, dict) and "sign_off" in admet_result:
+    # ── 7. ADMET: Full pharmacokinetic safety profile (via QUINT) ──
+    admet_qf = q_run_admet(mol_frame, ope_result=ope_qf, ome_result=ome_qf, ose_result=ose_qf)
+    admet_result = emit(admet_qf, target_label="px_prv_admet")
+    if "sign_off" in admet_result:
         sign_offs.append(admet_result["sign_off"])
 
-    # ── 8. PKPD: Sigmoid Emax PK/PD modeling ──
-    from PX_Engine.operations.PKPD import link_pk_to_pd
+    # ── 8. PKPD: Sigmoid Emax PK/PD modeling (via QUINT) ──
     from PX_Laboratory import SimulationEngine
 
     sim = SimulationEngine(time_step_h=0.5)
@@ -277,12 +293,13 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
     )
     emax = ope_result.get("emax", 0.9)
     ec50 = ope_result.get("ec50", 5.0)
-    pkpd_result = link_pk_to_pd(pk_profile, {"emax": emax, "ec50": ec50, "hill": 1.5})
-    if isinstance(pkpd_result, dict) and "sign_off" in pkpd_result:
+    pd_params = {"emax": emax, "ec50": ec50, "hill": 1.5}
+    pkpd_qf = q_run_pkpd(pk_profile, pd_params)
+    pkpd_result = emit(pkpd_qf, target_label="px_prv_pkpd")
+    if "sign_off" in pkpd_result:
         sign_offs.append(pkpd_result["sign_off"])
 
-    # ── 9. DoseOptimizer_v2: Coarse-to-fine dose search ──
-    from PX_Engine.operations.DoseOptimizer_v2 import optimize_dose
+    # ── 9. DoseOptimizer_v2: Coarse-to-fine dose search (via QUINT) ──
     clearance = (admet_result.get("metabolism") or {}).get("clearance_L_per_h", 5.0)
     vd = (admet_result.get("distribution") or {}).get("vd_L", 50.0)
     ka = (admet_result.get("absorption") or {}).get("ka_per_h", 1.0)
@@ -294,20 +311,14 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
         "vd_L": vd,
         "ka_per_h": ka,
     }
-    dose_result = optimize_dose(
-        smiles=smiles,
-        admet=admet_result,
-        protocol_template=protocol_template,
-        pd_params={"emax": emax, "ec50": ec50, "hill": 1.5},
-        n_eval_patients=10,
+    dose_qf = q_run_dose_optimizer(
+        mol_frame, admet_result, protocol_template, pd_params, n_eval_patients=10,
     )
-    if isinstance(dose_result, dict) and "sign_off" in dose_result:
+    dose_result = emit(dose_qf, target_label="px_prv_dose")
+    if "sign_off" in dose_result:
         sign_offs.append(dose_result["sign_off"])
 
-    # ── 10. VirtualEfficacyAnalytics: PTA, responder rate ──
-    from PX_Engine.operations.VirtualEfficacyAnalytics import compute_pta, virtual_responder_rate, effect_variability_risk
-
-    # Run a mini-trial for efficacy analytics
+    # ── 10. VirtualEfficacyAnalytics: PTA, responder rate (via QUINT) ──
     from PX_Engine.operations.TrialEngine import TrialEngine as TE
     te = TE(time_step_h=0.5)
     best_regimen = dose_result.get("best_regimen", {})
@@ -323,25 +334,21 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
     variability_params = {"clearance_variation": 0.3, "vd_variation": 0.25}
     trial_result = te.run_trial(
         trial_protocol, admet_result,
-        pd_params={"emax": emax, "ec50": ec50, "hill": 1.5},
+        pd_params=pd_params,
         variability=variability_params,
     )
     if isinstance(trial_result, dict) and "sign_off" in trial_result:
         sign_offs.append(trial_result["sign_off"])
 
-    pta_result = compute_pta(trial_result, metric="auc_mg_h_per_L", target_threshold=200.0)
-    responder_result = virtual_responder_rate(trial_result, response_metric="max_effect", responder_threshold=0.5)
-    variability_result = effect_variability_risk(trial_result, effect_metric="max_effect")
-
+    ve_qf = q_run_virtual_efficacy(trial_result)
+    ve_raw = emit(ve_qf, target_label="px_prv_virtual_efficacy")
     virtual_efficacy = {
-        "pta": pta_result,
-        "responder_rate": responder_result,
-        "effect_variability": variability_result,
+        "pta": ve_raw.get("pta"),
+        "responder_rate": ve_raw.get("responder_rate"),
+        "effect_variability": ve_raw.get("variability"),
     }
 
-    # ── 11. GradingEngine: 5-tier classification ──
-    from PX_Engine.operations.GradingEngine import GradingEngine as GE
-
+    # ── 11. GradingEngine: Weighted MPO scoring (via QUINT) ──
     from PX_System.foundation.Evidence_Package import generate_dossier
     candidate = {"name": item.get("name") or item_id, "smiles": smiles}
     engine_results = {
@@ -382,22 +389,20 @@ def run_full_pipeline(item: dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], O
     if constraint_violations:
         dossier["constraint_violations"] = constraint_violations
 
-    # Grade
-    ge = GE(verbose=False)
-    grade_result = ge.grade_dossier(dossier)
+    # Grade (via QUINT)
+    grade_qf = q_run_grading(dossier)
+    grade_result = emit(grade_qf, target_label="px_prv_grading")
     dossier["discovery_grading"] = grade_result
-    if isinstance(grade_result, dict) and "sign_off" in grade_result:
+    if "sign_off" in grade_result:
         sign_offs.append(grade_result["sign_off"])
 
-    # ── 12. ZeusLaws: Constitutional governance (full gate) ──
-    from PX_System.foundation.ZeusLaws import run_zeus_gate
-
-    zeus_verdict = run_zeus_gate(dossier)
+    # ── 12. ZeusLaws: Constitutional governance (via QUINT) ──
+    zeus_qf = q_run_zeus(dossier)
+    zeus_verdict = emit(zeus_qf, target_label="px_prv_zeus")
     dossier["zeus_verdict"] = zeus_verdict
 
     if not zeus_verdict.get("authorized"):
         _STATS["zeus_rejected"] += 1
-        # Still save dossier (Zeus runs at end, dossier is preserved with verdict)
 
     # ── Build authorization chain from all engine sign-offs ──
     auth_chain = build_authorization_chain(sign_offs)
