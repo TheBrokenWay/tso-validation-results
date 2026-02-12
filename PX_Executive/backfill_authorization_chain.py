@@ -156,8 +156,16 @@ def main() -> int:
         auth_count = auth.get("authorization_count", "0/0")
         grade = (new_dossier.get("discovery_grading") or {}).get("grade", "?")
 
-        # Save updated dossier (overwrites old file at same tier location)
+        # Save updated dossier (may land at different tier than original)
         out_path = save_dossier(new_dossier, item)
+
+        # Remove orphaned original if tier changed (old copy has no auth_chain)
+        if out_path and Path(out_path).resolve() != path.resolve():
+            try:
+                path.unlink()
+            except OSError:
+                pass
+
         print(f" OK -> {out_path} (auth={auth_count}, grade={grade})")
         ok += 1
 

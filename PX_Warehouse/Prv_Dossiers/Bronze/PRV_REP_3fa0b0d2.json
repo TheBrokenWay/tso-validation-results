@@ -1,16 +1,16 @@
 {
   "dossier_version": "2.0.0",
-  "generated": "2026-02-07T08:54:31.229544+00:00",
+  "generated": "2026-02-12T15:38:10.225771+00:00",
   "causal_trace_log": [
     {
       "law": "U34",
       "authorization": "GLOBAL_SUM conserved",
-      "timestamp": "2026-02-07T08:54:31.229544+00:00"
+      "timestamp": "2026-02-12T15:38:10.225771+00:00"
     }
   ],
   "alcoa_metadata": {
     "attributable_to": "OLYMPUS_Pipeline_Gate",
-    "timestamp": "2026-02-07T08:54:31.229544+00:00",
+    "timestamp": "2026-02-12T15:38:10.225771+00:00",
     "original": true,
     "complete": true,
     "consistent": true,
@@ -33,7 +33,30 @@
       "vd_estimate_L": 117.054,
       "binding_affinity_nM": 19.37506259,
       "note": "OPE engine using RDKit deterministic molecular descriptors (v3.0-CORE-RDKIT)",
-      "version": "3.0-CORE-RDKIT"
+      "version": "3.0-CORE-RDKIT",
+      "sign_off": {
+        "engine_id": "OPE_V3_DETERMINISTIC",
+        "version": "3.0-CORE-RDKIT",
+        "timestamp": "2026-02-12T15:38:10.091139+00:00",
+        "execution_time_ms": 0,
+        "status": "PASSED",
+        "authorized": true,
+        "laws_checked": [
+          "U27",
+          "U34"
+        ],
+        "laws_passed": [
+          "U27",
+          "U34"
+        ],
+        "laws_failed": [],
+        "reason": "All laws passed",
+        "input_hash": "sha256:be3f075731938e22",
+        "output_hash": "sha256:e112c2687f333430",
+        "signature": "sha256:88a1a687476e1475"
+      },
+      "engine_id": "OPE_V3_DETERMINISTIC",
+      "status": "PASSED"
     },
     "admet": {
       "absorption": {
@@ -51,9 +74,10 @@
         "bbb_penetration": "LOW"
       },
       "metabolism": {
-        "hepatic_extraction_ratio": 0.08643389,
-        "clearance_L_per_h": 7.77905,
-        "half_life_h": 10.42780571
+        "hepatic_extraction_ratio": 0.11674333,
+        "clearance_L_per_h": 10.5069,
+        "half_life_h": 4.62,
+        "source": "OME"
       },
       "excretion": {
         "renal_clearance_fraction": 0.239365,
@@ -65,6 +89,8 @@
         "hepatotoxicity_risk": 0.292635,
         "ames_mutagenicity": 0.05,
         "risk_level": "TOXICITY_FAILURE",
+        "risk_level_display": "TOXICITY_FAILURE (SI=12.29)",
+        "selectivity_index": 12.29,
         "safety_margin": 0.96124166
       },
       "toxicity_flags": {
@@ -86,16 +112,2191 @@
       },
       "toxicity_threshold": 251.95358511,
       "note": "ADMET engine using deterministic physical laws (v3.0-CORE-DETERMINISTIC)",
-      "version": "3.0-CORE-DETERMINISTIC"
+      "version": "3.0-CORE-DETERMINISTIC",
+      "sign_off": {
+        "engine_id": "OPE_ADMET_V3_DETERMINISTIC",
+        "version": "3.0-CORE-DETERMINISTIC",
+        "timestamp": "2026-02-12T15:38:10.092432+00:00",
+        "execution_time_ms": 0,
+        "status": "FAILED",
+        "authorized": false,
+        "laws_checked": [
+          "L11"
+        ],
+        "laws_passed": [],
+        "laws_failed": [
+          "L11"
+        ],
+        "reason": "Laws failed: ['L11']",
+        "input_hash": "sha256:be3f075731938e22",
+        "output_hash": "sha256:8e412759d7266e80",
+        "signature": "sha256:fd79d5cbc9f0713f"
+      },
+      "engine_id": "ADMET_V3_DETERMINISTIC",
+      "status": "PASSED"
+    },
+    "obe": {
+      "engine": "OBE_V3_DETERMINISTIC",
+      "docking_score_kcal": -6.6766,
+      "harm_energy": 0.0537346,
+      "biological_status": "HIT",
+      "law_u27_compliance": "VERIFIED",
+      "sign_off": {
+        "engine_id": "OBE_V3_DETERMINISTIC",
+        "version": "3.0-CORE",
+        "timestamp": "2026-02-12T15:38:10.091550+00:00",
+        "execution_time_ms": 0,
+        "status": "PASSED",
+        "authorized": true,
+        "laws_checked": [
+          "U27",
+          "L1"
+        ],
+        "laws_passed": [
+          "U27",
+          "L1"
+        ],
+        "laws_failed": [],
+        "reason": "All laws passed",
+        "input_hash": "sha256:309ed28d525ae999",
+        "output_hash": "sha256:e2757a04c204b605",
+        "signature": "sha256:d37874571349a06e"
+      },
+      "engine_id": "OBE_V3_DETERMINISTIC",
+      "status": "PASSED"
+    },
+    "oce": {
+      "engine": "OCE_V3_DETERMINISTIC",
+      "coherence": 1.0,
+      "drift_score": 0.0,
+      "authorized": "True",
+      "manifold_id": "35D_GAIP_CORE",
+      "status": "STABLE",
+      "sign_off": {
+        "engine_id": "OCE_V3_DETERMINISTIC",
+        "version": "3.0-CORE",
+        "timestamp": "2026-02-12T15:38:10.091658+00:00",
+        "execution_time_ms": 0,
+        "status": "PASSED",
+        "authorized": true,
+        "laws_checked": [
+          "L1"
+        ],
+        "laws_passed": [
+          "L1"
+        ],
+        "laws_failed": [],
+        "reason": "All laws passed",
+        "input_hash": "sha256:0e79587a1796d53d",
+        "output_hash": "sha256:e46318a4710d19e7",
+        "signature": "sha256:8355b23ab97bf871"
+      },
+      "engine_id": "OCE_V3_DETERMINISTIC"
+    },
+    "ole": {
+      "engine": "OLE_V3_DETERMINISTIC",
+      "compound_id": "PRV_REP_3fa0b0d2",
+      "prv_eligible": false,
+      "prv_diseases_matched": [],
+      "freedom_to_operate": true,
+      "regulatory_pathway": "STANDARD_FDA",
+      "status": "LEGAL_CLEARANCE_GRANTED",
+      "sign_off": {
+        "engine_id": "OLE_V3_DETERMINISTIC",
+        "version": "3.0-CORE",
+        "timestamp": "2026-02-12T15:38:10.091730+00:00",
+        "execution_time_ms": 0,
+        "status": "PASSED",
+        "authorized": true,
+        "laws_checked": [
+          "L11",
+          "FTO"
+        ],
+        "laws_passed": [
+          "L11",
+          "FTO"
+        ],
+        "laws_failed": [],
+        "reason": "All laws passed",
+        "input_hash": "sha256:a61906f3007c4757",
+        "output_hash": "sha256:6bc5b89ffdd9cb96",
+        "signature": "sha256:e876e0fdc170e6a6"
+      },
+      "engine_id": "OLE_V3_DETERMINISTIC"
+    },
+    "ome": {
+      "engine": "OME_V3_DETERMINISTIC",
+      "clearance_L_per_h": 10.5069,
+      "half_life_h": 4.62,
+      "metabolic_stability": "STABLE",
+      "status": "CALCULATED",
+      "sign_off": {
+        "engine_id": "OME_V3_DETERMINISTIC",
+        "version": "3.0-CORE",
+        "timestamp": "2026-02-12T15:38:10.092050+00:00",
+        "execution_time_ms": 0,
+        "status": "PASSED",
+        "authorized": true,
+        "laws_checked": [
+          "U27"
+        ],
+        "laws_passed": [
+          "U27"
+        ],
+        "laws_failed": [],
+        "reason": "All laws passed",
+        "input_hash": "sha256:309ed28d525ae999",
+        "output_hash": "sha256:1b845b804360a0c9",
+        "signature": "sha256:2399843f024fc539"
+      },
+      "engine_id": "OME_V3_DETERMINISTIC"
+    },
+    "ose": {
+      "engine": "OSE_V3_DETERMINISTIC",
+      "toxicity_index": 0.0292635,
+      "selectivity_index": 12.29,
+      "harm_energy": 0.04389525,
+      "safety_status": "FAILURE",
+      "law_l11_compliance": "VERIFIED",
+      "sign_off": {
+        "engine_id": "OSE_V3_DETERMINISTIC",
+        "version": "3.0-CORE",
+        "timestamp": "2026-02-12T15:38:10.092353+00:00",
+        "execution_time_ms": 0,
+        "status": "FAILED",
+        "authorized": false,
+        "laws_checked": [
+          "L11"
+        ],
+        "laws_passed": [],
+        "laws_failed": [
+          "L11"
+        ],
+        "reason": "Laws failed: ['L11']",
+        "input_hash": "sha256:309ed28d525ae999",
+        "output_hash": "sha256:0ea0db6a687ad828",
+        "signature": "sha256:0079be01f89dd94b"
+      },
+      "engine_id": "OSE_V3_DETERMINISTIC",
+      "status": "PASSED"
+    },
+    "trial_result": {
+      "trial_id": "TRIAL-UNKNOWN",
+      "duration_days": 7.0,
+      "arms": [
+        {
+          "arm_id": "treatment",
+          "label": "",
+          "n_patients": 21,
+          "initial_dose_mg": 10.0,
+          "final_dose_mg": 10.0,
+          "dosing_interval_h": 24.0,
+          "exposure_summary": {
+            "cmax_mg_per_L": {
+              "mean": 0.14428295582974046,
+              "median": 0.1408016092073061,
+              "min": 0.09782669667346591,
+              "max": 0.21632203883629075,
+              "std": 0.033600759290853766
+            },
+            "auc_mg_h_per_L": {
+              "mean": 16.356754343159828,
+              "median": 15.940440049074713,
+              "min": 11.058729671243947,
+              "max": 24.583343546533186,
+              "std": 3.8377376583173834
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 0.07988815656865803,
+              "median": 0.07659859951712038,
+              "min": 0.05243056802550698,
+              "max": 0.12368634365987254,
+              "std": 0.020363359891821656
+            }
+          },
+          "arm_stopped": false,
+          "patients_enrolled": 21,
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.00044493199789425516,
+              "median": 0.0004209328976725031,
+              "min": 0.0002438195474908798,
+              "max": 0.0008012694951295746,
+              "std": 0.0001570496273853839
+            },
+            "auec_h": {
+              "mean": 0.04261988055374734,
+              "median": 0.0402241615734286,
+              "min": 0.02324678612413988,
+              "max": 0.07703072044788571,
+              "std": 0.015162633592257979
+            },
+            "time_above_threshold_h": {
+              "mean": 87.5,
+              "median": 87.5,
+              "min": 87.5,
+              "max": 87.5,
+              "std": 0.0
+            },
+            "mean_effect": {
+              "mean": 0.0002532100299918579,
+              "median": 0.00023896972150622565,
+              "min": 0.0001381050827673083,
+              "max": 0.00045766984186819046,
+              "std": 9.009155995098493e-05
+            }
+          }
+        }
+      ],
+      "pd_params": {
+        "emax": 0.95,
+        "ec50": 24.21882824,
+        "hill": 1.5
+      },
+      "adaptive_rules": null,
+      "constitutional": {
+        "status": "SIMULATED",
+        "engine": "TRIAL_ENGINE_V2.0-PKPD",
+        "notes": "Trial simulation with PK/PD modeling. PD model is theoretical and requires clinical validation. No clinical endpoints."
+      },
+      "sign_off": {
+        "engine_id": "TRIAL_ENGINE_V1",
+        "version": "1.0-EXPOSURE",
+        "timestamp": "2026-02-12T15:38:10.225695+00:00",
+        "execution_time_ms": 14,
+        "status": "PASSED",
+        "authorized": true,
+        "laws_checked": [
+          "L11",
+          "L34"
+        ],
+        "laws_passed": [
+          "L11",
+          "L34"
+        ],
+        "laws_failed": [],
+        "reason": "All laws passed",
+        "input_hash": "sha256:9ed4d85ebeb5398c",
+        "output_hash": "sha256:e85a0717584c6b5b",
+        "signature": "sha256:82b3be2757e7203f"
+      }
+    },
+    "pkpd": {
+      "max_effect": 0.012559473221167928,
+      "time_to_max_effect_h": 147.0,
+      "auec_h": 1.2070422754792454,
+      "time_above_threshold_h": 87.5,
+      "mean_effect": 0.007171098033840056,
+      "effect_at_steady_state": 0.007615921237207083
+    },
+    "dose_optimization": {
+      "best_regimen": {
+        "dose_mg": 10.0,
+        "interval_h": 24.0,
+        "score": 0.0,
+        "pk_summary": {
+          "cmax_mg_per_L": {
+            "mean": 0.1395696723703709,
+            "std": 0.012348457681568214,
+            "cv_percent": 8.847522152806638,
+            "min": 0.12260505153992332,
+            "max": 0.15938656700190035
+          },
+          "auc_mg_h_per_L": {
+            "mean": 15.780621761493014,
+            "std": 1.3961940061987226,
+            "cv_percent": 8.847522152806658,
+            "min": 13.862495422828117,
+            "max": 18.021244049676568
+          },
+          "cmin_steady_state_mg_per_L": {
+            "mean": 0.07664029281140963,
+            "std": 0.006780766884465348,
+            "cv_percent": 8.847522152806647,
+            "min": 0.06732470522136486,
+            "max": 0.08752211678777433
+          }
+        },
+        "pd_summary": {
+          "max_effect": {
+            "mean": 0.0004165150083071939,
+            "std": 5.5313077241169946e-05,
+            "cv_percent": 13.279972182989066,
+            "min": 0.0003420582425512562,
+            "max": 0.0005069203053266011
+          },
+          "auec_h": {
+            "mean": 0.03975688547145073,
+            "std": 0.005280514782800618,
+            "cv_percent": 13.282013216534619,
+            "min": 0.03264893046760374,
+            "max": 0.04838765985472066
+          },
+          "time_above_threshold_h": {
+            "mean": 91.0,
+            "std": 0.0,
+            "cv_percent": 0.0,
+            "min": 91.0,
+            "max": 91.0
+          },
+          "mean_effect": {
+            "mean": 0.00023574940873622422,
+            "std": 3.1312274971653195e-05,
+            "cv_percent": 13.282016332303058,
+            "min": 0.0001936008219961712,
+            "max": 0.00028692797728387126
+          }
+        }
+      },
+      "search_history": [
+        {
+          "dose_mg": 10.0,
+          "interval_h": 24.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 0.1395696723703709,
+              "std": 0.012348457681568214,
+              "cv_percent": 8.847522152806638,
+              "min": 0.12260505153992332,
+              "max": 0.15938656700190035
+            },
+            "auc_mg_h_per_L": {
+              "mean": 15.780621761493014,
+              "std": 1.3961940061987226,
+              "cv_percent": 8.847522152806658,
+              "min": 13.862495422828117,
+              "max": 18.021244049676568
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 0.07664029281140963,
+              "std": 0.006780766884465348,
+              "cv_percent": 8.847522152806647,
+              "min": 0.06732470522136486,
+              "max": 0.08752211678777433
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.0004165150083071939,
+              "std": 5.5313077241169946e-05,
+              "cv_percent": 13.279972182989066,
+              "min": 0.0003420582425512562,
+              "max": 0.0005069203053266011
+            },
+            "auec_h": {
+              "mean": 0.03975688547145073,
+              "std": 0.005280514782800618,
+              "cv_percent": 13.282013216534619,
+              "min": 0.03264893046760374,
+              "max": 0.04838765985472066
+            },
+            "time_above_threshold_h": {
+              "mean": 91.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 91.0,
+              "max": 91.0
+            },
+            "mean_effect": {
+              "mean": 0.00023574940873622422,
+              "std": 3.1312274971653195e-05,
+              "cv_percent": 13.282016332303058,
+              "min": 0.0001936008219961712,
+              "max": 0.00028692797728387126
+            }
+          }
+        },
+        {
+          "dose_mg": 10.0,
+          "interval_h": 12.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 0.24035227085700384,
+              "std": 0.021265220408847235,
+              "cv_percent": 8.847522152806642,
+              "min": 0.21113757778238063,
+              "max": 0.27447885111709486
+            },
+            "auc_mg_h_per_L": {
+              "mean": 30.454843751351426,
+              "std": 2.6944990475034643,
+              "cv_percent": 8.847522152806633,
+              "min": 26.753073388796057,
+              "max": 34.77899540543487
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 0.18635980004851574,
+              "std": 0.016488224593218588,
+              "cv_percent": 8.847522152806638,
+              "min": 0.16370786362015272,
+              "max": 0.21282022270619855
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.0009407468630514545,
+              "std": 0.00012486092596865315,
+              "cv_percent": 13.27253173756518,
+              "min": 0.0007726607471275138,
+              "max": 0.0011448104294382588
+            },
+            "auec_h": {
+              "mean": 0.10656414012610378,
+              "std": 0.014147186620905266,
+              "cv_percent": 13.27574792436184,
+              "min": 0.08751993456804971,
+              "max": 0.12968589193970664
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.0006324579047207032,
+              "std": 8.396353648916433e-05,
+              "cv_percent": 13.275750980809239,
+              "min": 0.0005194305695079242,
+              "max": 0.0007696854789323186
+            }
+          }
+        },
+        {
+          "dose_mg": 10.0,
+          "interval_h": 8.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 0.34517977088912943,
+              "std": 0.030539856696422944,
+              "cv_percent": 8.847522152806643,
+              "min": 0.303223349898648,
+              "max": 0.3941903548682425
+            },
+            "auc_mg_h_per_L": {
+              "mean": 45.07653621397379,
+              "std": 3.9881565272492416,
+              "cv_percent": 8.847522152806647,
+              "min": 39.59750676414652,
+              "max": 51.47675879339051
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 0.2976245316122539,
+              "std": 0.026332396366581183,
+              "cv_percent": 8.847522152806645,
+              "min": 0.26144842513517574,
+              "max": 0.3398829526757286
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.0016179069407726988,
+              "std": 0.00021458171919628693,
+              "cv_percent": 13.262920986902033,
+              "min": 0.001329015019920644,
+              "max": 0.001968575306017348
+            },
+            "auec_h": {
+              "mean": 0.19234839679171,
+              "std": 0.025519892000729946,
+              "cv_percent": 13.267535589789652,
+              "min": 0.15799232091303198,
+              "max": 0.23405449255322708
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.0011419899259255922,
+              "std": 0.00015151391820260516,
+              "cv_percent": 13.267535445183713,
+              "min": 0.0009380147806855874,
+              "max": 0.0013896028066412202
+            }
+          }
+        },
+        {
+          "dose_mg": 132.5,
+          "interval_h": 24.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 1.8492981589074144,
+              "std": 0.16361706428077905,
+              "cv_percent": 8.84752215280665,
+              "min": 1.624516932903984,
+              "max": 2.11187201277518
+            },
+            "auc_mg_h_per_L": {
+              "mean": 209.09323833978246,
+              "std": 18.499570582133007,
+              "cv_percent": 8.847522152806624,
+              "min": 183.67806435247263,
+              "max": 238.78148365821437
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 1.0154838797511776,
+              "std": 0.08984516121916586,
+              "cv_percent": 8.847522152806647,
+              "min": 0.8920523441830843,
+              "max": 1.1596680474380099
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.01967506328089754,
+              "std": 0.00255908203548217,
+              "cv_percent": 13.006728359378519,
+              "min": 0.01622184996783634,
+              "max": 0.023848107458851946
+            },
+            "auec_h": {
+              "mean": 1.8914928442982508,
+              "std": 0.24782866316559826,
+              "cv_percent": 13.10227865321602,
+              "min": 1.5573607536010585,
+              "max": 2.2959478582491446
+            },
+            "time_above_threshold_h": {
+              "mean": 91.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 91.0,
+              "max": 91.0
+            },
+            "mean_effect": {
+              "mean": 0.011216250887128729,
+              "std": 0.0014696008884286247,
+              "cv_percent": 13.102425250803487,
+              "min": 0.009234881317181266,
+              "max": 0.013614634406853041
+            }
+          }
+        },
+        {
+          "dose_mg": 132.5,
+          "interval_h": 12.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 3.184667588855301,
+              "std": 0.28176417041722607,
+              "cv_percent": 8.847522152806647,
+              "min": 2.7975729056165437,
+              "max": 3.6368447773015076
+            },
+            "auc_mg_h_per_L": {
+              "mean": 403.5266797054065,
+              "std": 35.70211237942091,
+              "cv_percent": 8.847522152806635,
+              "min": 354.4782224015479,
+              "max": 460.82168912201206
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 2.4692673506428333,
+              "std": 0.21846897586014638,
+              "cv_percent": 8.847522152806643,
+              "min": 2.169129192967023,
+              "max": 2.8198679508571307
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.043316307105246706,
+              "std": 0.005488853259660662,
+              "cv_percent": 12.671563266749079,
+              "min": 0.0358874102483909,
+              "max": 0.05224165288599691
+            },
+            "auec_h": {
+              "mean": 4.961183225972581,
+              "std": 0.6358316037147562,
+              "cv_percent": 12.816128224937891,
+              "min": 4.101735783914053,
+              "max": 5.99636837352892
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.02944491367276475,
+              "std": 0.003773736948299685,
+              "cv_percent": 12.816260866779942,
+              "min": 0.02434399582253718,
+              "max": 0.035588868604934515
+            }
+          }
+        },
+        {
+          "dose_mg": 132.5,
+          "interval_h": 8.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 4.573631964280965,
+              "std": 0.4046531012276041,
+              "cv_percent": 8.847522152806645,
+              "min": 4.017709386157086,
+              "max": 5.223022202004213
+            },
+            "auc_mg_h_per_L": {
+              "mean": 597.2641048351526,
+              "std": 52.84307398605243,
+              "cv_percent": 8.847522152806645,
+              "min": 524.6669646249412,
+              "max": 682.0670540124238
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 3.943525043862364,
+              "std": 0.34890425185720053,
+              "cv_percent": 8.847522152806643,
+              "min": 3.464191633041079,
+              "max": 4.503449122953404
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.07214479241240027,
+              "std": 0.008847291111901818,
+              "cv_percent": 12.263242870432244,
+              "min": 0.06012655686659804,
+              "max": 0.08648178049992221
+            },
+            "auec_h": {
+              "mean": 8.710655191477462,
+              "std": 1.0854115232045436,
+              "cv_percent": 12.460733427567128,
+              "min": 7.238857236167994,
+              "max": 10.472532931286676
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.05171589483300487,
+              "std": 0.006444168380788212,
+              "cv_percent": 12.460711356918395,
+              "min": 0.042977719349077716,
+              "max": 0.06217629036343606
+            }
+          }
+        },
+        {
+          "dose_mg": 255.0,
+          "interval_h": 24.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 3.559026645444458,
+              "std": 0.31488567087998964,
+              "cv_percent": 8.847522152806645,
+              "min": 3.1264288142680448,
+              "max": 4.064357458548459
+            },
+            "auc_mg_h_per_L": {
+              "mean": 402.4058549180718,
+              "std": 35.60294715806741,
+              "cv_percent": 8.847522152806654,
+              "min": 353.4936332821168,
+              "max": 459.5417232667522
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 1.9543274666909458,
+              "std": 0.1729095555538664,
+              "cv_percent": 8.847522152806647,
+              "min": 1.7167799831448038,
+              "max": 2.2318139780882458
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.050748537558895454,
+              "std": 0.00637719039378862,
+              "cv_percent": 12.566254517950725,
+              "min": 0.042109176907031615,
+              "max": 0.061109195745177924
+            },
+            "auec_h": {
+              "mean": 4.936295625685644,
+              "std": 0.6322919556458381,
+              "cv_percent": 12.80903745626081,
+              "min": 4.081583714204067,
+              "max": 5.9656636264621765
+            },
+            "time_above_threshold_h": {
+              "mean": 91.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 91.0,
+              "max": 91.0
+            },
+            "mean_effect": {
+              "mean": 0.029271974204868285,
+              "std": 0.003749568052564677,
+              "cv_percent": 12.809412943323373,
+              "min": 0.024203445913227126,
+              "max": 0.03537627078082844
+            }
+          }
+        },
+        {
+          "dose_mg": 10.0,
+          "interval_h": 24.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 0.1395696723703709,
+              "std": 0.012348457681568214,
+              "cv_percent": 8.847522152806638,
+              "min": 0.12260505153992332,
+              "max": 0.15938656700190035
+            },
+            "auc_mg_h_per_L": {
+              "mean": 15.780621761493014,
+              "std": 1.3961940061987226,
+              "cv_percent": 8.847522152806658,
+              "min": 13.862495422828117,
+              "max": 18.021244049676568
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 0.07664029281140963,
+              "std": 0.006780766884465348,
+              "cv_percent": 8.847522152806647,
+              "min": 0.06732470522136486,
+              "max": 0.08752211678777433
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.0004165150083071939,
+              "std": 5.5313077241169946e-05,
+              "cv_percent": 13.279972182989066,
+              "min": 0.0003420582425512562,
+              "max": 0.0005069203053266011
+            },
+            "auec_h": {
+              "mean": 0.03975688547145073,
+              "std": 0.005280514782800618,
+              "cv_percent": 13.282013216534619,
+              "min": 0.03264893046760374,
+              "max": 0.04838765985472066
+            },
+            "time_above_threshold_h": {
+              "mean": 91.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 91.0,
+              "max": 91.0
+            },
+            "mean_effect": {
+              "mean": 0.00023574940873622422,
+              "std": 3.1312274971653195e-05,
+              "cv_percent": 13.282016332303058,
+              "min": 0.0001936008219961712,
+              "max": 0.00028692797728387126
+            }
+          }
+        },
+        {
+          "dose_mg": 10.75,
+          "interval_h": 24.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 0.15003739779814873,
+              "std": 0.01327459200768584,
+              "cv_percent": 8.847522152806645,
+              "min": 0.13180043040541756,
+              "max": 0.17134055952704288
+            },
+            "auc_mg_h_per_L": {
+              "mean": 16.964168393604986,
+              "std": 1.5009085566636253,
+              "cv_percent": 8.84752215280665,
+              "min": 14.902182579540218,
+              "max": 19.372837353402296
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 0.08238831477226535,
+              "std": 0.00728932440080025,
+              "cv_percent": 8.84752215280665,
+              "min": 0.07237405811296722,
+              "max": 0.09408627554685742
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.00046421715718221094,
+              "std": 6.164476638535575e-05,
+              "cv_percent": 13.279295138408559,
+              "min": 0.0003812368206267048,
+              "max": 0.0005649705776631764
+            },
+            "auec_h": {
+              "mean": 0.04431089676274354,
+              "std": 0.005885182715824068,
+              "cv_percent": 13.281569875092917,
+              "min": 0.036388983509941256,
+              "max": 0.05392993907682034
+            },
+            "time_above_threshold_h": {
+              "mean": 91.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 91.0,
+              "max": 91.0
+            },
+            "mean_effect": {
+              "mean": 0.00026275368076468595,
+              "std": 3.489782283445781e-05,
+              "cv_percent": 13.281573347667475,
+              "min": 0.0002157785009009129,
+              "max": 0.00031979246112411427
+            }
+          }
+        },
+        {
+          "dose_mg": 11.5,
+          "interval_h": 24.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 0.16050512322592653,
+              "std": 0.014200726333803445,
+              "cv_percent": 8.84752215280664,
+              "min": 0.14099580927091182,
+              "max": 0.18329455205218537
+            },
+            "auc_mg_h_per_L": {
+              "mean": 18.147715025716963,
+              "std": 1.6056231071285314,
+              "cv_percent": 8.847522152806661,
+              "min": 15.941869736252334,
+              "max": 20.724430657128043
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 0.08813633673312107,
+              "std": 0.007797881917135146,
+              "cv_percent": 8.847522152806643,
+              "min": 0.07742341100456959,
+              "max": 0.10065043430594048
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.0005136086177704465,
+              "std": 6.820000371082203e-05,
+              "cv_percent": 13.27859411839221,
+              "min": 0.0004218036661439291,
+              "max": 0.0006250753910704637
+            },
+            "auec_h": {
+              "mean": 0.04902635176250937,
+              "std": 0.006511244110391149,
+              "cv_percent": 13.281110823690376,
+              "min": 0.04026167518767046,
+              "max": 0.05966861967835475
+            },
+            "time_above_threshold_h": {
+              "mean": 91.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 91.0,
+              "max": 91.0
+            },
+            "mean_effect": {
+              "mean": 0.0002907152795351524,
+              "std": 3.8610229625773194e-05,
+              "cv_percent": 13.281114665699768,
+              "min": 0.0002387426982946361,
+              "max": 0.0003538215637200101
+            }
+          }
+        },
+        {
+          "dose_mg": 10.0,
+          "interval_h": 12.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 0.24035227085700384,
+              "std": 0.021265220408847235,
+              "cv_percent": 8.847522152806642,
+              "min": 0.21113757778238063,
+              "max": 0.27447885111709486
+            },
+            "auc_mg_h_per_L": {
+              "mean": 30.454843751351426,
+              "std": 2.6944990475034643,
+              "cv_percent": 8.847522152806633,
+              "min": 26.753073388796057,
+              "max": 34.77899540543487
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 0.18635980004851574,
+              "std": 0.016488224593218588,
+              "cv_percent": 8.847522152806638,
+              "min": 0.16370786362015272,
+              "max": 0.21282022270619855
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.0009407468630514545,
+              "std": 0.00012486092596865315,
+              "cv_percent": 13.27253173756518,
+              "min": 0.0007726607471275138,
+              "max": 0.0011448104294382588
+            },
+            "auec_h": {
+              "mean": 0.10656414012610378,
+              "std": 0.014147186620905266,
+              "cv_percent": 13.27574792436184,
+              "min": 0.08751993456804971,
+              "max": 0.12968589193970664
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.0006324579047207032,
+              "std": 8.396353648916433e-05,
+              "cv_percent": 13.275750980809239,
+              "min": 0.0005194305695079242,
+              "max": 0.0007696854789323186
+            }
+          }
+        },
+        {
+          "dose_mg": 10.75,
+          "interval_h": 12.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 0.25837869117127915,
+              "std": 0.022860111939510794,
+              "cv_percent": 8.847522152806647,
+              "min": 0.2269728961160592,
+              "max": 0.29506476495087697
+            },
+            "auc_mg_h_per_L": {
+              "mean": 32.73895703270279,
+              "std": 2.896586476066223,
+              "cv_percent": 8.847522152806627,
+              "min": 28.75955389295576,
+              "max": 37.387420060842494
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 0.2003367850521544,
+              "std": 0.01772484143771,
+              "cv_percent": 8.847522152806647,
+              "min": 0.17598595339166415,
+              "max": 0.22878173940916346
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.001048420293127165,
+              "std": 0.00013913589423187415,
+              "cv_percent": 13.271003541610968,
+              "min": 0.0008611148411723726,
+              "max": 0.0012758109054459917
+            },
+            "auec_h": {
+              "mean": 0.11876426395253303,
+              "std": 0.015765466284409956,
+              "cv_percent": 13.274587624027207,
+              "min": 0.09754139407709836,
+              "max": 0.14453063410654599
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.0007048656276666928,
+              "std": 9.356802938245938e-05,
+              "cv_percent": 13.274591029810374,
+              "min": 0.000578907916318049,
+              "max": 0.0008577890176307026
+            }
+          }
+        },
+        {
+          "dose_mg": 11.5,
+          "interval_h": 12.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 0.27640511148555447,
+              "std": 0.024455003470174336,
+              "cv_percent": 8.847522152806645,
+              "min": 0.2428082144497377,
+              "max": 0.3156506787846591
+            },
+            "auc_mg_h_per_L": {
+              "mean": 35.023070314054145,
+              "std": 3.098673904628989,
+              "cv_percent": 8.847522152806647,
+              "min": 30.76603439711545,
+              "max": 39.99584471625011
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 0.21431377005579305,
+              "std": 0.018961458282201388,
+              "cv_percent": 8.847522152806647,
+              "min": 0.18826404316317558,
+              "max": 0.2447432561121283
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.0011598922701447233,
+              "std": 0.00015391099357195273,
+              "cv_percent": 13.269421439695325,
+              "min": 0.000952693567765905,
+              "max": 0.0014114265724020183
+            },
+            "auec_h": {
+              "mean": 0.13139550249196214,
+              "std": 0.017440632692545983,
+              "cv_percent": 13.2733863502009,
+              "min": 0.1079173348427621,
+              "max": 0.15989940188105944
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.000779832020035065,
+              "std": 0.00010351014628072849,
+              "cv_percent": 13.273390117537643,
+              "min": 0.000640489111515645,
+              "max": 0.0009490026539592854
+            }
+          }
+        },
+        {
+          "dose_mg": 10.0,
+          "interval_h": 8.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 0.34517977088912943,
+              "std": 0.030539856696422944,
+              "cv_percent": 8.847522152806643,
+              "min": 0.303223349898648,
+              "max": 0.3941903548682425
+            },
+            "auc_mg_h_per_L": {
+              "mean": 45.07653621397379,
+              "std": 3.9881565272492416,
+              "cv_percent": 8.847522152806647,
+              "min": 39.59750676414652,
+              "max": 51.47675879339051
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 0.2976245316122539,
+              "std": 0.026332396366581183,
+              "cv_percent": 8.847522152806645,
+              "min": 0.26144842513517574,
+              "max": 0.3398829526757286
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.0016179069407726988,
+              "std": 0.00021458171919628693,
+              "cv_percent": 13.262920986902033,
+              "min": 0.001329015019920644,
+              "max": 0.001968575306017348
+            },
+            "auec_h": {
+              "mean": 0.19234839679171,
+              "std": 0.025519892000729946,
+              "cv_percent": 13.267535589789652,
+              "min": 0.15799232091303198,
+              "max": 0.23405449255322708
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.0011419899259255922,
+              "std": 0.00015151391820260516,
+              "cv_percent": 13.267535445183713,
+              "min": 0.0009380147806855874,
+              "max": 0.0013896028066412202
+            }
+          }
+        },
+        {
+          "dose_mg": 10.75,
+          "interval_h": 8.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 0.3710682537058142,
+              "std": 0.03283034594865469,
+              "cv_percent": 8.84752215280665,
+              "min": 0.3259651011410466,
+              "max": 0.4237546314833607
+            },
+            "auc_mg_h_per_L": {
+              "mean": 48.45727643002183,
+              "std": 4.28726826679294,
+              "cv_percent": 8.847522152806658,
+              "min": 42.567319771457534,
+              "max": 55.33751570289479
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 0.319946371483173,
+              "std": 0.028307326094074783,
+              "cv_percent": 8.847522152806647,
+              "min": 0.28105705702031397,
+              "max": 0.36537417412640827
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.0018029353420979607,
+              "std": 0.00023907454448262477,
+              "cv_percent": 13.260294970114069,
+              "min": 0.0014810610967448824,
+              "max": 0.0021936211427050893
+            },
+            "auec_h": {
+              "mean": 0.2143544395456463,
+              "std": 0.02843505266069269,
+              "cv_percent": 13.265436778899794,
+              "min": 0.1760731180663192,
+              "max": 0.2608238419010773
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.0012726418016206645,
+              "std": 0.0001688214915519612,
+              "cv_percent": 13.265436616726953,
+              "min": 0.0010453621170183666,
+              "max": 0.0015485348657109288
+            }
+          }
+        },
+        {
+          "dose_mg": 11.5,
+          "interval_h": 8.0,
+          "score": 0.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 0.39695673652249885,
+              "std": 0.03512083520088637,
+              "cv_percent": 8.84752215280664,
+              "min": 0.34870685238344523,
+              "max": 0.4533189080984788
+            },
+            "auc_mg_h_per_L": {
+              "mean": 51.83801664606985,
+              "std": 4.586380006336625,
+              "cv_percent": 8.847522152806642,
+              "min": 45.53713277876849,
+              "max": 59.19827261239908
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 0.34226821135409197,
+              "std": 0.030282255821568346,
+              "cv_percent": 8.847522152806642,
+              "min": 0.30066568890545214,
+              "max": 0.3908653955770878
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.0019944589156505998,
+              "std": 0.00026441692227356406,
+              "cv_percent": 13.257576789307304,
+              "min": 0.0016384566919675613,
+              "max": 0.0024265483249435184
+            },
+            "auec_h": {
+              "mean": 0.23713482171617675,
+              "std": 0.031451817903826604,
+              "cv_percent": 13.263264195534653,
+              "min": 0.1947912891207854,
+              "max": 0.28853337320926287
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.001407891000445429,
+              "std": 0.0001867323004318787,
+              "cv_percent": 13.263264014955723,
+              "min": 0.0011564935999100452,
+              "max": 0.001713048869965799
+            }
+          }
+        },
+        {
+          "dose_mg": 255.0,
+          "interval_h": 12.0,
+          "score": 50.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 6.128982906853599,
+              "std": 0.5422631204256048,
+              "cv_percent": 8.847522152806645,
+              "min": 5.3840082334507064,
+              "max": 6.999210703485919
+            },
+            "auc_mg_h_per_L": {
+              "mean": 776.5985156594614,
+              "std": 68.7097257113385,
+              "cv_percent": 8.847522152806654,
+              "min": 682.2033714142992,
+              "max": 886.8643828385893
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 4.752174901237151,
+              "std": 0.4204497271270743,
+              "cv_percent": 8.847522152806645,
+              "min": 4.1745505223138935,
+              "max": 5.426915679008063
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.10736373737741903,
+              "std": 0.01263131670693376,
+              "cv_percent": 11.764974856017266,
+              "min": 0.09012855517922157,
+              "max": 0.12774666072781177
+            },
+            "auec_h": {
+              "mean": 12.509573345786421,
+              "std": 1.514864529816092,
+              "cv_percent": 12.109641855422202,
+              "min": 10.449035364369989,
+              "max": 14.96135090550325
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.0742461859256861,
+              "std": 0.008991168010915427,
+              "cv_percent": 12.109939249828665,
+              "min": 0.06201631597051403,
+              "max": 0.08879824375836336
+            }
+          }
+        },
+        {
+          "dose_mg": 255.0,
+          "interval_h": 8.0,
+          "score": 50.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 8.802084157672802,
+              "std": 0.7787663457587851,
+              "cv_percent": 8.847522152806643,
+              "min": 7.732195422415524,
+              "max": 10.051854049140182
+            },
+            "auc_mg_h_per_L": {
+              "mean": 1149.4516734563317,
+              "std": 101.69799144485573,
+              "cv_percent": 8.847522152806652,
+              "min": 1009.7364224857363,
+              "max": 1312.6573492314576
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 7.5894255561124755,
+              "std": 0.6714761073478204,
+              "cv_percent": 8.847522152806647,
+              "min": 6.666934840946983,
+              "max": 8.66701529323108
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.17070815655787286,
+              "std": 0.018556533221295315,
+              "cv_percent": 10.870326055570958,
+              "min": 0.14518467574417745,
+              "max": 0.2004260092000171
+            },
+            "auec_h": {
+              "mean": 21.082059090282673,
+              "std": 2.3841521873475386,
+              "cv_percent": 11.3089152114485,
+              "min": 17.816017775995736,
+              "max": 24.9149880198489
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.12516547223182237,
+              "std": 0.014154728296946743,
+              "cv_percent": 11.3088122822965,
+              "min": 0.1057749364543057,
+              "max": 0.1479215682780221
+            }
+          }
+        },
+        {
+          "dose_mg": 377.5,
+          "interval_h": 24.0,
+          "score": 50.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 5.268755131981502,
+              "std": 0.4661542774792007,
+              "cv_percent": 8.84752215280665,
+              "min": 4.6283406956321045,
+              "max": 6.016842904321738
+            },
+            "auc_mg_h_per_L": {
+              "mean": 595.7184714963612,
+              "std": 52.70632373400171,
+              "cv_percent": 8.847522152806647,
+              "min": 523.3092022117612,
+              "max": 680.30196287529
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 2.893171053630714,
+              "std": 0.25597394988856675,
+              "cv_percent": 8.847522152806643,
+              "min": 2.541507622106523,
+              "max": 3.3039599087384808
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.08760819953687292,
+              "std": 0.010551877441247946,
+              "cv_percent": 12.044394813532067,
+              "min": 0.07324633197419982,
+              "max": 0.10467587107376883
+            },
+            "auec_h": {
+              "mean": 8.643436547568426,
+              "std": 1.0766050063938588,
+              "cv_percent": 12.455751835150911,
+              "min": 7.183545790097001,
+              "max": 10.390986995101368
+            },
+            "time_above_threshold_h": {
+              "mean": 91.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 91.0,
+              "max": 91.0
+            },
+            "mean_effect": {
+              "mean": 0.051256256161160044,
+              "std": 0.006384681226734471,
+              "cv_percent": 12.45639401882912,
+              "min": 0.04259859325159188,
+              "max": 0.06161995806997103
+            }
+          }
+        },
+        {
+          "dose_mg": 377.5,
+          "interval_h": 12.0,
+          "score": 50.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 9.073298224851895,
+              "std": 0.8027620704339837,
+              "cv_percent": 8.847522152806649,
+              "min": 7.970443561284869,
+              "max": 10.361576629670331
+            },
+            "auc_mg_h_per_L": {
+              "mean": 1149.6703516135162,
+              "std": 101.7173390432556,
+              "cv_percent": 8.847522152806619,
+              "min": 1009.9285204270512,
+              "max": 1312.9070765551653
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 7.035082451831468,
+              "std": 0.6224304783940023,
+              "cv_percent": 8.84752215280665,
+              "min": 6.179971851660763,
+              "max": 8.033963407158996
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.177160279876971,
+              "std": 0.019096651264769587,
+              "cv_percent": 10.77930745990651,
+              "min": 0.15087251018479542,
+              "max": 0.2077194465882943
+            },
+            "auec_h": {
+              "mean": 21.04636049828326,
+              "std": 2.382943417522276,
+              "cv_percent": 11.322353894473352,
+              "min": 17.782415241606543,
+              "max": 24.877844716448138
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.12491530094014651,
+              "std": 0.014143891972353488,
+              "cv_percent": 11.322785812388645,
+              "min": 0.10554231567907604,
+              "max": 0.14765703904881763
+            }
+          }
+        },
+        {
+          "dose_mg": 377.5,
+          "interval_h": 8.0,
+          "score": 50.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 13.030536351064637,
+              "std": 1.1528795902899664,
+              "cv_percent": 8.847522152806645,
+              "min": 11.446681458673963,
+              "max": 14.880685896276153
+            },
+            "auc_mg_h_per_L": {
+              "mean": 1701.6392420775105,
+              "std": 150.55290890365927,
+              "cv_percent": 8.84752215280667,
+              "min": 1494.8058803465308,
+              "max": 1943.2476444504914
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 11.235326068362586,
+              "std": 0.9940479628384394,
+              "cv_percent": 8.847522152806643,
+              "min": 9.869678048852887,
+              "max": 12.830581463508754
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.26847053875241045,
+              "std": 0.02548671558015331,
+              "cv_percent": 9.493300716939274,
+              "min": 0.23298094501400557,
+              "max": 0.30881005699206876
+            },
+            "auec_h": {
+              "mean": 33.95290893102609,
+              "std": 3.4412670419776448,
+              "cv_percent": 10.135411516487245,
+              "min": 29.189925613567393,
+              "max": 39.43152001990225
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.20157903923514464,
+              "std": 0.02043038534708742,
+              "cv_percent": 10.135173490560744,
+              "min": 0.1733016954555293,
+              "max": 0.23410478612334062
+            }
+          }
+        },
+        {
+          "dose_mg": 500.0,
+          "interval_h": 24.0,
+          "score": 50.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 6.9784836185185455,
+              "std": 0.6174228840784111,
+              "cv_percent": 8.847522152806645,
+              "min": 6.130252576996166,
+              "max": 7.969328350095017
+            },
+            "auc_mg_h_per_L": {
+              "mean": 789.0310880746507,
+              "std": 69.80970030993599,
+              "cv_percent": 8.84752215280664,
+              "min": 693.1247711414061,
+              "max": 901.0622024838275
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 3.832014640570482,
+              "std": 0.3390383442232674,
+              "cv_percent": 8.847522152806647,
+              "min": 3.366235261068243,
+              "max": 4.376105839388717
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.1273114112653969,
+              "std": 0.014619210710017136,
+              "cv_percent": 11.483032482878947,
+              "min": 0.1073133989691171,
+              "max": 0.15084587426176557
+            },
+            "auec_h": {
+              "mean": 12.758863353745294,
+              "std": 1.5397650979398592,
+              "cv_percent": 12.068199613470032,
+              "min": 10.66376241388646,
+              "max": 15.250180479652593
+            },
+            "time_above_threshold_h": {
+              "mean": 91.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 91.0,
+              "max": 91.0
+            },
+            "mean_effect": {
+              "mean": 0.07566291967183077,
+              "std": 0.009131850219632429,
+              "cv_percent": 12.06912217931792,
+              "min": 0.06323765502244785,
+              "max": 0.09043823428438234
+            }
+          }
+        },
+        {
+          "dose_mg": 500.0,
+          "interval_h": 12.0,
+          "score": 50.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 12.017613542850194,
+              "std": 1.063261020442362,
+              "cv_percent": 8.847522152806642,
+              "min": 10.556878889119032,
+              "max": 13.723942555854745
+            },
+            "auc_mg_h_per_L": {
+              "mean": 1522.7421875675718,
+              "std": 134.72495237517347,
+              "cv_percent": 8.847522152806647,
+              "min": 1337.6536694398033,
+              "max": 1738.9497702717442
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 9.317990002425786,
+              "std": 0.8244112296609296,
+              "cv_percent": 8.847522152806643,
+              "min": 8.185393181007635,
+              "max": 10.641011135309927
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.2457891049668553,
+              "std": 0.024117774914431355,
+              "cv_percent": 9.812385670098617,
+              "min": 0.21230129343422302,
+              "max": 0.2840662656977468
+            },
+            "auec_h": {
+              "mean": 29.785681879420686,
+              "std": 3.1361150405057026,
+              "cv_percent": 10.528934852663168,
+              "min": 25.460091762256393,
+              "max": 34.79500304650734
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.17678797261363788,
+              "std": 0.018614802138149953,
+              "cv_percent": 10.52945054063817,
+              "min": 0.1511129916852972,
+              "max": 0.20652152888207986
+            }
+          }
+        },
+        {
+          "dose_mg": 500.0,
+          "interval_h": 8.0,
+          "score": 50.0,
+          "pk_summary": {
+            "cmax_mg_per_L": {
+              "mean": 17.258988544456475,
+              "std": 1.5269928348211481,
+              "cv_percent": 8.847522152806647,
+              "min": 15.1611674949324,
+              "max": 19.709517743412125
+            },
+            "auc_mg_h_per_L": {
+              "mean": 2253.8268106986893,
+              "std": 199.40782636246234,
+              "cv_percent": 8.84752215280666,
+              "min": 1979.8753382073257,
+              "max": 2573.837939669524
+            },
+            "cmin_steady_state_mg_per_L": {
+              "mean": 14.881226580612696,
+              "std": 1.3166198183290598,
+              "cv_percent": 8.84752215280665,
+              "min": 13.072421256758789,
+              "max": 16.994147633786433
+            }
+          },
+          "pd_summary": {
+            "max_effect": {
+              "mean": 0.3561000806696848,
+              "std": 0.02942337674867604,
+              "cv_percent": 8.262670621512411,
+              "min": 0.3146764449742142,
+              "max": 0.4021809185047425
+            },
+            "auec_h": {
+              "mean": 46.06879051449913,
+              "std": 4.1709573376670415,
+              "cv_percent": 9.05375915253153,
+              "min": 40.24139425976068,
+              "max": 52.649871612907944
+            },
+            "time_above_threshold_h": {
+              "mean": 95.0,
+              "std": 0.0,
+              "cv_percent": 0.0,
+              "min": 95.0,
+              "max": 95.0
+            },
+            "mean_effect": {
+              "mean": 0.27350852009765136,
+              "std": 0.024761706129738142,
+              "cv_percent": 9.053358235749808,
+              "min": 0.23891285093367498,
+              "max": 0.31257818312917635
+            }
+          }
+        }
+      ],
+      "search_strategy": "coarse_to_fine",
+      "evaluations": 24,
+      "coarse_evaluations": 15,
+      "fine_evaluations": 9,
+      "target_achievement": {},
+      "constitutional": {
+        "status": "OPTIMIZED",
+        "engine": "DOSE_OPTIMIZER_V2_COARSE_TO_FINE",
+        "notes": "Coarse-to-fine grid search. All evaluations based on virtual trials with IIV. L51: No fabricated values. L34: Optimization explicitly labeled VIRTUAL."
+      },
+      "sign_off": {
+        "engine_id": "DOSE_OPT_V2",
+        "version": "2.1-HOLISTIC",
+        "timestamp": "2026-02-12T15:38:10.210508+00:00",
+        "execution_time_ms": 116,
+        "status": "PASSED",
+        "authorized": true,
+        "laws_checked": [
+          "L11"
+        ],
+        "laws_passed": [
+          "L11"
+        ],
+        "laws_failed": [],
+        "reason": "All laws passed",
+        "input_hash": "sha256:be3f075731938e22",
+        "output_hash": "sha256:430fdec7ea2c6d16",
+        "signature": "sha256:a06fee92db4f865b"
+      },
+      "engine_id": "DOSE_OPTIMIZER_V2",
+      "status": "PASSED"
+    },
+    "virtual_efficacy": {
+      "pta": {
+        "pta": 0.0,
+        "n_responders": 0,
+        "n_total": 21,
+        "threshold": 250.0,
+        "metric": "auc_mg_h_per_L",
+        "arm_id": null,
+        "constitutional": {
+          "status": "COMPUTED",
+          "engine": "VIRTUAL_EFFICACY_PTA_V2.0",
+          "notes": "PTA computed from virtual trial simulations. Approximates using population distribution. L51: No fabricated individual patient data. L34: PTA explicitly labeled VIRTUAL."
+        }
+      },
+      "responder_rate": {
+        "responder_rate": 0.0,
+        "n_responders": 0,
+        "n_total": 21,
+        "response_metric": "max_effect",
+        "responder_threshold": 0.5,
+        "arm_id": null,
+        "constitutional": {
+          "status": "COMPUTED",
+          "engine": "VIRTUAL_EFFICACY_RESPONDER_RATE_V2.0",
+          "notes": "Virtual responder rate from simulated PD data. No clinical efficacy endpoints. L51: No fabricated response data. L34: Responder rate explicitly labeled VIRTUAL."
+        }
+      },
+      "effect_variability": {
+        "risks_by_arm": [
+          {
+            "arm_id": "treatment",
+            "effect_metric": "max_effect",
+            "mean": 0.00044493199789425516,
+            "std": 0.0001570496273853839,
+            "cv_percent": 35.29744503174823,
+            "min": 0.0002438195474908798,
+            "max": 0.0008012694951295746,
+            "over_response_risk": "NONE",
+            "under_response_risk": "NONE",
+            "variability_risk": "MEDIUM"
+          }
+        ],
+        "safety_threshold": null,
+        "efficacy_threshold": null,
+        "constitutional": {
+          "status": "COMPUTED",
+          "engine": "VIRTUAL_EFFICACY_RISK_V2.0",
+          "notes": "Risk assessment from virtual PD data. No clinical safety endpoints. L51: Based on simulated effect distributions. L34: Risk explicitly labeled VIRTUAL."
+        }
+      }
     }
   },
   "harm_energy": 0.2968985,
   "zeus": {},
   "context": {
-    "physics_snapshot": null,
+    "physics_snapshot": {
+      "p_vector": [
+        0.1,
+        0.0,
+        35.0,
+        1.0
+      ],
+      "csa_scores": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "coherence": 1.0,
+      "manifold_id": "35D_GAIP_CORE"
+    },
     "law_l1_overrode_external": false
   },
   "fda_compliance": "2026.01.14",
-  "constitutional_seal": "e3785ef20caff203e90bec28612f8280a9bcb0ba864a07ec50474a5597c4f0df",
-  "refinery_status": "SKIP_NO_SMILES"
+  "constitutional_seal": "5a90e618cfb2c329d50622ce5d96bff3228a0fac50c7fa90feb8bb9035d4d8c9",
+  "prv_eligible": false,
+  "regulatory_pathway": "STANDARD_FDA",
+  "discovery_grading": {
+    "grading_version": "WeightedGradingEngine_v2.0",
+    "grade": "REJECTED",
+    "percentage": 0.0,
+    "total_score": 0,
+    "max_score": 100,
+    "hard_limit_checks": {
+      "rejected": true,
+      "toxicity_failed": true,
+      "herg_failed": false,
+      "zeus_failed": false,
+      "constitutional_failed": false,
+      "rejection_reasons": [
+        "Law L11: toxicity 0.296899 >= 0.021"
+      ]
+    },
+    "category_scores": {},
+    "reasoning": {
+      "grade": "REJECTED",
+      "strengths": [],
+      "weaknesses": [
+        "Law L11: toxicity 0.296899 >= 0.021"
+      ],
+      "summary": "REJECTED due to hard limit violation(s): Law L11: toxicity 0.296899 >= 0.021"
+    },
+    "metrics": {
+      "ec50": 24.21882824,
+      "binding_affinity_nM": 19.37506259,
+      "emax": 0.95,
+      "molecular_weight": 360.2919999999999,
+      "logp": 3.8527,
+      "hbd": 2.0,
+      "hba": 2.0,
+      "binding_affinity_score": null,
+      "toxicity_index": 0.2968985,
+      "safety_margin": 0.96124166,
+      "herg_risk": 0.48527,
+      "bioavailability": 0.9,
+      "half_life_h": 4.62,
+      "clearance_mL_min_kg": 2.501642857142857,
+      "vd_L_per_kg": 1.6722,
+      "qed": null,
+      "lipinski_violations": 0,
+      "synthesis_steps": null,
+      "fto_status": "clear",
+      "constraint_violations": []
+    },
+    "sign_off": {
+      "engine_id": "GRADING_ENGINE_V2",
+      "version": "v2.0-weighted",
+      "timestamp": "2026-02-12T15:38:10.259741+00:00",
+      "execution_time_ms": 0,
+      "status": "FAILED",
+      "authorized": false,
+      "laws_checked": [
+        "L11",
+        "GRADE_RULES"
+      ],
+      "laws_passed": [],
+      "laws_failed": [
+        "L11",
+        "GRADE_RULES"
+      ],
+      "reason": "Laws failed: ['L11', 'GRADE_RULES']",
+      "input_hash": "sha256:44136fa355b3678a",
+      "output_hash": "sha256:272e746b1593bab4",
+      "signature": "sha256:a1d6bff30f5a82d9"
+    },
+    "timestamp": "2026-02-12T15:38:10.259767+00:00",
+    "grading_engine_version": "v2.0-weighted",
+    "engine_id": "GRADING_ENGINE_V2",
+    "status": "PASSED"
+  },
+  "zeus_verdict": {
+    "authorized": false,
+    "operation": "zeus_gate",
+    "rationale": "One or more laws failed and whole profile did not pass",
+    "timestamp": "2026-02-12T15:38:10.259826+00:00",
+    "laws_required": [
+      "L1_HARM_LAW",
+      "U27_STABILITY_LAW",
+      "U34_GLOBAL_SUM",
+      "L11_DETERMINISTIC_ENGINE"
+    ],
+    "laws_results": {
+      "L11_DETERMINISTIC_ENGINE": {
+        "passed": false,
+        "reason": "toxicity_index 0.2968985 >= 0.021"
+      },
+      "L1_HARM_LAW": {
+        "passed": false,
+        "reason": "harm_energy 0.2968985 >= 0.021"
+      },
+      "U34_GLOBAL_SUM": {
+        "passed": true,
+        "reason": "causal_trace or engines present"
+      },
+      "U27_STABILITY_LAW": {
+        "passed": true,
+        "reason": "OPE and ADMET outputs present"
+      },
+      "TRIAL_TOXICITY": {
+        "passed": true,
+        "reason": "trial not run"
+      },
+      "TRIAL_HARM_ENERGY": {
+        "passed": true,
+        "reason": "trial not run"
+      },
+      "TRIAL_STABILITY": {
+        "passed": true,
+        "reason": "trial not run"
+      }
+    },
+    "whole_profile_passed": false,
+    "all_single_passed": false,
+    "toxicity_index": 0.2968985,
+    "harm_energy": 0.2968985,
+    "verdict_field": "zeus_verdict",
+    "engine_id": "ZEUS_GATE_V1",
+    "status": "PASSED"
+  },
+  "authorization_chain": {
+    "authorization_chain": [
+      {
+        "engine_id": "OPE_V3_DETERMINISTIC",
+        "version": "3.0-CORE-RDKIT",
+        "timestamp": "2026-02-12T15:38:10.091139+00:00",
+        "execution_time_ms": 0,
+        "status": "PASSED",
+        "authorized": true,
+        "laws_checked": [
+          "U27",
+          "U34"
+        ],
+        "laws_passed": [
+          "U27",
+          "U34"
+        ],
+        "laws_failed": [],
+        "reason": "All laws passed",
+        "input_hash": "sha256:be3f075731938e22",
+        "output_hash": "sha256:e112c2687f333430",
+        "signature": "sha256:88a1a687476e1475"
+      },
+      {
+        "engine_id": "OBE_V3_DETERMINISTIC",
+        "version": "3.0-CORE",
+        "timestamp": "2026-02-12T15:38:10.091550+00:00",
+        "execution_time_ms": 0,
+        "status": "PASSED",
+        "authorized": true,
+        "laws_checked": [
+          "U27",
+          "L1"
+        ],
+        "laws_passed": [
+          "U27",
+          "L1"
+        ],
+        "laws_failed": [],
+        "reason": "All laws passed",
+        "input_hash": "sha256:309ed28d525ae999",
+        "output_hash": "sha256:e2757a04c204b605",
+        "signature": "sha256:d37874571349a06e"
+      },
+      {
+        "engine_id": "OCE_V3_DETERMINISTIC",
+        "version": "3.0-CORE",
+        "timestamp": "2026-02-12T15:38:10.091658+00:00",
+        "execution_time_ms": 0,
+        "status": "PASSED",
+        "authorized": true,
+        "laws_checked": [
+          "L1"
+        ],
+        "laws_passed": [
+          "L1"
+        ],
+        "laws_failed": [],
+        "reason": "All laws passed",
+        "input_hash": "sha256:0e79587a1796d53d",
+        "output_hash": "sha256:e46318a4710d19e7",
+        "signature": "sha256:8355b23ab97bf871"
+      },
+      {
+        "engine_id": "OLE_V3_DETERMINISTIC",
+        "version": "3.0-CORE",
+        "timestamp": "2026-02-12T15:38:10.091730+00:00",
+        "execution_time_ms": 0,
+        "status": "PASSED",
+        "authorized": true,
+        "laws_checked": [
+          "L11",
+          "FTO"
+        ],
+        "laws_passed": [
+          "L11",
+          "FTO"
+        ],
+        "laws_failed": [],
+        "reason": "All laws passed",
+        "input_hash": "sha256:a61906f3007c4757",
+        "output_hash": "sha256:6bc5b89ffdd9cb96",
+        "signature": "sha256:e876e0fdc170e6a6"
+      },
+      {
+        "engine_id": "OME_V3_DETERMINISTIC",
+        "version": "3.0-CORE",
+        "timestamp": "2026-02-12T15:38:10.092050+00:00",
+        "execution_time_ms": 0,
+        "status": "PASSED",
+        "authorized": true,
+        "laws_checked": [
+          "U27"
+        ],
+        "laws_passed": [
+          "U27"
+        ],
+        "laws_failed": [],
+        "reason": "All laws passed",
+        "input_hash": "sha256:309ed28d525ae999",
+        "output_hash": "sha256:1b845b804360a0c9",
+        "signature": "sha256:2399843f024fc539"
+      },
+      {
+        "engine_id": "OSE_V3_DETERMINISTIC",
+        "version": "3.0-CORE",
+        "timestamp": "2026-02-12T15:38:10.092353+00:00",
+        "execution_time_ms": 0,
+        "status": "FAILED",
+        "authorized": false,
+        "laws_checked": [
+          "L11"
+        ],
+        "laws_passed": [],
+        "laws_failed": [
+          "L11"
+        ],
+        "reason": "Laws failed: ['L11']",
+        "input_hash": "sha256:309ed28d525ae999",
+        "output_hash": "sha256:0ea0db6a687ad828",
+        "signature": "sha256:0079be01f89dd94b"
+      },
+      {
+        "engine_id": "OPE_ADMET_V3_DETERMINISTIC",
+        "version": "3.0-CORE-DETERMINISTIC",
+        "timestamp": "2026-02-12T15:38:10.092432+00:00",
+        "execution_time_ms": 0,
+        "status": "FAILED",
+        "authorized": false,
+        "laws_checked": [
+          "L11"
+        ],
+        "laws_passed": [],
+        "laws_failed": [
+          "L11"
+        ],
+        "reason": "Laws failed: ['L11']",
+        "input_hash": "sha256:be3f075731938e22",
+        "output_hash": "sha256:8e412759d7266e80",
+        "signature": "sha256:fd79d5cbc9f0713f"
+      },
+      {
+        "engine_id": "PKPD_EMAX_V2",
+        "version": "2.0-PHASE1",
+        "timestamp": "2026-02-12T15:38:10.093121+00:00",
+        "execution_time_ms": 0,
+        "status": "PASSED",
+        "authorized": true,
+        "laws_checked": [
+          "U27"
+        ],
+        "laws_passed": [
+          "U27"
+        ],
+        "laws_failed": [],
+        "reason": "All laws passed",
+        "input_hash": "sha256:a66a4c56b5117201",
+        "output_hash": "sha256:b91ed653243f41b1",
+        "signature": "sha256:da3398a1756cba78"
+      },
+      {
+        "engine_id": "DOSE_OPT_V2",
+        "version": "2.1-HOLISTIC",
+        "timestamp": "2026-02-12T15:38:10.210508+00:00",
+        "execution_time_ms": 116,
+        "status": "PASSED",
+        "authorized": true,
+        "laws_checked": [
+          "L11"
+        ],
+        "laws_passed": [
+          "L11"
+        ],
+        "laws_failed": [],
+        "reason": "All laws passed",
+        "input_hash": "sha256:be3f075731938e22",
+        "output_hash": "sha256:430fdec7ea2c6d16",
+        "signature": "sha256:a06fee92db4f865b"
+      },
+      {
+        "engine_id": "TRIAL_ENGINE_V1",
+        "version": "1.0-EXPOSURE",
+        "timestamp": "2026-02-12T15:38:10.225695+00:00",
+        "execution_time_ms": 14,
+        "status": "PASSED",
+        "authorized": true,
+        "laws_checked": [
+          "L11",
+          "L34"
+        ],
+        "laws_passed": [
+          "L11",
+          "L34"
+        ],
+        "laws_failed": [],
+        "reason": "All laws passed",
+        "input_hash": "sha256:9ed4d85ebeb5398c",
+        "output_hash": "sha256:e85a0717584c6b5b",
+        "signature": "sha256:82b3be2757e7203f"
+      },
+      {
+        "engine_id": "GRADING_ENGINE_V2",
+        "version": "v2.0-weighted",
+        "timestamp": "2026-02-12T15:38:10.259741+00:00",
+        "execution_time_ms": 0,
+        "status": "FAILED",
+        "authorized": false,
+        "laws_checked": [
+          "L11",
+          "GRADE_RULES"
+        ],
+        "laws_passed": [],
+        "laws_failed": [
+          "L11",
+          "GRADE_RULES"
+        ],
+        "reason": "Laws failed: ['L11', 'GRADE_RULES']",
+        "input_hash": "sha256:44136fa355b3678a",
+        "output_hash": "sha256:272e746b1593bab4",
+        "signature": "sha256:a1d6bff30f5a82d9"
+      }
+    ],
+    "all_engines_authorized": false,
+    "authorization_count": "8/11"
+  }
 }
