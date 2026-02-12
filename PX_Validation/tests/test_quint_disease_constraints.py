@@ -85,12 +85,12 @@ class TestLoadDiseaseConstraint(unittest.TestCase):
 
 
 class TestLoadAllDiseaseConstraints(unittest.TestCase):
-    """Tests for loading all 22 disease constraint files."""
+    """Tests for loading all 33 disease constraint files."""
 
     def test_load_all_count(self):
-        """load_all_disease_constraints returns exactly 22 entries."""
+        """load_all_disease_constraints returns exactly 33 entries."""
         constraints = load_all_disease_constraints()
-        self.assertEqual(len(constraints), 22)
+        self.assertEqual(len(constraints), 33)
 
     def test_load_all_types(self):
         """All loaded constraints are QFrame with QCONSTRAINT type."""
@@ -162,13 +162,13 @@ class TestEvaluateMolecule(unittest.TestCase):
 
 
 class TestEvaluateAgainstAll(unittest.TestCase):
-    """Tests for evaluating molecules against all 22 constraints."""
+    """Tests for evaluating molecules against all 33 constraints."""
 
-    def test_evaluate_against_all_returns_22(self):
-        """evaluate_molecule_against_all returns results for all 22 diseases."""
+    def test_evaluate_against_all_returns_33(self):
+        """evaluate_molecule_against_all returns results for all 33 diseases."""
         mol = _make_molecule(toxicity=0.005, mw=300.0, logp=2.0, hbd=2, hba=4)
         results = evaluate_molecule_against_all(mol)
-        self.assertEqual(len(results), 22)
+        self.assertEqual(len(results), 33)
 
     def test_get_eligible_diseases_safe_molecule(self):
         """A safe molecule is eligible for at least some diseases."""
@@ -184,12 +184,12 @@ class TestConstraintSummary(unittest.TestCase):
     """Tests for the constraint summary function."""
 
     def test_get_constraint_summary(self):
-        """Summary has count=22 and expected structure."""
+        """Summary has count=33 and expected structure."""
         summary = get_constraint_summary()
-        self.assertEqual(summary["count"], 22)
+        self.assertEqual(summary["count"], 33)
         self.assertIn("disease_ids", summary)
         self.assertIn("versions", summary)
-        self.assertEqual(len(summary["disease_ids"]), 22)
+        self.assertEqual(len(summary["disease_ids"]), 33)
         self.assertIn("nipah_virus_infection", summary["disease_ids"])
 
 

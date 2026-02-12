@@ -1,5 +1,5 @@
 """
-QUINT Engine Adapter — Thin wrappers for all 12 PRV pipeline engines.
+QUINT Engine Adapter — Thin wrappers for ALL engines in the Predator X system.
 
 Each q_run_* function accepts EITHER a QFrame or a plain dict (backward compatible),
 calls the existing engine function unchanged, and wraps the result in a QFrame
@@ -11,9 +11,13 @@ Design:
   - Preserves sign_off blocks inside the QFrame payload
   - Python stdlib only for the adapter itself (constitutional module)
 
-The 12 engines in PRV pipeline order:
+PRV pipeline engines (1-12):
   OPE -> OBE -> OCE -> OLE -> OME -> OSE -> ADMET -> PKPD ->
   DoseOptimizer_v2 -> VirtualEfficacyAnalytics -> GradingEngine -> ZeusLaws
+
+Auxiliary engines (13-20):
+  VectorCore, SimulationEngine, TrialEngine, CheckConstitutional,
+  EvidencePackage, WrapTrialSimulation, Metabolism, BlockOrchestrator
 """
 
 from __future__ import annotations
@@ -320,12 +324,225 @@ def q_run_zeus(dossier_or_frame):
     return _wrap_result(result, "ZEUS_GATE_V1", "Zeus", "ZeusLaws")
 
 
+# ===========================================================================
+# AUXILIARY ENGINES (13-20) — Physics, Simulation, Trial, Governance, etc.
+# ===========================================================================
+
+
+# ---------------------------------------------------------------------------
+# 13. VectorCore — VectorCore().execute(p_array, physical_descriptors)
+# ---------------------------------------------------------------------------
+
+def q_run_vector_core(input_data, physical_descriptors=None):
+    """
+    QUINT-wrapped VectorCore physics engine.
+
+    Args:
+        input_data: QFrame or dict containing {"p_vector": [...]}.
+                    Also accepts a plain list as the p_vector directly.
+        physical_descriptors: Optional dict of physical descriptors.
+    """
+    from PX_Engine.Vector_Core import VectorCore
+
+    if isinstance(input_data, list):
+        p_vector = input_data
+    else:
+        payload = _unwrap(input_data)
+        p_vector = payload.get("p_vector", [0.1, 0.0, 35.0, 1.0])
+        if physical_descriptors is None:
+            physical_descriptors = payload.get("physical_descriptors")
+
+    core = VectorCore()
+    result = core.execute(p_vector, physical_descriptors=physical_descriptors)
+    return _wrap_result(result, "VECTOR_CORE_V1", "VectorCore", "VectorCore")
+
+
+# ---------------------------------------------------------------------------
+# 14. SimulationEngine — SimulationEngine().materialize_candidate(wl_id, coh)
+# ---------------------------------------------------------------------------
+
+def q_run_simulation(input_data):
+    """
+    QUINT-wrapped SimulationEngine materialization.
+
+    Args:
+        input_data: QFrame or dict containing {"task_id": ..., "coherence": ...}.
+    """
+    from PX_Laboratory.Simulation_Engine import SimulationEngine
+
+    payload = _unwrap(input_data)
+    task_id = payload.get("task_id", payload.get("worldline_id", "SIM-UNK"))
+    coherence = payload.get("coherence", payload.get("amplitude", 0.0))
+    engine = SimulationEngine()
+    result = engine.materialize_candidate(task_id, coherence)
+    if not isinstance(result, dict):
+        result = {"materialization": result, "task_id": task_id}
+    return _wrap_result(result, "SIMULATION_ENGINE_V1", f"SIM-{str(task_id)[:16]}", "SimulationEngine")
+
+
+# ---------------------------------------------------------------------------
+# 15. TrialEngine — TrialEngine(time_step_h).run_trial(protocol, admet, ...)
+# ---------------------------------------------------------------------------
+
+def q_run_trial(protocol_or_frame, admet=None, pd_params=None, variability=None, time_step_h=1.0):
+    """
+    QUINT-wrapped TrialEngine clinical trial simulation.
+
+    Args:
+        protocol_or_frame: QFrame or dict with trial protocol.
+        admet:       QFrame or dict with ADMET output.
+        pd_params:   QFrame or dict with PD parameters (optional).
+        variability: QFrame or dict with IIV parameters (optional).
+        time_step_h: Time step in hours for PK simulation.
+    """
+    from PX_Engine.operations.TrialEngine import TrialEngine
+
+    protocol = _unwrap(protocol_or_frame)
+    admet_dict = _unwrap(admet) if admet is not None else None
+    pd_dict = _unwrap(pd_params) if pd_params is not None else None
+    var_dict = _unwrap(variability) if variability is not None else None
+
+    engine = TrialEngine(time_step_h=time_step_h)
+    result = engine.run_trial(protocol=protocol, admet=admet_dict, pd_params=pd_dict, variability=var_dict)
+    return _wrap_result(result, "TRIAL_ENGINE_V1", "Trial", "TrialEngine")
+
+
+# ---------------------------------------------------------------------------
+# 16. CheckConstitutional — check_constitutional(operation, payload)
+# ---------------------------------------------------------------------------
+
+def q_run_check_constitutional(operation, data_or_frame):
+    """
+    QUINT-wrapped ZeusLaws constitutional check (L10/L11).
+
+    Args:
+        operation: String identifying the operation being checked.
+        data_or_frame: QFrame or dict with toxicity/harm data.
+    """
+    from PX_System.foundation.ZeusLaws import check_constitutional
+
+    data = _unwrap(data_or_frame)
+    result = check_constitutional(operation, data)
+    return _wrap_result(result, "CONSTITUTIONAL_CHECK_V1", f"CONST-{operation[:16]}", "CheckConstitutional")
+
+
+# ---------------------------------------------------------------------------
+# 17. EvidencePackage — generate_dossier(candidate, engine_results, ...)
+# ---------------------------------------------------------------------------
+
+def q_run_evidence_dossier(candidate_or_frame, engine_results=None, zeus_verdict=None, context=None):
+    """
+    QUINT-wrapped Evidence_Package dossier generation.
+
+    Args:
+        candidate_or_frame: QFrame or dict with candidate data.
+        engine_results: QFrame or dict with engine outputs.
+        zeus_verdict:   QFrame or dict with Zeus gate result.
+        context:        QFrame or dict with additional context.
+    """
+    from PX_System.foundation.Evidence_Package import generate_dossier
+
+    candidate = _unwrap(candidate_or_frame)
+    eng = _unwrap(engine_results) if engine_results is not None else None
+    zeus = _unwrap(zeus_verdict) if zeus_verdict is not None else None
+    ctx = _unwrap(context) if context is not None else None
+
+    result = generate_dossier(candidate, eng, zeus_verdict=zeus, context=ctx)
+    return _wrap_result(result, "EVIDENCE_PACKAGE_V1", "Evidence", "EvidencePackage")
+
+
+# ---------------------------------------------------------------------------
+# 18. WrapTrialSimulation — wrap_trial_simulation(protocol, trial, ope, admet)
+# ---------------------------------------------------------------------------
+
+def q_run_wrap_trial(protocol_or_frame, trial_result=None, ope_result=None, admet_result=None, output_dir=None):
+    """
+    QUINT-wrapped wrap_trial_simulation for Evidence_Package.
+
+    Args:
+        protocol_or_frame: QFrame or dict with trial protocol.
+        trial_result: QFrame or dict with TrialEngine output.
+        ope_result:   QFrame or dict with OPE output.
+        admet_result: QFrame or dict with ADMET output.
+        output_dir:   Output directory for trial simulation files.
+    """
+    from PX_System.foundation.Evidence_Package import wrap_trial_simulation
+
+    protocol = _unwrap(protocol_or_frame)
+    trial = _unwrap(trial_result) if trial_result is not None else None
+    ope = _unwrap(ope_result) if ope_result is not None else None
+    admet = _unwrap(admet_result) if admet_result is not None else None
+
+    result = wrap_trial_simulation(protocol, trial, ope, admet, output_dir=output_dir)
+    return _wrap_result(result, "WRAP_TRIAL_V1", "WrapTrial", "WrapTrialSimulation")
+
+
+# ---------------------------------------------------------------------------
+# 19. Metabolism — Metabolism().pulse(task_id, p_vec, csa_s)
+# ---------------------------------------------------------------------------
+
+def q_run_metabolism_pulse(input_data):
+    """
+    QUINT-wrapped Metabolism pulse (heartbeat cycle).
+
+    Args:
+        input_data: QFrame or dict containing {"task_id": ..., "p_vec": [...], "csa_s": [...]}.
+                    Also accepts a plain string as task_id.
+    """
+    from PX_Engine.Metabolism import Metabolism
+
+    if isinstance(input_data, str):
+        payload = {"task_id": input_data}
+    else:
+        payload = _unwrap(input_data)
+
+    task_id = payload.get("task_id", payload.get("event", "pulse"))
+    p_vec = payload.get("p_vec")
+    csa_s = payload.get("csa_s")
+
+    m = Metabolism()
+    result = m.pulse(task_id, p_vec, csa_s)
+    if not isinstance(result, dict):
+        if isinstance(result, tuple) and len(result) == 2:
+            result = {"cycle_age": result[0], "status": result[1], "task_id": task_id}
+        else:
+            result = {"pulse_result": result, "task_id": task_id}
+    return _wrap_result(result, "METABOLISM_V1", f"METAB-{str(task_id)[:16]}", "Metabolism")
+
+
+# ---------------------------------------------------------------------------
+# 20. BlockOrchestrator — execute_living_pulse(task_id, ctx, p_vec, csa_s)
+# ---------------------------------------------------------------------------
+
+def q_run_block_pulse(input_data):
+    """
+    QUINT-wrapped Block_Orchestrator living pulse.
+
+    Args:
+        input_data: QFrame or dict containing
+                    {"task_id": ..., "ctx": {...}, "p_vec": [...], "csa_s": [...]}.
+    """
+    from PX_Engine.Block_Orchestrator import execute_living_pulse
+
+    payload = _unwrap(input_data)
+    task_id = payload.get("task_id", "UNK")
+    ctx = payload.get("ctx", payload.get("source_ctx", {}))
+    p_vec = payload.get("p_vec", payload.get("p_vector", [0.1, 0.0, 35.0, 1.0]))
+    csa_s = payload.get("csa_s", payload.get("csa_scores", []))
+
+    result = execute_living_pulse(task_id, ctx, p_vec, csa_s)
+    if not isinstance(result, dict):
+        result = {"pulse_result": result, "task_id": task_id}
+    return _wrap_result(result, "BLOCK_ORCHESTRATOR_V1", f"BLOCK-{str(task_id)[:16]}", "BlockOrchestrator")
+
+
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
 
 __all__ = [
     "_unwrap",
+    # PRV pipeline (1-12)
     "q_run_ope",
     "q_run_obe",
     "q_run_oce",
@@ -338,4 +555,13 @@ __all__ = [
     "q_run_virtual_efficacy",
     "q_run_grading",
     "q_run_zeus",
+    # Auxiliary (13-20)
+    "q_run_vector_core",
+    "q_run_simulation",
+    "q_run_trial",
+    "q_run_check_constitutional",
+    "q_run_evidence_dossier",
+    "q_run_wrap_trial",
+    "q_run_metabolism_pulse",
+    "q_run_block_pulse",
 ]

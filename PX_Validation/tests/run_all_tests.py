@@ -90,6 +90,10 @@ def main():
         ("PX_Validation/tests/test_performance_regression.py", "Performance Regression Tests"),
         # QUINT internal language
         ("PX_Validation/tests/test_quint.py", "QUINT Language Tests"),
+        ("PX_Validation/tests/test_quint_engine_adapter.py", "QUINT Engine Adapter Tests"),
+        ("PX_Validation/tests/test_quint_audit_chain.py", "QUINT Audit Chain Tests"),
+        ("PX_Validation/tests/test_quint_disease_constraints.py", "QUINT Disease Constraints Tests"),
+        ("PX_Validation/tests/test_quint_tillar_bridge.py", "QUINT Tillar Bridge Tests"),
         # Disease registry
         ("PX_Validation/tests/test_disease_registry.py", "Disease Registry Tests"),
         # Dossier schema
