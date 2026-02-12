@@ -109,6 +109,16 @@ def get_learning_material_dir(repo_root: Path | None = None) -> Path:
     return root / "PX_Warehouse" / "Learning_Material"
 
 
+def get_learning_material_subdir(source: str, tier: str, repo_root: Path | None = None) -> Path:
+    """Subdir for reclassified dossiers: Learning_Material/<source>/<tier>/.
+
+    source: 'Novel', 'Prv', or 'Finalized'
+    tier: 'Diamond', 'Gold', 'Silver', 'Bronze', or 'Discovery_Accepted'
+    """
+    root = repo_root or _REPO_ROOT
+    return root / "PX_Warehouse" / "Learning_Material" / source / tier
+
+
 def get_feeder_dir(repo_root: Path | None = None) -> Path:
     """Loading dock for queue files (prv_24h_queue.json, reprocess_candidates.json, etc.)."""
     root = repo_root or _REPO_ROOT
@@ -158,7 +168,16 @@ def ensure_structure(repo_root: Path | None = None) -> None:
     for tier in TIERS:
         (wh / "Finalized_Dossiers" / tier).mkdir(exist_ok=True)
     (get_finalized_dossier_dir("Bronze", root).parent / "Discovery_Accepted").mkdir(parents=True, exist_ok=True)
-    (wh / "Learning_Material").mkdir(parents=True, exist_ok=True)
+    lm = wh / "Learning_Material"
+    lm.mkdir(parents=True, exist_ok=True)
+    for source in ("Novel", "Prv", "Finalized"):
+        for tier in TIERS:
+            (lm / source / tier).mkdir(parents=True, exist_ok=True)
+            if source == "Finalized":
+                (lm / source / tier / "packages").mkdir(exist_ok=True)
+        (lm / source / "Discovery_Accepted").mkdir(exist_ok=True)
+        if source == "Finalized":
+            (lm / source / "Discovery_Accepted" / "packages").mkdir(exist_ok=True)
     (wh / "WorldLines").mkdir(parents=True, exist_ok=True)
     for tier in TIERS:
         (wh / "WorldLines" / tier).mkdir(exist_ok=True)
@@ -182,6 +201,7 @@ __all__ = [
     "get_finalized_dossier_dir",
     "get_discovery_accepted_dir",
     "get_learning_material_dir",
+    "get_learning_material_subdir",
     "get_worldline_dir",
     "get_feeder_dir",
     "get_calibration_molecules_dir",
