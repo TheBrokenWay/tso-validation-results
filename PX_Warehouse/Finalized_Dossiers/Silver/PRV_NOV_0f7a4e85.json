@@ -2334,7 +2334,7 @@
       "sign_off": {
         "engine_id": "OLE_V3_DETERMINISTIC",
         "version": "3.0-CORE",
-        "timestamp": "2026-02-12T01:20:39.291104+00:00",
+        "timestamp": "2026-02-12T02:07:23.554625+00:00",
         "execution_time_ms": 0,
         "status": "PASSED",
         "authorized": true,
@@ -2350,7 +2350,7 @@
         "reason": "All laws passed",
         "input_hash": "sha256:4e3b2243a916ee3f",
         "output_hash": "sha256:f026ed81817700ae",
-        "signature": "sha256:f747e05c56a47149"
+        "signature": "sha256:bdfa38282eb0177f"
       }
     },
     "lineage_assignment": {
@@ -2363,7 +2363,7 @@
       "full_chain": [
         "PRV_NOV_0f7a4e85"
       ],
-      "first_seen": "2026-02-12T01:20:39.290936+00:00",
+      "first_seen": "2026-02-12T02:07:23.554465+00:00",
       "worldline_ids": [
         "E:\\foundation\\PX_Warehouse\\WorldLines\\Gold\\PRV_NOV_0f7a4e85.worldline"
       ]
@@ -2486,7 +2486,7 @@
       "prv_eligible": false
     },
     "worldline_trial_event": {
-      "timestamp": "2026-02-12T01:20:39.290936+00:00",
+      "timestamp": "2026-02-12T02:07:23.554465+00:00",
       "simulation_id": "TRIAL_PRV_NOV_0f7a4e85_e2f07a0b32a87d6a",
       "trial_hash": "e2f07a0b32a87d6a7d5967070f4d7cf89ce9abf1fbb13550e3985cb1af6aa616",
       "outcome_summary": {
@@ -2503,7 +2503,7 @@
         "arms": 1
       },
       "status": "COMPLETED",
-      "tier_after_trial": "Silver"
+      "tier_after_trial": "Gold"
     },
     "trial_adjusted_sa_score": {
       "score": 0.875556,
@@ -2511,74 +2511,131 @@
       "note": "Optional; high dose requirements could lower SA in future"
     },
     "discovery_grading": {
-      "grade": "NEEDS_REVIEW",
-      "metrics": {
-        "pta": 0.0,
-        "responder_rate": 0.0,
-        "toxicity": 0.0105245,
-        "dose_score": 0.5,
-        "variability_cv": 0.0,
-        "binding_affinity": 0.98989126741,
-        "trial_responder_rate": 0.0,
-        "trial_pta": 0.0,
-        "trial_variability_cv": 0.0,
-        "trial_effect_size": null,
-        "trial_toxicity_rate": 0.0105245
+      "grading_version": "WeightedGradingEngine_v2.0",
+      "grade": "SILVER_TIER",
+      "percentage": 65.0,
+      "total_score": 65.0,
+      "max_score": 100,
+      "hard_limit_checks": {
+        "rejected": false,
+        "toxicity_failed": false,
+        "herg_failed": false,
+        "zeus_failed": false,
+        "constitutional_failed": false,
+        "rejection_reasons": []
+      },
+      "category_scores": {
+        "efficacy": {
+          "score": 19.0,
+          "max": 30,
+          "percentage": 63.3,
+          "breakdown": {
+            "ic50": 17.0,
+            "emax": 2.0
+          }
+        },
+        "safety": {
+          "score": 14.0,
+          "max": 25,
+          "percentage": 56.0,
+          "breakdown": {
+            "toxicity": 10.0,
+            "safety_margin": 1.0,
+            "herg": 3.0
+          }
+        },
+        "pk": {
+          "score": 15.0,
+          "max": 20,
+          "percentage": 75.0,
+          "breakdown": {
+            "bioavailability": 8.0,
+            "half_life": 1.0,
+            "clearance": 3.0,
+            "vd": 3.0
+          }
+        },
+        "druglikeness": {
+          "score": 7.0,
+          "max": 10,
+          "percentage": 70.0,
+          "breakdown": {
+            "lipinski": 4.0,
+            "qed": 3.0,
+            "constraint_penalty": 0
+          }
+        },
+        "manufacturability": {
+          "score": 5.0,
+          "max": 10,
+          "percentage": 50.0,
+          "breakdown": {
+            "synthesis_steps": 3.5,
+            "yield": 1.5
+          }
+        },
+        "fto": {
+          "score": 5.0,
+          "max": 5,
+          "percentage": 100.0,
+          "breakdown": {
+            "fto_status": "clear"
+          }
+        }
       },
       "reasoning": {
-        "grade": "NEEDS_REVIEW",
-        "reason": "Ambiguous - meets 3/5 BRONZE criteria",
-        "criteria_met_count": 3,
-        "trial_integrated": true,
-        "trial_responder_rate": 0.0,
-        "trial_pta": 0.0,
-        "trial_effect_size": null,
-        "trial_toxicity_rate": 0.0105245
+        "grade": "SILVER_TIER",
+        "strengths": [
+          "fto: 5.0/5 (100.0%)"
+        ],
+        "weaknesses": [],
+        "summary": "Moderate candidate scoring 65.0% \u2014 optimization recommended"
       },
-      "timestamp": "2026-02-12T01:20:39.291315+00:00",
-      "grading_engine_version": "v2.0-discovery",
-      "thresholds_used": {
-        "GOLD_TIER": {
-          "pta_min": 30.0,
-          "responder_rate_min": 30.0,
-          "toxicity_max": 0.2,
-          "dose_score_min": 0.8,
-          "variability_cv_max": 30.0
-        },
-        "SILVER_TIER": {
-          "pta_min": 20.0,
-          "responder_rate_min": 20.0,
-          "toxicity_max": 0.35,
-          "dose_score_min": 0.6,
-          "variability_cv_max": 50.0
-        },
-        "BRONZE_TIER": {
-          "pta_min": 10.0,
-          "responder_rate_min": 10.0,
-          "toxicity_max": 0.5,
-          "dose_score_min": 0.4,
-          "variability_cv_max": 70.0
-        }
+      "metrics": {
+        "ec50": 12.63591574,
+        "binding_affinity_nM": 10.10873259,
+        "emax": 0.95,
+        "molecular_weight": 91.11,
+        "logp": -1.3541,
+        "hbd": 3.0,
+        "hba": 3.0,
+        "binding_affinity_score": null,
+        "toxicity_index": 0.0105245,
+        "safety_margin": 0.13965783,
+        "herg_risk": -0.03541,
+        "bioavailability": 0.9,
+        "half_life_h": 485.1,
+        "clearance_mL_min_kg": 0.023809523809523808,
+        "vd_L_per_kg": 0.57142857,
+        "qed": null,
+        "lipinski_violations": 0,
+        "synthesis_steps": null,
+        "fto_status": "clear",
+        "constraint_violations": []
       },
       "sign_off": {
         "engine_id": "GRADING_ENGINE_V2",
-        "version": "v2.0-discovery",
-        "timestamp": "2026-02-12T01:20:39.291346+00:00",
+        "version": "v2.0-weighted",
+        "timestamp": "2026-02-12T02:07:23.554801+00:00",
         "execution_time_ms": 0,
         "status": "PASSED",
         "authorized": true,
         "laws_checked": [
+          "L11",
           "GRADE_RULES"
         ],
         "laws_passed": [
+          "L11",
           "GRADE_RULES"
         ],
         "laws_failed": [],
         "reason": "All laws passed",
         "input_hash": "sha256:44136fa355b3678a",
-        "output_hash": "sha256:c4a156955eac84f1",
-        "signature": "sha256:ba5ec8c3ce5420be"
-      }
+        "output_hash": "sha256:154ea3d4631939b8",
+        "signature": "sha256:3e0d050a2e31781d"
+      },
+      "timestamp": "2026-02-12T02:07:23.554819+00:00",
+      "grading_engine_version": "v2.0-weighted"
     },
     "soc_benchmarking_score": {
       "score": 0.997825,
@@ -2637,7 +2694,7 @@
       "authorized": true,
       "operation": "zeus_gate",
       "rationale": "All laws passed",
-      "timestamp": "2026-02-12T01:20:39.291720+00:00",
+      "timestamp": "2026-02-12T02:07:23.555042+00:00",
       "laws_required": [
         "L1_HARM_LAW",
         "U27_STABILITY_LAW",
@@ -2686,8 +2743,8 @@
     "worldline_generated": true,
     "worldline_path": "E:\\foundation\\PX_Warehouse\\WorldLines\\Gold\\PRV_NOV_0f7a4e85.worldline",
     "tier": "Silver",
-    "finalized_at": "2026-02-12T01:20:39.290936+00:00",
-    "rep_seal": "4fa48c41e3754f84476bfacc87a37dd7ffc675b1ae5774d41391b16e9dc8980c",
+    "finalized_at": "2026-02-12T02:07:23.554465+00:00",
+    "rep_seal": "6450e55b2e179b628358f988bb5f14356455cebb572c080e1f5a0ee2d0a2419d",
     "finalization_version": "3.0.0",
     "spec_compliance_report": {
       "missing_fields": [],
@@ -2738,7 +2795,7 @@
         "grading_metrics_complete",
         "zeus_gate_passed"
       ],
-      "timestamp": "2026-02-12T01:20:39.291776+00:00"
+      "timestamp": "2026-02-12T02:07:23.555090+00:00"
     }
   }
 }
