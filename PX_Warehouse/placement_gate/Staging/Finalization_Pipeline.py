@@ -425,13 +425,27 @@ def _get_tier_from_trial_outcome(trial_outcome_summary: Dict[str, Any], discover
 
 
 def _add_prv_eligibility(dossier: Dict[str, Any], repo_root: Path) -> Dict[str, Any]:
-    """Run OLE for PRV eligibility scoring (via QUINT)."""
+    """Run OLE for PRV eligibility scoring (via QUINT).
+
+    Preserves disease indication from the upstream PRV pipeline so that
+    PRV-eligible candidates retain their eligibility through finalization.
+    """
     _ensure_repo_path()
     try:
         candidate = dossier.get("candidate") or {}
+        engines = dossier.get("engines") or {}
+        ole_prior = engines.get("ole") or {}
+
+        # Extract indication from upstream OLE result (PRV pipeline sets this)
+        disease_context = ole_prior.get("prv_diseases_matched") or []
+        indication = disease_context[0] if disease_context else (
+            dossier.get("indication") or "PRV_eligible_disease_space"
+        )
+
         payload = {
             "compound_id": candidate.get("name") or "UNKNOWN",
-            "indication": "PRV_eligible_disease_space",
+            "indication": indication,
+            "disease_context": disease_context,
         }
         ole_qf = q_run_ole(payload)
         return emit(ole_qf, target_label="finalization_ole")
