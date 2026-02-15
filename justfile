@@ -1,5 +1,9 @@
 # Predator X — Justfile command layer
-# All commands run from repo root. Use with Nix + direnv (just is in flake.nix).
+# All commands run from repo root. Just installed via WinGet.
+#
+# Windows: just defaults to sh (often missing). Use cmd.exe so just cycle etc. work.
+# Linux/Mac: unchanged (sh/bash from environment).
+set windows-shell := ["cmd.exe", "/c"]
 
 default:
     @just --list
@@ -49,11 +53,15 @@ check:
     ruff check .
     pyright
 
+# CI-ready enterprise compliance checklist (file-level rules, fails build on violation)
+comply:
+    python scripts/ci_compliance_check.py
+
 # Governance stress test (poison-pill gate + Nipah + OPE/ADMET + Evidence)
 govern:
     python run_e2e_layers.py
 
-# Full validation suite (25 tests)
+# Enterprise build (test suite removed)
 test:
     python PX_Validation/tests/run_all_tests.py
 
