@@ -6,12 +6,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Predator X is a deterministic, constitutionally governed pharmaceutical compound discovery platform. It generates and evaluates novel/repurposed molecules through a forward-only pipeline: **Feed -> PRV -> Trial -> Finalization**. Every stage is gated by governance (ZeusLaws), and all outputs maintain full lineage from WorldLine physics snapshots to final dossiers.
 
-The environment is sealed via Nix flakes (`flake.nix`) with `direnv` (`.envrc` contains `use flake`). Tools pinned: Bazel 7, Python 3.11, Rye, Ruff, Pyright, DVC, Hydra. Dependencies: RDKit (>=2023.9.1), NumPy (>=1.24.0,<2.0), requests (>=2.31.0). Constitutional modules (ZeusLaws, Sovereign_Log_Chain) use only Python stdlib.
+The environment uses standard Python tooling: setuptools + wheel (pyproject.toml), Just (task runner), Ruff (linter, ruff.toml), Pyright (type checker, pyrightconfig.json). Python 3.13 on Windows (Miniconda3). Dependencies: RDKit (>=2023.9.1), NumPy (>=1.24.0), requests (>=2.31.0), reportlab (>=4.0). Pinned versions in requirements-lock.txt. Constitutional modules (ZeusLaws, Sovereign_Log_Chain) use only Python stdlib.
 
 ## Commands
 
 ```bash
 just check         # Lint + type-check (ruff check . && pyright)
+just comply        # CI compliance checklist — fails build on violation
 just test          # Full validation suite (python PX_Validation/tests/run_all_tests.py)
 just govern        # Governance stress test (python run_e2e_layers.py)
 
@@ -73,7 +74,7 @@ Feed Stage (Genesis_Engine, Vector_Core, Metabolism, Trajectory_Predictor)
 | `PX_Warehouse/placement_gate/Staging/` | Canonical warehouse implementation: `warehouse_layout.py`, `Finalization_Pipeline.py`, `WorldLine_Database.py`, data fetchers, pipeline scripts |
 | `PX_Discovery/` | `candidate_discovery_engine.py` (stub — use warehouse inventory or Hit_to_Lead_Optimizer for now) |
 | `PX_Constitution/` | `Constitutional_Tests.py` (mandatory pre-execution tests), `Block_Universe.py` (35D manifold), `Virtual_Machine.py` (VM fingerprint) |
-| `PX_Validation/tests/` | 21 test files; `run_all_tests.py` is the master harness |
+| `PX_Validation/tests/` | 40 test files (36 PX + 4 TSO); `run_all_tests.py` is the master harness (447 tests) |
 | `PX_Audit/` | Audit chain, manifold health, drift monitoring, `sovereign_log_chain.jsonl` |
 | `PX_Security/` | `IP_LOCK.json`, `PredatorImmune_Block.py`, `RedSurface.py`, `AAS_CircuitBreaker.py` |
 | `PX_Domain/` | Disease constraint models (`PRV_Diseases/`) |
@@ -172,6 +173,8 @@ These are hard rules from `.cursor/rules/00_constitution.mdc` through `07_lean_r
 | Finalize orchestrator | `PX_Executive/px_finalize.py` | Legacy wrappers (removed) |
 | Live orchestrator | `PX_Executive/orchestrators/PX_Live_Orchestrator_v2.py` | v1 |
 | WorldLine DB | `PX_Warehouse.WorldLine_Database` | `99_WAREHOUSE_ARCHIVE.WorldLine_Database` |
+| PDF dossier | `DOSSIER_PDF_V1_REPORTLAB` | Text-only |
+| Disease adapter | `DISEASE_ADAPTER_V1_QUINT` | `NotImplementedError` stubs |
 | Toxicity hard limit | `0.0210` | Any rounding above |
 | Harmonic overdrive | `1.02` | Variable/adaptive |
 
@@ -196,7 +199,7 @@ The governance E2E test (`run_e2e_layers.py`) validates 6 layers in sequence: (1
 - Operational engines: uppercase abbreviation (`OBE.py`, `OCE.py`, `ADMET.py`, `PKPD.py`)
 - Orchestrator scripts: `run_<action>.py` (`run_genesis_feed.py`, `run_prv_novel.py`, `run_finalize_dossiers.py`)
 - Test files: `test_<subject>.py` with `_integration` suffix for integration tests
-- Dossier tiers: `DIAMOND`, `GOLD`, `SILVER` (warehouse paths), `GOLD_TIER`, `SILVER_TIER`, `BRONZE_TIER`, `NEEDS_REVIEW`, `REJECTED` (GradingEngine)
+- Dossier tiers: `DIAMOND` (Finalized_Dossiers; full pharma package), `REJECTED` (WorldLine only; GradingEngine <85%)
 - WorldLine IDs: `WL-XXXX` format
 - Trace IDs: `PRD-V-XXXXXXXX` format
 - Engine version tags: `V3_DETERMINISTIC` suffix

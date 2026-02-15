@@ -1,0 +1,32 @@
+# Predator X — Ruff Configuration
+# Ruff: Python linter + formatter (replaces flake8, isort, pyflakes)
+
+target-version = "py311"
+line-length = 120
+
+[lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "UP",   # pyupgrade
+]
+ignore = [
+    "E501",   # line too long (handled by formatter)
+    "E741",   # ambiguous variable names (physics code uses l, O, I)
+    "B905",   # zip strict (Python 3.10+)
+]
+
+[lint.per-file-ignores]
+"99_LEGACY_CODE/**" = ["ALL"]
+"PX_Validation/tests/**" = ["B", "UP"]
+
+[lint.isort]
+known-first-party = [
+    "PX_Engine", "PX_Executive", "PX_System", "PX_Validation",
+    "PX_Warehouse", "PX_Laboratory", "PX_Constitution", "PX_Audit",
+    "PX_Security", "PX_Discovery", "PX_Domain", "PX_Data",
+    "governance", "scripts", "TSO_Validator", "Nipah_Analysis",
+]

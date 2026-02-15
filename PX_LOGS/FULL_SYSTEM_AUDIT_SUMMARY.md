@@ -204,7 +204,7 @@
 
 | File | Lines | Detail |
 |------|-------|--------|
-| `PX_Executive/generators/SMART_Antiviral_Fork.py` | 73, 82 | Uses `np.random.uniform()` for `target_potency` and `host_potency` in physics calculations |
+| `PX_Executive/generators/SMART_Antiviral_Fork.py` | 73, 82 | **FIXED** (Feb 2026) — `np.random.uniform()` replaced with deterministic physics |
 
 ### Broken Imports
 
@@ -254,7 +254,7 @@ test_virtual_efficacy.py, test_virtual_efficacy_integration.py, test_warehouse_i
 |----------|-----|
 | P0 | Route all 23 ungated warehouse write paths through `placement_gate.place_prv_dossier()` |
 | P0 | Fix schema mismatch: GradingEngine expects top-level `toxicity_index`, dossiers nest it inside `harm_energy`/`engines` |
-| P0 | Fix `SMART_Antiviral_Fork.py` Rule 2 violation — replace `np.random` with deterministic physics |
+| ~~P0~~ | ~~Fix `SMART_Antiviral_Fork.py` Rule 2 violation~~ — **DONE** (Feb 2026) |
 | P1 | Add 15 excluded test files to `run_all_tests.py` harness |
 | P1 | Fix `Evidence_Package.wrap_trial_simulation` default `output_dir` (relative path causes root-level dumps) |
 | P2 | Remove broken import in `Refinement_Engine.py` (PX_Warehouse.RAG_Query_Engine) |

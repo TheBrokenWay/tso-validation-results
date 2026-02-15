@@ -15,6 +15,7 @@ CANONICAL_TOP = {
     "CommercialAssets", "WorldLines", "TrialSimulations", "Operations", "Archive",
     "Feeder", "Calibration_Molecules", "Prv_Dossiers", "Novel_Dossiers",
     "Finalized_Dossiers", "Learning_Material", "placement_gate",
+    "Discovery_Accepted",
 }
 # Known legacy dirs — flagged but don't block commits
 KNOWN_LEGACY_TOP = {

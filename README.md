@@ -1,89 +1,74 @@
-# Predator X — Deterministic Scientific Platform
+# Predator X — Deterministic Pharmaceutical Compound Discovery Platform
 
-Predator X is a fully deterministic, constitutionally governed scientific research platform. Every tool, engine, and physics layer is pinned, reproducible, and validated end‑to‑end.
-
-This README provides the top‑level overview and links to the core documents that define the system.
+Predator X is a fully deterministic, constitutionally governed pharmaceutical compound discovery platform. It generates and evaluates novel/repurposed molecules through a forward-only pipeline: **Feed -> PRV -> Trial -> Finalization**. Every stage is gated by governance (ZeusLaws), and all outputs maintain full lineage from WorldLine physics snapshots to final dossiers.
 
 ---
 
-## 🔒 Deterministic Environment
-Predator X uses:
-- **Nix** for version locking  
-- **direnv** for automatic environment activation  
-- **flake.nix** as the environment ledger  
+## Environment
 
-This ensures identical results on any machine.
+| Component | Tool | Version |
+|-----------|------|---------|
+| Language | Python | 3.13 (Miniconda3, Windows) |
+| Build | setuptools + wheel | via pyproject.toml |
+| Lint | Ruff | ruff.toml at repo root |
+| Type-check | Pyright | pyrightconfig.json at repo root |
+| Task runner | Just | justfile at repo root |
+| Dependencies | pip / conda | requirements-lock.txt for pinned versions |
+| Version control | Git + Git LFS | .gitattributes tracks *.db, *.tar.gz, *.tar.bz2 |
 
-See: `DETERMINISTIC_SETUP.md`
+Core dependencies: RDKit (>=2023.9.1), NumPy (>=1.24.0), requests (>=2.31.0), reportlab (>=4.0).
 
----
-
-## 🧱 Hermetic Build System
-All engines run under:
-- **Bazel 7** (hermetic execution, caching)
-
-This guarantees reproducible simulations and prevents drift.
+Constitutional modules (ZeusLaws, Sovereign_Log_Chain, QUINT) use only Python stdlib.
 
 ---
 
-## 🧬 Python Architecture & Safety
-The Python layer is governed by:
-- **Rye** (project structure)
-- **Ruff + Pyright** (static safety)
+## Quick Start
 
-This eliminates runtime type errors and ensures molecular engine stability.
-
----
-
-## 🏛 Governance & Constitution
-Predator X enforces:
-- **OPA** (Zeus Laws)
-- **Hydra** (configuration governance)
-
-Governance is externalized and cannot be bypassed.
-
-See: `GOVERNANCE_VERSION_LOCK.md`
+```bash
+just test          # Run full test suite (447 tests across 40 files)
+just govern        # Governance stress test (7 layers)
+just check         # Lint + type-check (ruff + pyright)
+just feed          # Genesis feed (novel candidates)
+just novel         # 12-engine PRV pipeline (novel)
+just finalize      # Finalization pipeline
+just cycle         # Full cycle: Feed -> PRV -> Finalize
+```
 
 ---
 
-## 🗂 Physics Lineage
-All Physics Maps and worldlines are versioned using:
-- **DVC**
+## Architecture
 
-This provides full lineage and time‑travel capability.
+```
+Feed Stage (Genesis_Engine, Vector_Core, Metabolism, Trajectory_Predictor)
+  -> Queue (PX_Warehouse/Feeder/prv_24h_queue.json)
+  -> PRV Stage (OPE -> Constraints -> OBE -> OCE -> OLE -> OME -> OSE -> ADMET -> PKSim -> PKPD -> DoseOpt -> Trial -> VirtualEfficacy -> GradingEngine -> ZeusLaws)
+  -> Finalization (Evidence_Package, GradingEngine, ZeusLaws.run_zeus_gate)
+  -> PX_Warehouse/Finalized_Dossiers/<DIAMOND|GOLD|SILVER>/
+```
 
----
-
-## 🧪 Validation Status
-- **25/25 PX_Validation tests passed**
-- **Governance stress tests passed**
-  - Thermodynamic paradox → rejected  
-  - Temporal paradox → rejected  
-
-See: `STATUS.md`
+See `CLAUDE.md` for full architecture reference and constitutional rules.
 
 ---
 
-## 🎛 Ergonomic Control Panel
-A Justfile provides simple commands for engine loops:
+## Governance
 
-- `just feed`
-- `just novel`
-- `just repurpose`
-- `just finalize`
-- `just cycle`
-
-See: `JUSTFILE.md`
+- **ZeusLaws**: Constitutional governance gate (Laws L1, L11, U27, U34)
+- **Toxicity hard limit**: 0.0210 (Law L11) — no rounding, no negotiation
+- **Harmonic Overdrive**: Fixed constant 1.02 — never adaptive
+- **Fail-closed**: All gates default to `authorized=False`
+- **Sovereign Log Chain**: SHA-256 chained immutable audit trail
 
 ---
 
-## 📐 Architecture Diagram
-A full textual architecture diagram is available in:
+## Validation Status
 
-`ARCHITECTURE_DIAGRAM.md`
+- **447/447** PX_Validation tests passed (40 test files)
+- **7/7** governance E2E layers passed
+- **TSO_Validator**: Standalone safety gate (zero PX_* imports, stdlib only)
+- **65** preflight integration checks across 3 diseases, all 12 engines
 
 ---
 
-## ✔ Current Status
-**Predator X is fully installed, deterministic, governed, and operational.  
-No additional configuration is required.**
+## Current Status
+
+**v1.0.0-enterprise** — Predator X is fully operational with 12-engine PRV pipeline, QUINT internal language, pharma-grade dossier system, and 33 disease constraint models.
